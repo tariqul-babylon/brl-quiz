@@ -21,11 +21,13 @@
         </div>
         <div class="row row-cols-5 g-2 mt-3">
             @foreach ($permissions as $k => $permission)
-                <div>
-                    <input true type="checkbox" class="form-check-input me-1" name="permission[]"
-                        value="{{ $permission->id }}" id="{{ $permission->id }}">
-                    <label for="{{ $permission->id }}" class="user-select-none">
-                        {{ ucwords(str_replace('-', ' ', $permission->name)) }}
+                <div class="@if (in_array($permission->name, config('app.permissions'))) d-none @endif">
+                    <div>
+                        <input true type="checkbox" class="form-check-input me-1" name="permission[]"
+                            value="{{ $permission->id }}" id="{{ $permission->id }}">
+                        <label for="{{ $permission->id }}" class="user-select-none">
+                            {{ ucwords(str_replace('-', ' ', $permission->name)) }}
+                    </div>
                 </div>
             @endforeach
         </div>

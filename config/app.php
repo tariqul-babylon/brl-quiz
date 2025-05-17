@@ -14,6 +14,15 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'per_page' => 10,
+    'permissions' => [
+        'View Laravel Logger Activity',
+        'View Log',
+        'View Telescope',
+    ],
+    'roles' => [
+        'Dev',
+    ],
 
     /*
     |--------------------------------------------------------------------------
