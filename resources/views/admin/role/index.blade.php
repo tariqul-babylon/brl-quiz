@@ -1,14 +1,13 @@
 @extends('admin.layout.master')
+
 @section('content')
     <div class="">
         <div class="page-title mb-3">
             <div class="d-flex  justify-content-between align-items-center">
                 <h1 class="title">User Roles</h1>
-                @can('Add Role')
-                    <a class="btn btn-primary" href="{{ route('role.create') }}">
-                        New
-                    </a>
-                @endcan
+                <a class="btn btn-primary" href="{{ route('role.create') }}">
+                    New
+                </a>
             </div>
         </div>
 
@@ -21,9 +20,9 @@
                     </div>
                 </div> --}}
 
-                <div class="table-responsive">
-                    <table class="table striped">
-                        <thead>
+                <div class="table-responsiv bg-white">
+                    <table class="table  table-bordered">
+                        <thead class="">
                             <tr>
                                 <th class="text-center">No</th>
                                 <th>Name</th>
@@ -50,25 +49,25 @@
                                                 </span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                @can('View Role')
+                                                
                                                     <li>
                                                         <a class="dropdown-item" href="{{ route('role.show', $role->id) }}">
                                                             <i class="far fa-eye"></i>
                                                             View
                                                         </a>
                                                     </li>
-                                                @endcan
+                                                
 
-                                                @can('Edit Role')
+                                                
                                                     <li>
                                                         <a class="dropdown-item" href="{{ route('role.edit', $role->id) }}">
                                                             <i class="far fa-edit"></i>
                                                             Edit
                                                         </a>
                                                     </li>
-                                                @endcan
+                                               
 
-                                                @can('Delete Role')
+                                                
                                                     <li>
                                                         <form action="{{ route('role.destroy', $role->id) }}" method="post">
                                                             @csrf
@@ -78,14 +77,13 @@
                                                             </button>
                                                         </form>
                                                     </li>
-                                                @endcan
+                                                
                                             </ul>
                                         </div>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
-
                     </table>
                 </div>
                 {!! $roles->links() !!}

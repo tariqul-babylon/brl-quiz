@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use DB;
 class RoleController extends Controller
 {
     /**
@@ -11,7 +13,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $roles = Role::latest()->paginate();
+        return view('admin.role.index', compact('roles'));
     }
 
     /**
@@ -19,7 +22,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $data['permissions'] = Permission::get();
+        return view('admin.role.create', $data);
     }
 
     /**
@@ -27,7 +31,20 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:roles,name',
+            'permission' => 'required',
+        ]);
+
+        $role = Role::create(['name' => $request->input('name')]);
+        $role->syncPermissions($request->input('permission'));
+
+        $alert = [
+            'type' => 'Success',
+            'message' => 'Successfully Stored',
+        ];
+
+        return redirect()->route('role.index')->with($alert);
     }
 
     /**
@@ -35,7 +52,13 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data['role'] = Role::find($id);
+        $data['permissions'] = Permission::get();
+        $data['rolePermissions'] = Permission::join("role_has_permissions", "role_has_permissions.permission_id", "=", "permissions.id")
+            ->where("role_has_permissions.role_id", $id)
+            ->get();
+
+        return view('admin.role.show', $data);
     }
 
     /**
@@ -43,7 +66,13 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data['role'] = Role::find($id);
+        $data['permissions'] = Permission::get();
+        $data['rolePermissions'] = DB::table("role_has_permissions")->where("role_has_permissions.role_id", $id)
+            ->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
+            ->all();
+
+        return view('admin.role.edit', $data);
     }
 
     /**
@@ -51,7 +80,23 @@ class RoleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'permission' => 'required',
+        ]);
+
+        $role = Role::find($id);
+        $role->name = $request->input('name');
+        $role->save();
+
+        $role->syncPermissions($request->input('permission'));
+
+        $alert = [
+            'type' => 'Success',
+            'message' => 'Successfully Updated',
+        ];
+
+        return redirect()->back()->with($alert);
     }
 
     /**
@@ -59,6 +104,13 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DB::table("roles")->where('id', $id)->delete();
+
+        $alert = [
+            'type' => 'Success',
+            'message' => 'Successfully Deleted',
+        ];
+
+        return redirect()->back()->with($alert);
     }
 }

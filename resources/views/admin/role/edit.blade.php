@@ -1,57 +1,42 @@
 @extends('admin.layout.master')
+
 @section('content')
-    <div class="page-title mb-3">
-        <div class="d-flex  justify-content-between align-items-center">
-            <h1 class="title">Update Role</h1>
+    <div class="page-header">
+        <div class="head">
+            <h1 class="title">Create Permission</h1>
         </div>
     </div>
-    <div class="card">
-        <div class="card-body">
-            <form action="{{ route('role.update', $role->id) }}" method="POST">
-                @csrf
-                @method('PUT')
-
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="mb-2">
-                            <label for="role_name">Permission Name </label>
-                            <input value="{{ $role->name }}" id="role_name" name="name"
-                                class="form-control @error('name') is-invalid @enderror" type="text"
-                                placeholder="Permission Name">
-                            @error('name')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
-                    @foreach ($permissions as $k => $permission)
-                        <div class="@if (in_array($permission->name, config('app.permissions'))) d-none @endif">
-                            <div class="mb-2">
-                                <input true type="checkbox" class="form-check-input" name="permission[]"
-                                    value="{{ $permission->id }}" id="{{ $permission->id }}">
-                                <label for="{{ $permission->id }}" class="optional">
-                                    {{ ucwords(str_replace('-', ' ', $permission->name)) }}
-                                </label>
-                            </div>
-                        </div>
-                    @endforeach
-
-                </div>
-                <div class="mb-5">
-                    @error('permission')
-                        <small class="text-danger">Minimum One Permission Field Required</small>
-                    @enderror
-                </div>
-
-
+    <form action="{{ route('role.update', $role->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <div class="row row-cols-3 gx-3 gy-3">
+            <div>
+                <label for="role_name">Permission Name </label>
+                <input value="{{ $role->name }}" id="role_name" name="name"
+                    class="form-control @error('name') is-invalid @enderror" type="text" placeholder="Permission Name">
+                @error('name')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+        </div>
+        <div class="row row-cols-5 g-2 mt-3">
+            @foreach ($permissions as $k => $permission)
                 <div>
-                    <button class="btn btn-primary">Submit</button>
+                    <input true type="checkbox" class="form-check-input me-1" name="permission[]"
+                        value="{{ $permission->id }}" id="{{ $permission->id }}">
+                    <label for="{{ $permission->id }}" class="user-select-none">
+                        {{ ucwords(str_replace('-', ' ', $permission->name)) }}
                 </div>
-            </form>
-
+            @endforeach
         </div>
-    </div>
+
+        <div class="mt-4">
+            <a href="" class="btn btn-outline-secondary">
+                Back
+            </a>
+            <button class="btn btn-primary">Submit</button>
+        </div>
+    </form>
 @endsection
 
 @push('js')

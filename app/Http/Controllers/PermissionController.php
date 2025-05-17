@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
@@ -11,7 +12,8 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //
+        $permissions = Permission::latest()->paginate();
+        return view('admin.permission.index', compact('permissions'));
     }
 
     /**
@@ -27,7 +29,18 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:permissions,name',
+        ]);
+
+        Permission::create(['name' => $request->name]);
+
+        $alert = [
+            'type' => 'Success',
+            'message' => 'Successfully Stored',
+        ];
+
+        return redirect()->route('permission.index')->with($alert);
     }
 
     /**
@@ -35,7 +48,7 @@ class PermissionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // show
     }
 
     /**
@@ -43,7 +56,8 @@ class PermissionController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data['permission'] = Permission::findOrFail($id);
+        return view('admin.permission.edit', $data);
     }
 
     /**
@@ -51,7 +65,21 @@ class PermissionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:permissions,name,' . $id,
+        ]);
+
+        $permission = Permission::findOrFail($id);
+
+        $permission->update([
+            'name' => $request->name,
+        ]);
+
+        $alert = [
+            'type' => 'Success',
+            'message' => 'Successfully Updated',
+        ];
+        return redirect()->route('permission.index')->with($alert);
     }
 
     /**
@@ -59,6 +87,12 @@ class PermissionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $permission = Permission::findOrFail($id);
+        $permission->delete();
+        $alert = [
+            'type' => 'Success',
+            'message' => 'Successfully Deleted',
+        ];
+        return redirect()->back()->with($alert);
     }
 }
