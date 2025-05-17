@@ -98,6 +98,9 @@
                             </div>
                         </form>
                     </div>
+                    <a href="{{ url('/auth/google') }}" class="btn btn-danger">
+                        <i class="fab fa-google"></i> Sign up with Google
+                    </a>
                 </div>
             </div>
         </div>
