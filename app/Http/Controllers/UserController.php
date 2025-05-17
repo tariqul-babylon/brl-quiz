@@ -12,8 +12,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
-        return view('users.index', compact('users'));
+        $users = User::latest()->paginate();
+        return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -37,7 +37,9 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::findOrFail($id); 
+
+        return view('admin.users.show', compact('user'));
     }
 
     /**
