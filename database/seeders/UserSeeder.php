@@ -16,11 +16,10 @@ class UserSeeder extends Seeder
         User::updateOrCreate(
             ['id' => 1],
             [
-                'username' => 'admin',
-                'name' => 'admin',
+                'username' => 'superadmin',
+                'name' => 'Super Admin',
                 'email' => 'admin@gmail.com',
-                'password' => Hash::make('admin123'),
-                'status' => 3,
+                'password' => bcrypt(12341234),
             ]
         );
     }
