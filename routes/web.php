@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExamCategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
@@ -22,4 +23,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
     Route::resource('users', UserController::class);
+    Route::resource('exam-categories', ExamCategoryController::class);
 });
