@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('answer_id');
             $table->unsignedBigInteger('answer_option_id');
             $table->timestamps();
+
+            $table->unique(['answer_id', 'answer_option_id'], 'answer_choice_unique');
         });
     }
 

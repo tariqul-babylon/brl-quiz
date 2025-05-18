@@ -19,6 +19,8 @@ return new class extends Migration
             $table->boolean('answer_status');
             $table->timestamp('answer_at');
             $table->timestamps();
+
+            $table->unique(['answer_id', 'question_id'], 'answer_question_unique');
         });
     }
 

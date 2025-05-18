@@ -45,9 +45,29 @@ class ExamController extends Controller
         $totalSeconds = ($hours * 3600) + ($minutes * 60);
         $data['duration'] = gmdate("H:i:s", $totalSeconds);
 
+        $code = $this->makeExamCode();
+        while(1){
+            if(!Exam::where('exam_code', $code)->exists()){
+                break;
+            }
+            $code = $this->makeExamCode();
+        }
+
+        $data['exam_code'] = $code;
+
         Exam::create($data);
 
         return redirect()->route('exams.index')->with('success', 'Exam created successfully.');
+    }
+
+    private function makeExamCode($digits=6){
+        $characters = "123456789ABCDEF123456789GHJ123456789KMN123456789PQRST123456789UVW123456789XYZ123456789";
+        $characters = str_shuffle($characters);
+        $code = '';
+        for ($i = 0; $i < $digits; $i++) {
+            $code .= $characters[rand(0, strlen($characters) - 1)];
+        }
+        return $code;
     }
 
     /**
@@ -105,27 +125,12 @@ class ExamController extends Controller
         ];
     }
 
-    private function parseDuration($input)
+    public function createLink(Exam $exam)
     {
-        // Default to 0
-        $totalSeconds = 0;
+        $exam->update([
+            'exam_link' => '/exam/'.$exam->exam_code
+        ]);
 
-        // Match "1 hr 20 min", "2h 30m", "90m", "45s"
-        preg_match_all('/(\d+)\s*(h(?:r|ours?)?|m(?:in(?:utes?)?)?|s(?:ec(?:onds?)?)?)/i', $input, $matches, PREG_SET_ORDER);
-
-        foreach ($matches as $match) {
-            $value = (int)$match[1];
-            $unit = strtolower($match[2]);
-
-            if (str_starts_with($unit, 'h')) {
-                $totalSeconds += $value * 3600;
-            } elseif (str_starts_with($unit, 'm')) {
-                $totalSeconds += $value * 60;
-            } elseif (str_starts_with($unit, 's')) {
-                $totalSeconds += $value;
-            }
-        }
-
-        return gmdate("H:i:s", $totalSeconds); // store as HH:MM:SS format
+        return redirect()->route('exams.index')->with('success', 'Exam Link Created successfully.');
     }
 }

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->boolean('question_type');
             $table->boolean('status')->default(1);
             $table->timestamps();
+
+            $table->unique(['exam_id', 'title'], 'exam_title_unique');
         });
     }
 
