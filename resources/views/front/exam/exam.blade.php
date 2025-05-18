@@ -219,8 +219,8 @@
         // Set exam to start tomorrow at 9:00 AM by default
         const now = new Date();
         const startDate = new Date();
-        startDate.setDate(now.getDate() + 1); // Tomorrow
-        startDate.setHours(9, 0, 0, 0); // 9:00 AM
+        startDate.setDate(now.getDate() +1 ); // Tomorrow
+        startDate.setHours(0, 0, 9, 0); // 9:00 AM
         
         // Set exam to end 7 days after start (adjust as needed)
         const endDate = new Date(startDate);

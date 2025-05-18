@@ -27,11 +27,13 @@ class JoinExamController extends Controller
       return back()->withErrors(['exam_code' => 'Invalid exam code'])->withInput();
     } else if ($exam->exam_status != Exam::PUBLISHED) {
       return back()->withErrors(['exam_code' => 'Exam not available'])->withInput();
-    } else if ($exam->start_at > $now) {
-      return back()->withErrors(['exam_code' => 'Exam not started yet.'])->withInput();
-    } else if ($exam->end_at < $now) {
-      return back()->withErrors(['exam_code' => 'Exam time is over.'])->withInput();
-    } else if ($exam->is_sign_in_required && !auth()->check()) {
+    } 
+    // else if ($exam->start_at > $now) {
+    //   return back()->withErrors(['exam_code' => 'Exam not started yet.'])->withInput();
+    // } else if ($exam->end_at < $now) {
+    //   return back()->withErrors(['exam_code' => 'Exam time is over.'])->withInput();
+    // } 
+    else if ($exam->is_sign_in_required && !auth()->check()) {
       return redirect()->guest(route('login'));
     } else if ($exam?->authAnswer) {
       $now = Carbon::now();
