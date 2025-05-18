@@ -3,7 +3,7 @@
     <div class="page-title">
         <div class="d-flex justify-content-between align-items-end">
             <h1 class="title">Users List</h1>
-            <a href="" class="btn btn-primary">
+            <a href="{{ route('permission.create') }}" class="btn btn-primary">
                 <span class="material-symbols-outlined">
                     add
                 </span>
