@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('tagline');
-            $table->timestamps('exam_start_time');
-            $table->timestamps('exam_end_time');
+            $table->timestamp('start_at')->nullable();
+            $table->timestamp('end_at')->nullable();
             $table->text('instruction')->nullable(); // assuming nullable for flexibility
             $table->integer('full_mark');
             $table->float('negative_mark')->default(0);
@@ -25,7 +25,6 @@ return new class extends Migration
             // Booleans (true/false values)
             $table->boolean('is_bluer')->default(false);
             $table->boolean('is_timer')->default(false);
-            $table->boolean('is_date_enabled')->default(false);
             $table->boolean('exam_status')->default(false);
             $table->boolean('user_result_view')->default(false);
             $table->boolean('user_answer_view')->default(false);
@@ -38,6 +37,7 @@ return new class extends Migration
             $table->string('id_no_placeholder')->nullable();
             $table->string('logo')->nullable();
             $table->string('exam_link')->nullable();
+            $table->string('exam_code')->unique();
 
             $table->timestamps();
             $table->softDeletes();

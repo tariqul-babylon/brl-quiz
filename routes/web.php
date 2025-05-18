@@ -57,8 +57,13 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'dashboard'], function () {
     Route::prefix('exams/{exam}')->group(function () {
         Route::get('questions', [ExamQuestionController::class, 'index'])->name('exam_questions.index');
         Route::post('questions', [ExamQuestionController::class, 'store'])->name('exam_questions.store');
-        // You can add more routes like edit, update, delete questions as needed
+
+        Route::get('questions/{question}/edit', [ExamQuestionController::class, 'edit'])->name('exam_questions.edit');
+        Route::put('questions/{question}', [ExamQuestionController::class, 'update'])->name('exam_questions.update');
+        Route::delete('questions/{question}', [ExamQuestionController::class, 'destroy'])->name('exam_questions.destroy');
     });
+
+    Route::get('exam/create-link/{exam}', [ExamController::class, 'createLink'])->name('exam.create-link');
     Route::resource('exams', ExamController::class);
 });
 

@@ -17,6 +17,7 @@
                 <tr>
                     <th>No</th>
                     <th>Title</th>
+                    <th>Exam Code</th>
                     <th>Start Time</th>
                     <th>End Time</th>
                     <th>Full Mark</th>
@@ -32,6 +33,7 @@
                     <tr>
                         <td>{{ $exams->firstItem() + $loop->index }}</td>
                         <td>{{ $exam->title }}</td>
+                        <td>{{ $exam->exam_code }}</td>
                         <td>{{ \Carbon\Carbon::parse($exam->exam_start_time)->format('d-m-Y H:i') }}</td>
                         <td>{{ \Carbon\Carbon::parse($exam->exam_end_time)->format('d-m-Y H:i') }}</td>
                         <td>{{ $exam->full_mark }}</td>
@@ -89,6 +91,15 @@
                                             <span class="material-symbols-outlined">quiz</span> Questions Add
                                         </a>
                                     </li>
+
+                                    @if(!$exam->exam_link)
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('exam.create-link', $exam->id) }}">
+                                                <span class="material-symbols-outlined">link</span> Create Exam Link
+                                            </a>
+                                        </li>
+                                    @endif
+
                                     <li>
                                         <form action="{{ route('exams.destroy', $exam->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete this exam?');">
                                             @csrf

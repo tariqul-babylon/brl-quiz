@@ -15,7 +15,7 @@
                         <div class="form-group">
                             <div class="input-with-icon password">
                                 <span class="material-symbols-outlined input-icon">lock</span>
-                                <input type="text" name="exam_code" class="@err('exam_code') form-control  " placeholder="Exam Code" >
+                                <input value="{{old('exam_code')}}" type="text" name="exam_code" class="@err('exam_code') form-control  " placeholder="Exam Code" >
                             </div>
                             @errtext('exam_code')
                         </div>
