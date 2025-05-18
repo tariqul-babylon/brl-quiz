@@ -22,7 +22,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $question->title }}</td>
-                            <td>{{ $question->question_type ? 'Type A' : 'Type B' }}</td>
+                            <td>{{ \App\Models\ExamQuestion::QUESTION_TYPE[$question->question_type] ?? 'Unknown' }}</td>
                             <td>{{ $question->status ? 'Active' : 'Inactive' }}</td>
                         </tr>
                     @empty
@@ -35,20 +35,33 @@
             <!-- Right column: Add Question Form -->
             <div class="col-md-6">
                 <h4>Add New Question</h4>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <strong>Whoops!</strong> Please fix the following errors:
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <form action="{{ route('exam_questions.store', $exam->id) }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="title" class="form-label">Question Title</label>
                         <input type="text" id="title" name="title" class="form-control" required value="{{ old('title') }}">
                     </div>
-
+                    @php use App\Models\ExamQuestion; @endphp
                     <div class="mb-3">
                         <label for="question_type" class="form-label">Question Type</label>
                         <select name="question_type" id="question_type" class="form-select" required>
                             <option value="">Select Question Type</option>
-                            <option value="1" {{ old('question_type') == '1' ? 'selected' : '' }}>MCQ</option>
-                            <option value="2" {{ old('question_type') == '2' ? 'selected' : '' }}>True / False</option>
-                            <option value="3" {{ old('question_type') == '3' ? 'selected' : '' }}>Yes / No</option>
+                            @foreach (ExamQuestion::QUESTION_TYPE as $key => $label)
+                                <option value="{{ $key }}" {{ old('question_type') == $key ? 'selected' : '' }}>
+                                    {{ $label }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -90,17 +103,17 @@
         let mcqCount = 0;
 
         const createMcqOption = (value = '') => {
-            mcqCount++;
             const wrapper = document.createElement('div');
             wrapper.classList.add('input-group', 'mt-2', 'mcq-option');
             wrapper.innerHTML = `
-            <div class="input-group-text">
-                <input type="radio" name="correct_option" value="${mcqCount}" required>
-            </div>
-            <input type="text" name="options[]" class="form-control" placeholder="Option ${mcqCount}" required value="${value}">
-            <span class="input-group-text text-danger remove-option" role="button">&times;</span>
-        `;
+                <div class="input-group-text">
+                    <input type="radio" name="correct_option" value="${mcqCount}" required data-type="mcq">
+                </div>
+                <input type="text" name="options[]" class="form-control" placeholder="Option ${mcqCount + 1}" required value="${value}" data-type="mcq">
+                <span class="input-group-text text-danger remove-option" role="button">&times;</span>
+            `;
             mcqOptionsWrapper.appendChild(wrapper);
+            mcqCount++;
         };
 
         const loadInitialMcqs = () => {
@@ -109,23 +122,35 @@
             for (let i = 0; i < 4; i++) createMcqOption();
         };
 
+        const toggleInputsByType = (type) => {
+            const allInputs = document.querySelectorAll('[data-type]');
+            allInputs.forEach(input => {
+                input.disabled = (type === '1' && input.dataset.type === 'binary') ||
+                    (type !== '1' && input.dataset.type === 'mcq');
+            });
+        };
+
         const setBinaryOptions = (type) => {
             binaryOptionsWrapper.innerHTML = '';
             const values = type === '2' ? ['True', 'False'] : ['Yes', 'No'];
             values.forEach((val, idx) => {
                 binaryOptionsWrapper.innerHTML += `
-                <div class="input-group mt-2">
-                    <div class="input-group-text">
-                        <input type="radio" name="correct_option" value="${val}" required>
-                    </div>
-                    <input type="text" name="options[]" class="form-control" required value="${val}">
+            <div class="input-group mt-2">
+                <div class="input-group-text">
+                    <input type="radio" name="correct_option" value="${idx}" required data-type="binary">
                 </div>
-            `;
+                <input type="text" name="options[]" class="form-control" required value="${val}" data-type="binary">
+            </div>
+        `;
             });
         };
 
         questionType.addEventListener('change', function () {
             const value = this.value;
+
+            // Reset content
+            mcqOptionsWrapper.innerHTML = '';
+            binaryOptionsWrapper.innerHTML = '';
 
             if (value === '1') {
                 mcqWrapper.style.display = 'block';
@@ -139,7 +164,10 @@
                 mcqWrapper.style.display = 'none';
                 binaryWrapper.style.display = 'none';
             }
+
+            toggleInputsByType(value);
         });
+
 
         addMcqBtn.addEventListener('click', function (e) {
             e.preventDefault();
@@ -152,6 +180,16 @@
                 const allOptions = mcqOptionsWrapper.querySelectorAll('.mcq-option');
                 if (allOptions.length > 2) {
                     e.target.closest('.mcq-option').remove();
+                    // After removal, reset mcqCount and re-index all MCQ options
+                    const remaining = mcqOptionsWrapper.querySelectorAll('.mcq-option');
+                    mcqCount = 0;
+                    remaining.forEach((option, index) => {
+                        const radio = option.querySelector('input[type="radio"]');
+                        const text = option.querySelector('input[type="text"]');
+                        radio.value = index;
+                        text.placeholder = `Option ${index + 1}`;
+                        mcqCount++;
+                    });
                 } else {
                     alert('At least 2 options are required.');
                 }
