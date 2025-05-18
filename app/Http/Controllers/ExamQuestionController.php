@@ -16,6 +16,7 @@ class ExamQuestionController extends Controller
 
     public function store(Request $request, Exam $exam)
     {
+        dd($request->all());
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'question_type' => 'required|boolean',

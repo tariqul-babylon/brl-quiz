@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('exam_id');
             $table->string('title');
             $table->boolean('question_type');
-            $table->boolean('status');
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }
