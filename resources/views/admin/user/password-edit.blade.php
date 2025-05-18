@@ -14,7 +14,7 @@
                     <div class="alert alert-success">{{ session('status') }}</div>
                 @endif
 
-                <form method="POST" action="{{ route('password.update') }}">
+                <form method="POST" action="{{ route('admin.password.update') }}">
                     @csrf
                     <div class="row row-cols-1 row-cols-md-2 g-3">
 

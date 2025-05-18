@@ -1,9 +1,14 @@
 <?php
 
+use App\Http\Controllers\AdminPasswordController;
+use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\ExamCategoryController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExamQuestionController;
+use App\Http\Controllers\Front\PasswordController;
+use App\Http\Controllers\Front\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
@@ -21,11 +26,19 @@ Auth::routes([
 ]);
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/change-password', [App\Http\Controllers\ChangePasswordController::class, 'showChangeForm'])->name('password.change');
-    Route::post('/change-password', [App\Http\Controllers\ChangePasswordController::class, 'update'])->name('password.update');
-    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
+    Route::get('/change-password', [PasswordController::class, 'showChangeForm'])->name('password.change');
+    Route::post('/change-password', [PasswordController::class, 'update'])->name('password.update');
+});
+
+Route::middleware(['auth'])->prefix(prefix: 'admin')->name('admin.')->group(function () {
+    Route::get('/change-password', [AdminPasswordController::class, 'showChangeForm'])->name('password.change');
+    Route::post('/change-password', [AdminPasswordController::class, 'update'])->name('password.update');
+
+    Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
 });
 
 

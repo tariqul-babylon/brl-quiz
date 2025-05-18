@@ -5,13 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
-class ProfileController extends Controller
+class AdminProfileController extends Controller
 {
     public function edit()
     {
         $user = Auth::user();
-        return view('admin.profile.edit', compact('user'));
+        return view('admin.user.profile-edit', compact('user'));
     }
 
     private function storeImage($file, $path, $oldFile = null)
@@ -52,8 +51,6 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->route('profile.edit')->with('status', 'Profile updated successfully.');
+        return redirect()->route('admin.profile.edit')->with('status', 'Profile updated successfully.');
     }
-
 }
-

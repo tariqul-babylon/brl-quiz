@@ -33,7 +33,7 @@
                             </div>
                         </div>
                         <div class="links">
-                            <a href="{{ route('profile.edit') }}" class="link">
+                            <a href="{{ route('admin.profile.edit') }}" class="link">
                                 <span class="material-symbols-outlined">
                                     person
                                 </span>
@@ -51,7 +51,7 @@
                                 </span>
                                 Support
                             </a>
-                            <a href="{{ route('password.change') }}" class="link">
+                            <a href="{{ route('admin.password.change') }}" class="link">
                                 <span class="material-symbols-outlined">
                                     vpn_key
                                 </span>

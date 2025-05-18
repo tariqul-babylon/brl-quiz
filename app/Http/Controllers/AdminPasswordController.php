@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-
-class ChangePasswordController extends Controller
+class AdminPasswordController extends Controller
 {
     public function showChangeForm()
     {
-        return view('admin.auth.passwords.change');
+        return view('admin.user.password-edit');
     }
 
     public function update(Request $request)
@@ -31,4 +30,3 @@ class ChangePasswordController extends Controller
         return back()->with('status', 'Password changed successfully!');
     }
 }
-

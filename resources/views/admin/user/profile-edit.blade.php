@@ -27,7 +27,7 @@
                         </div>
                     @endif
                 </div>
-                <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('admin.profile.update') }}" enctype="multipart/form-data">
                     @csrf
 
                     <div class="row row-cols-1 row-cols-md-2 g-3">
@@ -67,16 +67,19 @@
                         </div>
 
                         <div>
-                            <label for="org_logo" class="form-label">Organization Logo</label>
-                            <input type="file" name="org_logo"
-                                class="form-control @error('org_logo') is-invalid @enderror">
                             @if ($user->org_logo)
                                 <img src="{{ asset('storage/' . $user->org_logo) }}" alt="Org Logo" width="80"
-                                    class="mt-2">
+                                    class="mt-2 border">
                             @endif
-                            @error('org_logo')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
+                            <div class="mt-2">
+                                <label for="org_logo" class="form-label">Organization Logo</label>
+                                <input type="file" name="org_logo"
+                                    class="form-control @error('org_logo') is-invalid @enderror">
+
+                                @error('org_logo')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
                         </div>
                     </div>
 
