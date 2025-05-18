@@ -12,7 +12,8 @@ class ExamCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $examCategories = ExamCategory::with('parent')->latest()->paginate(30);
+        return view('admin.exam-categories.index', compact('examCategories'));
     }
 
     /**
@@ -20,7 +21,8 @@ class ExamCategoryController extends Controller
      */
     public function create()
     {
-        //
+        $examCategories = ExamCategory::whereNull('deleted_at')->get();
+        return view('admin.exam-categories.create', compact('examCategories'));
     }
 
     /**
@@ -28,7 +30,18 @@ class ExamCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'parent_id' => 'nullable|integer',
+        ]);
+
+        ExamCategory::create([
+            'name' => $request->name,
+            'parent_id' => $request->parent_id,
+            'created_by' => auth()->id(),
+        ]);
+
+        return redirect()->route('exam-categories.index')->with('success', 'Exam Category created successfully.');
     }
 
     /**
@@ -42,17 +55,34 @@ class ExamCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ExamCategory $examCategory)
+    public function edit($id)
     {
-        //
+        $examCategory = ExamCategory::findOrFail($id);
+        $examCategories = ExamCategory::where('id', '!=', $id)
+            ->whereNull('deleted_at')
+            ->get();
+
+        return view('admin.exam-categories.edit', compact('examCategory', 'examCategories'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ExamCategory $examCategory)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'parent_id' => 'nullable|integer|exists:exam_categories,id',
+        ]);
+
+        $examCategory = ExamCategory::findOrFail($id);
+        $examCategory->update([
+            'name' => $request->name,
+            'parent_id' => $request->parent_id,
+        ]);
+
+        return redirect()->route('exam-categories.index')->with('success', 'Exam Category updated successfully.');
     }
 
     /**
@@ -60,6 +90,9 @@ class ExamCategoryController extends Controller
      */
     public function destroy(ExamCategory $examCategory)
     {
-        //
+        $examCategory->delete();
+
+        return redirect()->route('exam-categories.index')
+            ->with('success', 'Exam Category deleted successfully.');
     }
 }

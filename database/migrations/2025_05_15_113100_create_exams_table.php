@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('tagline');
-            $table->date('exam_date');
             $table->time('exam_start_time');
             $table->time('exam_end_time');
             $table->text('instruction')->nullable(); // assuming nullable for flexibility
             $table->integer('full_mark');
+            $table->float('negative_mark')->default(0);
             $table->time('duration');
 
             // Booleans (true/false values)
