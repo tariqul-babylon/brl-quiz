@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('exam_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name',100);
-            $table->unsignedBigInteger('parent_id');
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->unsignedBigInteger('created_by');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('parent_id')->references('id')->on('exam_categories')->onDelete('set null');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
