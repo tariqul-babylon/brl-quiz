@@ -13,8 +13,15 @@ return new class extends Migration
     {
         Schema::create('exam_users', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('exam_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_type');
+            $table->unsignedBigInteger('status')->default(1);
             $table->timestamps();
+
+            $table->unique(['exam_id', 'user_id'], 'exam_user_unique');
         });
+
     }
 
     /**

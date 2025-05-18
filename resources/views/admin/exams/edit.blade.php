@@ -107,14 +107,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
-                        <div>
-                            <label>Exam Link</label>
-                            <input type="text" name="exam_link" class="form-control @error('exam_link') is-invalid @enderror" value="{{ old('exam_link', $exam->exam_link) }}">
-                            @error('exam_link')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
                     </div>
 
                     <div class="mt-3">

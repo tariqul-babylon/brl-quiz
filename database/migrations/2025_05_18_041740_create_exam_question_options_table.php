@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('title');
             $table->boolean('is_correct');
             $table->timestamps();
+
+            $table->unique(['question_id', 'title'], 'question_option_unique');
         });
     }
 

@@ -6,86 +6,100 @@
 
         <div class="row">
             <!-- Left column: Question List -->
-            <div class="col-md-6">
-                <h4>Questions List</h4>
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Type</th>
-                        <th>Status</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @forelse ($questions as $question)
+            <div class="col-md-8">
+                <div class="card p-4">
+                    <h4>Questions List</h4>
+                    <table class="table table-bordered">
+                        <thead>
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $question->title }}</td>
-                            <td>{{ \App\Models\ExamQuestion::QUESTION_TYPE[$question->question_type] ?? 'Unknown' }}</td>
-                            <td>{{ $question->status ? 'Active' : 'Inactive' }}</td>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
-                    @empty
-                        <tr><td colspan="4" class="text-center">No questions added yet.</td></tr>
-                    @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        @forelse ($questions as $question)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $question->title }}</td>
+                                <td>{{ \App\Models\ExamQuestion::QUESTION_TYPE[$question->question_type] ?? 'Unknown' }}</td>
+                                <td>{{ $question->status ? 'Active' : 'Inactive' }}</td>
+                                <td>
+                                    <a href="{{ route('exam_questions.edit', [$exam->id, $question->id]) }}" class="btn btn-sm btn-warning">Edit</a>
+
+                                    <form action="{{ route('exam_questions.destroy', [$exam->id, $question->id]) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this question?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="5" class="text-center">No questions added yet.</td></tr>
+                        @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- Right column: Add Question Form -->
-            <div class="col-md-6">
-                <h4>Add New Question</h4>
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <strong>Whoops!</strong> Please fix the following errors:
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <form action="{{ route('exam_questions.store', $exam->id) }}" method="POST">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Question Title</label>
-                        <input type="text" id="title" name="title" class="form-control" required value="{{ old('title') }}">
-                    </div>
-                    @php use App\Models\ExamQuestion; @endphp
-                    <div class="mb-3">
-                        <label for="question_type" class="form-label">Question Type</label>
-                        <select name="question_type" id="question_type" class="form-select" required>
-                            <option value="">Select Question Type</option>
-                            @foreach (ExamQuestion::QUESTION_TYPE as $key => $label)
-                                <option value="{{ $key }}" {{ old('question_type') == $key ? 'selected' : '' }}>
-                                    {{ $label }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- MCQ Options -->
-                    <div id="mcq-options" class="mb-3" style="display: none;">
-                        <label class="form-label">Options</label>
-                        <div id="mcq-options-wrapper">
-                            <!-- JS will inject initial 4 options here -->
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <h4>Add New Question</h4>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <strong>Whoops!</strong> Please fix the following errors:
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
                         </div>
-                        <div class="text-center">
-                            <a href="#" id="add-mcq-option" class="mt-2 d-block text-decoration-none">Add More Option</a>
-                        </div>
-                    </div>
+                    @endif
 
-                    <!-- True / False or Yes / No Options -->
-                    <div id="binary-options" class="mb-3" style="display: none;">
-                        <label class="form-label">Options</label>
-                        <div id="binary-options-wrapper">
-                            <!-- JS will inject true/false or yes/no -->
+                    <form action="{{ route('exam_questions.store', $exam->id) }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Question Title</label>
+                            <input type="text" id="title" name="title" class="form-control" required value="{{ old('title') }}">
                         </div>
-                    </div>
+                        @php use App\Models\ExamQuestion; @endphp
+                        <div class="mb-3">
+                            <label for="question_type" class="form-label">Question Type</label>
+                            <select name="question_type" id="question_type" class="form-select" required>
+                                <option value="">Select Question Type</option>
+                                @foreach (ExamQuestion::QUESTION_TYPE as $key => $label)
+                                    <option value="{{ $key }}" {{ old('question_type') == $key ? 'selected' : '' }}>
+                                        {{ $label }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                    <button type="submit" class="btn btn-primary">Add Question</button>
-                </form>
+                        <!-- MCQ Options -->
+                        <div id="mcq-options" class="mb-3" style="display: none;">
+                            <label class="form-label">Options</label>
+                            <div id="mcq-options-wrapper">
+                                <!-- JS will inject initial 4 options here -->
+                            </div>
+                            <div class="text-center">
+                                <a href="#" id="add-mcq-option" class="mt-2 d-block text-decoration-none">Add More Option</a>
+                            </div>
+                        </div>
+
+                        <!-- True / False or Yes / No Options -->
+                        <div id="binary-options" class="mb-3" style="display: none;">
+                            <label class="form-label">Options</label>
+                            <div id="binary-options-wrapper">
+                                <!-- JS will inject true/false or yes/no -->
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Add Question</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -110,7 +124,7 @@
                     <input type="radio" name="correct_option" value="${mcqCount}" required data-type="mcq">
                 </div>
                 <input type="text" name="options[]" class="form-control" placeholder="Option ${mcqCount + 1}" required value="${value}" data-type="mcq">
-                <span class="input-group-text text-danger remove-option" role="button">&times;</span>
+                <span class="input-group-text text-danger remove-option material-symbols-outlined" role="button">close</span>
             `;
             mcqOptionsWrapper.appendChild(wrapper);
             mcqCount++;
