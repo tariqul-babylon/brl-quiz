@@ -12,72 +12,10 @@
             --white: #ffffff;
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+       
         
-        body {
-            background-color: #f8f9fa;
-            color: var(--dark-blue);
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header Styles */
-        header {
-            background-color: var(--dark-blue);
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-        }
-        
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            color: var(--white);
-            font-size: 24px;
-            font-weight: 700;
-            text-decoration: none;
-        }
-        
-        .logo span {
-            color: var(--medium-purple);
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 30px;
-        }
-        
-        .nav-links a {
-            color: var(--white);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        .nav-links a:hover {
-            color: var(--medium-purple);
-        }
-        
+      
+/*         
         .btn {
             display: inline-block;
             background-color: var(--medium-purple);
@@ -98,7 +36,7 @@
             background-color: transparent;
             border: 2px solid var(--medium-purple);
             margin-left: 15px;
-        }
+        } */
         
         /* Hero Section */
         .hero {
@@ -337,21 +275,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <nav>
-                <a href="#" class="logo">Skill<span>Shoper</span></a>
-                <ul class="nav-links">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Features</a></li>
-                    <li><a href="#">Tests</a></li>
-                    <li><a href="#">Pricing</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#" class="btn">Sign In</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    
 
     <section class="hero">
         <div class="container">
