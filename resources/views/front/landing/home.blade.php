@@ -180,28 +180,28 @@
             </div>
             <div class="feature-card">
                 <div class="feature-icon">
-                    <span class="material-symbols-outlined">chart_line</span>
+                   <span class="material-symbols-outlined">show_chart</span>
                 </div>
                 <h3>Progress Tracking</h3>
                 <p>Monitor your improvement over time with our advanced progress tracking and reporting system.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">
-                    <span class="material-symbols-outlined">mobile_alt</span>
+                    <span class="material-symbols-outlined">smartphone</span>
                 </div>
                 <h3>Mobile Friendly</h3>
                 <p>Take tests anytime, anywhere with our fully responsive platform that works on all devices.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">
-                    <span class="material-symbols-outlined">certificate</span>
+                      <span class="material-symbols-outlined">emoji_events</span>
                 </div>
                 <h3>Certification</h3>
                 <p>Earn verifiable certificates upon completing tests to showcase your skills to employers.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">
-                    <span class="material-symbols-outlined">users</span>
+                     <span class="material-symbols-outlined">group</span>
                 </div>
                 <h3>Community</h3>
                 <p>Join a community of learners, compare scores, and participate in skill challenges.</p>
