@@ -13,9 +13,19 @@ class ExamQuestion extends Model
         'status',
     ];
 
-    // Optional: define relation back to Exam if needed
+    const QUESTION_TYPE = [
+        1 => 'MCQ',
+        2 => 'True / False',
+        3 => 'Yes / No',
+    ];
+
     public function exam()
     {
         return $this->belongsTo(Exam::class);
+    }
+
+    public function options()
+    {
+        return $this->hasMany(ExamQuestionOption::class, 'question_id');
     }
 }
