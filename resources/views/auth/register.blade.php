@@ -1,4 +1,4 @@
-@extends('auth.layouts.master')
+@extends('front.layouts.app')
 
 @section('content')
     <section class="login-section">
