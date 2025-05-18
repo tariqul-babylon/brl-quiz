@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Exam;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -29,8 +30,10 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    
     public function store(Request $request)
     {
+
         $this->validate($request, [
             'name' => 'required|unique:roles,name',
             'permission' => 'required',
@@ -43,6 +46,9 @@ class RoleController extends Controller
             'type' => 'Success',
             'message' => 'Successfully Stored',
         ];
+
+        
+
 
         return redirect()->route('role.index')->with($alert);
     }
