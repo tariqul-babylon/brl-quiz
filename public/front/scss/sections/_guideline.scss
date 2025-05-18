@@ -1,0 +1,38 @@
+#guideline {
+    margin-top: 150px;
+    margin-bottom: 50px;
+    .content {
+        display: flex;
+        &-item {
+            background-color: $white;
+            border-radius: 24px;
+            padding: 24px;
+            height: 100%;
+            .icon {
+                height: 72px;
+                width: 72px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: $purple500;
+                border-radius: 50%;
+                background: #faf5ff;
+                font-size: 24px;
+            }
+            p {
+                color: $primary;
+                font-size: 14px;
+                font-weight: 600;
+                margin: 0;
+                margin-top: 12px;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    #guideline {
+        margin-top: 48px;
+        margin-bottom: 48px;
+    }
+}

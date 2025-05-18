@@ -1,0 +1,26 @@
+.logout {
+    .dropdown-menu {
+        padding: 10px;
+        border-radius: 12px;
+        border: 1px solid rgba($primary, 0.15);
+        .dropdown-item {
+            display: flex !important;
+            align-items: center;
+            color: $primary;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 14px 14px;
+            border-radius: 12px;
+            &:hover {
+                background-color: #f9f4ff;
+            }
+            &:last-child {
+                margin-bottom: 0;
+            }
+            .material-symbols-outlined {
+                font-size: 17px;
+                margin-right: 8px;
+            }
+        }
+    }
+}

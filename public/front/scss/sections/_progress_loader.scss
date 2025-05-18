@@ -1,0 +1,9 @@
+#progresss-loader {
+    background: #d9d9d9;
+    height: 3px;
+    .success {
+        transition: 1s;
+        height: 3px;
+        background-color: $primary;
+    }
+}

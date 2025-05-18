@@ -1,0 +1,227 @@
+#header {
+    .overlay {
+        .content {
+            margin-top: 152px;
+            margin-bottom: 79px;
+            color: $white;
+            text-align: center;
+            .main-title {
+                font-size: 32px;
+                font-weight: 700;
+                text-transform: capitalize;
+            }
+            .tagline {
+                color: #e9d5ff;
+                font-size: 14px;
+                font-weight: 500;
+                text-transform: capitalize;
+            }
+        }
+
+        .form-area {
+            width: 100%;
+            max-width: 375px;
+            margin: auto;
+            padding-bottom: 175px;
+            .form {
+                padding: 30px;
+                padding-top: 0;
+                border-radius: 25px;
+                background: $black;
+                label {
+                    color: #c4b5fd;
+                    font-size: 14px;
+                    font-weight: 500;
+                    margin-bottom: 5px;
+                    display: block;
+                }
+                .forget {
+                    color: #adb5bd;
+                    font-size: 12px;
+                    font-weight: 400;
+                    text-decoration: none;
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+                .form-control {
+                    border-radius: 6px;
+                    border: 1px solid #101845;
+                    background: #080d26;
+                    border: 0;
+                    padding: 13px;
+                    font-size: 12px;
+                    color: #929fec;
+                    &:focus {
+                        box-shadow: none;
+                        outline: none;
+                    }
+                    &::placeholder {
+                        color: #4c1d95;
+                        font-weight: 500;
+                    }
+                }
+                .password {
+                    position: relative;
+                    .eye {
+                        color: #728191;
+                        position: absolute;
+                        top: calc(50% - 8px);
+                        right: 0;
+                        cursor: pointer;
+                        right: 13px;
+                        user-select: none;
+                    }
+                    .form-control {
+                        padding-right: 42px;
+                    }
+                }
+                .agrement {
+                    color: $white;
+                    font-size: 12px;
+                    font-weight: 400;
+                    a {
+                        color: $primary;
+                        text-decoration: none;
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+                .btn.submit {
+                    border-radius: 6px;
+                    background: linear-gradient(205deg, #fab2ff 0%, #1904e5 100%);
+                    padding: 13px 15px;
+                    color: $white;
+                    font-size: 12px;
+                    font-weight: 700;
+                    text-transform: capitalize;
+                    border: 0;
+                    outline: 0;
+                    box-shadow: none;
+                    width: 100%;
+                }
+                .social {
+                    .line {
+                        margin-bottom: 25px;
+                        border-bottom: 1px solid #e9ecef;
+                        text-align: center;
+                        .text {
+                            color: #adb5bd;
+                            font-size: 12px;
+                            font-weight: 500;
+                            text-transform: capitalize;
+                            background-color: $black;
+                            display: inline-block;
+                            padding: 0 10px;
+                            transform: translateY(10px);
+                        }
+                    }
+                    .button {
+                        display: grid;
+                        grid-gap: 10px;
+                        grid-template-columns: 1fr 1fr;
+                        .social-btn {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: #6c757d;
+                            font-size: 12px;
+                            font-weight: 500;
+                            padding: 10px 20px;
+                            border-radius: 6px;
+                            background: #101845;
+                            &:hover {
+                                background: lighten(#101845, 10%);
+                                color: #abbbc9;
+                            }
+                            img {
+                                height: 16px;
+                                width: 16px;
+                                margin-right: 10px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1440px) {
+    #header {
+        .overlay {
+            .content {
+                margin-top: 88px;
+                margin-bottom: 72px;
+                .main-title {
+                    font-size: 32px;
+                    font-weight: 700;
+                    text-transform: capitalize;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    #header {
+        .overlay {
+            .content {
+                padding: 0 15px;
+                margin-top: 60px;
+                .main-title {
+                    font-size: 26px;
+                }
+            }
+            .form-area {
+                max-width: 100%;
+                padding-bottom: 85px;
+                .form {
+                    border-radius: 0;
+                    padding-left: 15px;
+                    padding-right: 15px;
+                    padding-bottom: 35px;
+                    label {
+                    }
+                    .forget {
+                    }
+                    .form-control {
+                        &:focus {
+                        }
+                        &::placeholder {
+                        }
+                    }
+                    .password {
+                        .eye {
+                        }
+                        .form-control {
+                        }
+                    }
+                    .agrement {
+                        a {
+                            &:hover {
+                            }
+                        }
+                    }
+                    .btn.submit {
+                    }
+                    .social {
+                        .line {
+                            .text {
+                            }
+                        }
+                        .button {
+                            .social-btn {
+                                &:hover {
+                                }
+                                img {
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

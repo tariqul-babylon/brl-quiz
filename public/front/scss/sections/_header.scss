@@ -1,0 +1,173 @@
+#header {
+    background-image: url("../../img/banner.png");
+    background-size: cover;
+    background-attachment: fixed;
+
+    &.sticky {
+        background-image: unset;
+        position: fixed;
+        width: 100%;
+        z-index: 99999;
+        left: 0;
+        top: 0;
+        transition: 0.2s;
+        transform: translateY(-100%);
+        background-color: $black;
+        &.fixed {
+            transform: translateY(0);
+        }
+        .overlay {
+            background: unset;
+            nav {
+                .navbar-nav {
+                    .nav-item {
+                        .nav-link {
+                            &.button {
+                                background: linear-gradient(205deg, #fab2ff 0%, #1904e5 100%);
+                            }
+                        }
+                    }
+                }
+                .navbar-toggler {
+                    background-color: #000;
+                }
+            }
+        }
+    }
+
+    .overlay {
+        background-image: linear-gradient(
+            143deg,
+            rgba(16, 24, 69, 0.75) 9.73%,
+            rgba(25, 4, 229, 0.75) 36.46%,
+            rgba(250, 178, 255, 0.75) 100%
+        );
+        nav {
+            padding-top: 18px;
+            padding-bottom: 18px;
+            .navbar-brand {
+                .logo {
+                    height: 40px;
+                    padding-right: 12px;
+                }
+                .tag {
+                    color: $white;
+                    border-left: 1px solid $primary;
+                    padding-left: 12px;
+                    font-size: 14px;
+                    font-weight: 700;
+                }
+            }
+            .navbar-toggler {
+                background-color: $black;
+                color: $white;
+                border: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 0;
+                padding: 9px 12px;
+                font-size: 25px;
+            }
+            .navbar-collapse {
+                -webkit-transition: none;
+                -moz-transition: none;
+                -o-transition: none;
+                transition: none;
+            }
+            .navbar-nav {
+                .nav-item {
+                    .nav-link {
+                        font-size: 14px;
+                        font-weight: 500;
+                        text-decoration: none;
+                        color: #333;
+                        padding: 5px 16px;
+                        &.button {
+                            background-color: $black;
+                            padding: 13px 24px;
+                            border-radius: 12px;
+                            margin-left: 16px;
+                            line-height: 1.28;
+                            &:hover {
+                                background-color: lighten($black, 15%);
+                            }
+                        }
+                    }
+                }
+            }
+            .user-panel {
+                .dropdown-menu {
+                    .dropdown-item {
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 576px) {
+    #header {
+        .overlay {
+            nav {
+                .navbar-toggler {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    #header {
+        .overlay {
+            nav {
+                padding-top: 5px;
+                padding-bottom: 5px;
+                .navbar-brand {
+                    .logo {
+                        height: 34px;
+                        padding-right: 12px;
+                    }
+                }
+                .collapse.navbar-collapse {
+                    &.show {
+                        .navbar-nav {
+                            padding-bottom: 0;
+                            margin-left: -12px !important;
+                            margin-right: -12px !important;
+                            min-height: 100%;
+                            min-height: 100vh;
+                            .nav-item {
+                                text-align: center;
+                                .nav-link {
+                                    display: inline-block;
+                                    padding: 10px 16px;
+                                    &.button {
+                                        margin-left: 0;
+                                        margin-top: 18px;
+                                        background: linear-gradient(205deg, #fab2ff 0%, #1904e5 100%);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        &.home.regular {
+            background: unset !important;
+            background-color: $black !important;
+            .overlay {
+                background-image: unset !important;
+                nav {
+                    .navbar-toggler {
+                        background-color: #000;
+                    }
+                }
+            }
+        }
+    }
+}
