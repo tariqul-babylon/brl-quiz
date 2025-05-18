@@ -16,7 +16,6 @@ class UserSeeder extends Seeder
         User::updateOrCreate(
             ['id' => 1],
             [
-                'username' => 'superadmin',
                 'name' => 'Super Admin',
                 'email' => 'admin@gmail.com',
                 'password' => bcrypt(12341234),

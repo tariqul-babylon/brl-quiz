@@ -24,7 +24,6 @@ class GoogleController extends Controller
             ['email' => $googleUser->getEmail()],
             [
                 'name' => $googleUser->getName(),
-                'username' => Str::slug($googleUser->getName(), '_'),
                 'email_verified_at' => now(),
                 'password' => bcrypt(Str::random(24)),
                 'photo' => $googleUser->getAvatar(),

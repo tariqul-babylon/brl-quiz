@@ -22,7 +22,8 @@
             <div class="container">
                 <nav class="navbar navbar-expand">
                     <a class="navbar-brand" href="#">
-                        <img class="logo" src="./img/Logo Dark-01.png" alt="">
+                        <img class="logo" src="{{ asset('assets/images/design/logo/Logo Dark-01.png') }}"
+                            alt="">
                         <span class="tag">Quiz System</span>
                     </a>
                 </nav>
@@ -47,16 +48,16 @@
                 </div>
                 <div class="social">
                     <a href="" class="social-link">
-                        <img src="./img/in.png" alt="">
+                        <img src="{{ asset('assets/images/design/logo/in.png') }}" alt="">
                     </a>
                     <a href="" class="social-link">
-                        <img src="./img/twitter.png" alt="">
+                        <img src="{{ asset('assets/images/design/logo/twitter.png') }}" alt="">
                     </a>
                     <a href="" class="social-link">
-                        <img src="./img/f.png" alt="">
+                        <img src="{{ asset('assets/images/design/logo/f.png') }}" alt="">
                     </a>
                     <a href="" class="social-link">
-                        <img src="./img/ytd.png" alt="">
+                        <img src="{{ asset('assets/images/design/logo/ytd.png') }}" alt="">
                     </a>
                 </div>
             </div>
@@ -68,6 +69,21 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     @stack('js')
+    <script>
+        $(document).ready(function() {
+            $('.password .show-password').on('click', function() {
+                const input = $(this).siblings('input');
+                const icon = $(this).find('.visibility-icon');
+                if (input.attr('type') === 'password') {
+                    input.attr('type', 'text');
+                    icon.text('visibility');
+                } else {
+                    input.attr('type', 'password');
+                    icon.text('visibility_off');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
