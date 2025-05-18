@@ -1,0 +1,672 @@
+/* Updated CSS with fixed visibility icon and checkbox */
+.login-section {
+    padding: 80px 0;
+    padding-top: 50px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.login-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(16, 24, 69, 0.1);
+    padding: 40px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.login-logo {
+    margin-bottom: 20px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #101845;
+    margin-bottom: 10px;
+}
+
+.login-header p {
+    color: #718096;
+    font-size: 16px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #4a5568;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #a0aec0;
+    transition: color 0.3s;
+}
+
+.input-with-icon input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.input-with-icon input:focus {
+    border-color: #6161e2;
+    box-shadow: 0 0 0 3px rgba(97, 97, 226, 0.2);
+    outline: none;
+}
+
+.input-with-icon input:focus+.input-icon {
+    color: #6161e2;
+}
+
+.show-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #a0aec0;
+    transition: color 0.3s;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.show-password:hover {
+    color: #6161e2;
+}
+
+.visibility-icon {
+    font-size: 20px;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    font-size: 14px;
+    color: #4a5568;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.remember-me input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: relative;
+    height: 18px;
+    width: 18px;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    margin-right: 10px;
+    transition: all 0.3s;
+}
+
+.remember-me:hover input~.checkmark {
+    border-color: #6161e2;
+}
+
+.remember-me input:checked~.checkmark {
+    background-color: #6161e2;
+    border-color: #6161e2;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.remember-me input:checked~.checkmark:after {
+    display: block;
+}
+
+.forgot-password {
+    color: #6161e2;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    background-color: #6161e2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #101845;
+    transform: translateY(-2px);
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 25px 0;
+    color: #a0aec0;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.divider::before {
+    margin-right: 15px;
+}
+
+.divider::after {
+    margin-left: 15px;
+}
+
+.social-login {
+    margin-bottom: 25px;
+    display: block;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #4a5568;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.social-btn:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+}
+
+.social-btn img {
+    width: 20px;
+    margin-right: 8px;
+}
+
+.register-link {
+    text-align: center;
+    color: #718096;
+    font-size: 15px;
+}
+
+.register-link a {
+    color: #6161e2;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* Dark mode support */
+body.dark .login-card {
+    background: #101845;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .login-header h2,
+body.dark .login-form label,
+body.dark .remember-me,
+body.dark .social-btn {
+    color: #ffffff;
+}
+
+body.dark .login-header p,
+body.dark .register-link {
+    color: #cbd5e0;
+}
+
+body.dark .input-with-icon input {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+body.dark .checkmark {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark .remember-me:hover input~.checkmark {
+    border-color: #6161e2;
+}
+
+body.dark .social-btn {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark .social-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+.quiz-instructions-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.quiz-instructions-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.quiz-instructions-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.quiz-instructions-subtitle {
+    font-size: 16px;
+    color: #7f8c8d;
+}
+
+.quiz-instructions-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-left: 4px solid #3498db;
+}
+
+.quiz-instructions-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.quiz-instructions-card-title .material-symbols-outlined {
+    margin-right: 10px;
+    font-size: 24px;
+}
+
+.quiz-instructions-list {
+    padding-left: 20px;
+}
+
+.quiz-instructions-list li {
+    margin-bottom: 10px;
+    color: #34495e;
+    line-height: 1.5;
+}
+
+.quiz-instructions-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.quiz-instructions-btn {
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.quiz-instructions-btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.quiz-instructions-btn-primary:hover {
+    background: #2980b9;
+}
+
+.quiz-instructions-btn-outline {
+    background: transparent;
+    border: 2px solid #3498db;
+    color: #3498db;
+}
+
+.quiz-instructions-btn-outline:hover {
+    background: #f8f9fa;
+}
+
+.quiz-instructions-timer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff8e1;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    border: 1px solid #ffe0b2;
+}
+
+.quiz-instructions-timer-icon {
+    margin-right: 10px;
+    color: #f39c12;
+}
+
+.quiz-instructions-timer-text {
+    font-weight: 600;
+    color: #e67e22;
+}
+
+@media (max-width: 768px) {
+    .quiz-instructions-container {
+        padding: 20px;
+        margin: 20px;
+    }
+
+    .quiz-instructions-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .quiz-instructions-btn {
+        width: 100%;
+    }
+}
+
+
+/* FAQ Styles - Designed to avoid conflicts */
+.faq-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.faq-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.faq-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.faq-subtitle {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.faq-search-container {
+    max-width: 600px;
+    margin: 0 auto 40px;
+    position: relative;
+}
+
+.faq-search-input {
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 50px;
+    border: 1px solid #e0e0e0;
+    font-size: 1rem;
+    padding-left: 50px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.faq-search-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+}
+
+.faq-search-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #95a5a6;
+}
+
+.faq-category-tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.faq-tab {
+    padding: 10px 20px;
+    border-radius: 50px;
+    background: #f8f9fa;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    color: #7f8c8d;
+    transition: all 0.3s ease;
+}
+
+.faq-tab.active {
+    background: #3498db;
+    color: white;
+}
+
+.faq-tab:hover:not(.active) {
+    background: #ecf0f1;
+}
+
+.faq-accordion {
+    margin-bottom: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.faq-question {
+    width: 100%;
+    text-align: left;
+    padding: 20px 25px;
+    background: white;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    transition: all 0.3s ease;
+}
+
+.faq-question:hover {
+    background: #f8f9fa;
+}
+
+.faq-question:after {
+    content: '+';
+    font-size: 1.5rem;
+    color: #3498db;
+    transition: all 0.3s ease;
+}
+
+.faq-question.active:after {
+    content: '-';
+    transform: rotate(0deg);
+}
+
+.faq-answer {
+    padding: 0 25px;
+    max-height: 0;
+    overflow: hidden;
+    background: white;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.faq-answer.show {
+    padding: 20px 25px;
+    max-height: 500px;
+    border-left: 3px solid #3498db;
+}
+
+.faq-answer-content {
+    color: #34495e;
+    line-height: 1.6;
+}
+
+.faq-contact {
+    text-align: center;
+    margin-top: 60px;
+    padding: 40px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.faq-contact-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.faq-contact-text {
+    color: #7f8c8d;
+    margin-bottom: 25px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.faq-contact-btn {
+    padding: 12px 30px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.faq-contact-btn:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+@media (max-width: 768px) {
+    .faq-title {
+        font-size: 2rem;
+    }
+
+    .faq-question {
+        padding: 15px 20px;
+        font-size: 1rem;
+    }
+
+    .faq-answer.show {
+        padding: 15px 20px;
+    }
+
+    .faq-contact {
+        padding: 30px 20px;
+    }
+}
+
+.success-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.success-icon {
+    font-size: 5rem;
+    color: #28a745;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+}
+
+
+.btn-login {
+    background-color: #28a745;
+    border: none;
+    padding: 10px 25px;
+    transition: all 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
