@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('exam_id');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('exam_id')->constrained('exams');
+            $table->foreignId('user_id')->nullable()->constrained('users');
             $table->string('name', 150);
-            $table->string('id_no', 50);
-            $table->string('contact', 20);
-            $table->boolean('exam_stats');
+            $table->string('id_no', 50)->nullable();
+            $table->string('contact', 20)->nullable();
             $table->dateTime('join_at', 3);
             $table->dateTime('end_at', 3);
             $table->dateTime('duration');
@@ -26,7 +25,13 @@ return new class extends Migration
             $table->integer('incorrect_ans');
             $table->integer('not_answered');
             $table->boolean('end_method');
-            $table->timestamps();
+            $table->boolean('exam_stats');
+
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
+
             $table->softDeletes();
 
             // Composite unique constraint

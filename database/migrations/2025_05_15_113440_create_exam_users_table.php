@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('exam_users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('exam_id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('user_type');
-            $table->unsignedBigInteger('status')->default(1);
-            $table->timestamps();
+            $table->foreignId('exam_id')->constrained('exams')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->boolean('user_type');
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
 
             $table->unique(['exam_id', 'user_id'], 'exam_user_unique');
         });
