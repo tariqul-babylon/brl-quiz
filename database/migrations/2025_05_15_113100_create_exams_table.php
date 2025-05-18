@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('tagline');
-            $table->timestamps('exam_start_time');
-            $table->timestamps('exam_end_time');
+            $table->timestamp('exam_start_time')->nullable();
+            $table->timestamp('exam_end_time')->nullable();
             $table->text('instruction')->nullable(); // assuming nullable for flexibility
             $table->integer('full_mark');
             $table->float('negative_mark')->default(0);
@@ -38,6 +38,7 @@ return new class extends Migration
             $table->string('id_no_placeholder')->nullable();
             $table->string('logo')->nullable();
             $table->string('exam_link')->nullable();
+            $table->string('exam_code')->unique();
 
             $table->timestamps();
             $table->softDeletes();

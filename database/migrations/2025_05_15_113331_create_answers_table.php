@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('exam_id');
             $table->unsignedBigInteger('user_id');
-            $table->string('name',150);
-            $table->string('id_no',50);
-            $table->string('contact',20);
+            $table->string('name', 150);
+            $table->string('id_no', 50);
+            $table->string('contact', 20);
             $table->boolean('exam_stats');
             $table->dateTime('join_at', 3);
             $table->dateTime('end_at', 3);
@@ -28,6 +28,9 @@ return new class extends Migration
             $table->boolean('end_method');
             $table->timestamps();
             $table->softDeletes();
+
+            // Composite unique constraint
+            $table->unique(['exam_id', 'user_id'], 'answers_exam_user_unique');
         });
     }
 
