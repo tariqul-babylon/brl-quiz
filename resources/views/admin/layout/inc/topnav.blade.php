@@ -33,7 +33,7 @@
                             </div>
                         </div>
                         <div class="links">
-                            <a href="" class="link">
+                            <a href="{{ route('profile.edit') }}" class="link">
                                 <span class="material-symbols-outlined">
                                     person
                                 </span>

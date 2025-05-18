@@ -13,7 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, Notifiable,  HasRoles;
+    use HasFactory, Notifiable, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -25,7 +25,9 @@ class User extends Authenticatable
         'email',
         'password',
         'google_id',
-        'photo'
+        'photo',
+        'org_logo',
+        'contact',
     ];
 
     /**
