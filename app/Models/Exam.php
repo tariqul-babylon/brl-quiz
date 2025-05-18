@@ -16,7 +16,7 @@ class Exam extends Model
         'user_result_view', 'user_answer_view',
         'is_question_random', 'is_option_random',
         'is_sign_in_required', 'is_specific_student',
-        'id_no_placeholder', 'logo', 'exam_link'
+        'id_no_placeholder', 'logo', 'exam_link','exam_code'
     ];
 
 

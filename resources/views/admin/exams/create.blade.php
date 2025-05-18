@@ -79,11 +79,6 @@
                             <input type="file" name="logo" id="logoInput" class="form-control">
                             <img id="previewImage" src="#" alt="Preview" style="display: none; max-height: 100px; margin-top: 10px;">
                         </div>
-
-                        <div>
-                            <label>Exam Link</label>
-                            <input type="text" name="exam_link" class="form-control" value="{{ old('exam_link') }}">
-                        </div>
                     </div>
 
                     <div class="mt-3">

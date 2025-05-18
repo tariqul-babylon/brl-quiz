@@ -32,5 +32,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('questions', [ExamQuestionController::class, 'store'])->name('exam_questions.store');
         // You can add more routes like edit, update, delete questions as needed
     });
+    Route::get('exam/create-link/{exam}', [ExamController::class, 'createLink'])->name('exam.create-link');
     Route::resource('exams', ExamController::class);
 });

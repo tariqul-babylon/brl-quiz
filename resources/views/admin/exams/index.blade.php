@@ -89,6 +89,15 @@
                                             <span class="material-symbols-outlined">quiz</span> Questions Add
                                         </a>
                                     </li>
+
+                                    @if(!$exam->exam_link)
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('exam.create-link', $exam->id) }}">
+                                                <span class="material-symbols-outlined">link</span> Create Exam Link
+                                            </a>
+                                        </li>
+                                    @endif
+
                                     <li>
                                         <form action="{{ route('exams.destroy', $exam->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete this exam?');">
                                             @csrf
