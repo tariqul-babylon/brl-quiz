@@ -20,6 +20,12 @@ Auth::routes([
     'reset' => true,
 ]);
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/change-password', [App\Http\Controllers\ChangePasswordController::class, 'showChangeForm'])->name('password.change');
+    Route::post('/change-password', [App\Http\Controllers\ChangePasswordController::class, 'update'])->name('password.update');
+});
+
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 

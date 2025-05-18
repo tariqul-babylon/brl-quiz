@@ -51,7 +51,7 @@
                                 </span>
                                 Support
                             </a>
-                            <a href="" class="link">
+                            <a href="{{ route('password.change') }}" class="link">
                                 <span class="material-symbols-outlined">
                                     vpn_key
                                 </span>
