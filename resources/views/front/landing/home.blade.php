@@ -211,13 +211,7 @@
 </section>
 
 
-<section class="cta">
-    <div class="container">
-        <h2>Ready to Test Your Skills?</h2>
-        <p>Join thousands of professionals who use Skill Shoper to validate and improve their knowledge.</p>
-        <a href="#" class="btn">Start Free Trial</a>
-    </div>
-</section>
+
 
 @endsection
 
