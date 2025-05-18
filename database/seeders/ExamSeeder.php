@@ -9,25 +9,26 @@ class ExamSeeder extends Seeder
 {
     public function run()
     {
-        // Clear previous data to avoid duplicates
-        DB::table('exam_question_options')->truncate();
-        DB::table('exam_questions')->truncate();
-        DB::table('exams')->truncate();
+        DB::transaction(function () {
+            DB::table('exam_users')->delete();
+            DB::table('exam_question_options')->delete();
+            DB::table('exam_questions')->delete();
+            DB::table('exams')->delete();
+        });
 
         // Example data: 3 exams, each with questions and options
         $examsData = [
             [
                 'title' => 'Mathematics Basic',
                 'tagline' => 'Basic Math Exam',
-                'exam_start_time' => now()->addDay(),
-                'exam_end_time' => now()->addDays(2),
+                'start_at' => now()->addDay(),
+                'end_at' => now()->addDays(2),
                 'instruction' => 'Answer all questions.',
                 'full_mark' => 100,
                 'negative_mark' => 0.25,
                 'duration' => '01:30:00',
                 'is_bluer' => false,
                 'is_timer' => true,
-                'is_date_enabled' => true,
                 'exam_status' => true,
                 'user_result_view' => true,
                 'user_answer_view' => true,
@@ -42,15 +43,14 @@ class ExamSeeder extends Seeder
             [
                 'title' => 'Physics Intermediate',
                 'tagline' => 'Physics Exam - Intermediate Level',
-                'exam_start_time' => now()->addDays(3),
-                'exam_end_time' => now()->addDays(4),
+                'start_at' => now()->addDays(3),
+                'end_at' => now()->addDays(4),
                 'instruction' => 'No calculators allowed.',
                 'full_mark' => 80,
                 'negative_mark' => 0.1,
                 'duration' => '02:00:00',
                 'is_bluer' => true,
                 'is_timer' => true,
-                'is_date_enabled' => false,
                 'exam_status' => true,
                 'user_result_view' => true,
                 'user_answer_view' => false,
@@ -65,15 +65,14 @@ class ExamSeeder extends Seeder
             [
                 'title' => 'English Language',
                 'tagline' => 'English Proficiency Test',
-                'exam_start_time' => now()->addDays(5),
-                'exam_end_time' => now()->addDays(6),
+                'start_at' => now()->addDays(5),
+                'end_at' => now()->addDays(6),
                 'instruction' => 'Read all instructions carefully.',
                 'full_mark' => 50,
                 'negative_mark' => 0,
                 'duration' => '01:00:00',
                 'is_bluer' => false,
                 'is_timer' => false,
-                'is_date_enabled' => true,
                 'exam_status' => false,
                 'user_result_view' => false,
                 'user_answer_view' => false,
