@@ -29,7 +29,6 @@ class ExamController extends Controller
     public function store(ExamRequest $request)
     {
         $data = $request->validated();
-
         // Handle file upload
         if ($request->hasFile('logo')) {
             $data['logo'] = $request->file('logo')->store('uploads/exam/logo', 'public');
