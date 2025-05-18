@@ -14,7 +14,7 @@
                     @csrf
                     @method('PUT')
 
-                    <div class="row row-cols-3 g-3">
+                    <div class="row row-cols-4 g-3">
                         <div>
                             <label>Title</label>
                             <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title', $exam->title) }}">
@@ -84,12 +84,32 @@
                             @enderror
                         </div>
 
-                        <div>
-                            <label>ID No Placeholder</label>
-                            <input type="text" name="id_no_placeholder" class="form-control @error('id_no_placeholder') is-invalid @enderror" value="{{ old('id_no_placeholder', $exam->id_no_placeholder) }}">
-                            @error('id_no_placeholder')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                        <div class="d-flex align-items-center gap-3">
+                            <!-- Checkbox -->
+                            <div class="form-check mt-4">
+                                <input
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    id="collectStudentIdCheckbox"
+                                    {{ old('id_no_placeholder', $exam->id_no_placeholder) ? 'checked' : '' }}
+                                >
+                                <label class="form-check-label" for="collectStudentIdCheckbox">Collect Student ID</label>
+                            </div>
+
+                            <!-- Input Field -->
+                            <div
+                                id="studentIdInputWrapper"
+                                @if(!old('id_no_placeholder') && !$exam->id_no_placeholder) style="display: none;" @endif
+                            >
+                                <label for="id_no_placeholder" class="form-label mb-0 me-2">Add Column Name</label>
+                                <input
+                                    type="text"
+                                    name="id_no_placeholder"
+                                    id="id_no_placeholder"
+                                    class="form-control"
+                                    value="{{ old('id_no_placeholder', $exam->id_no_placeholder) }}"
+                                >
+                            </div>
                         </div>
 
                         <div>
@@ -142,7 +162,30 @@
     </div>
 @endsection
 
-@push('scripts')
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkbox = document.getElementById('collectStudentIdCheckbox');
+            const inputWrapper = document.getElementById('studentIdInputWrapper');
+            const inputField = document.getElementById('id_no_placeholder');
+
+            function toggleInputRequirement() {
+                if (checkbox.checked) {
+                    inputWrapper.style.display = 'block';
+                    inputField.setAttribute('required', 'required');
+                } else {
+                    inputWrapper.style.display = 'none';
+                    inputField.removeAttribute('required');
+                    inputField.value = ''; // Clear value on uncheck
+                }
+            }
+
+            checkbox.addEventListener('change', toggleInputRequirement);
+
+            // Run on page load
+            toggleInputRequirement();
+        });
+    </script>
 
     <script>
         $(document).ready(function () {
@@ -179,5 +222,5 @@
             minDate: "{{ \Carbon\Carbon::parse($exam->exam_start_time)->format('Y-m-d H:i') }}"
         });
     </script>
-@endpush
+@endsection
 

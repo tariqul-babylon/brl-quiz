@@ -23,7 +23,7 @@
                 <form action="{{ route('exams.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
-                    <div class="row row-cols-3 g-3">
+                    <div class="row row-cols-4 g-3">
                         <div>
                             <label>Title</label>
                             <input type="text" name="title" class="form-control" value="{{ old('title') }}">
@@ -69,13 +69,27 @@
                             </div>
                         </div>
 
-                        <div>
-                            <label>ID No Placeholder</label>
-                            <input type="text" name="id_no_placeholder" class="form-control" value="{{ old('id_no_placeholder') }}">
+                        <div class="d-flex align-items-center gap-3">
+                            <!-- Checkbox -->
+                            <div class="form-check mt-4">
+                                <input type="checkbox" class="form-check-input" id="collectStudentIdCheckbox">
+                                <label class="form-check-label" for="collectStudentIdCheckbox">Collect Student ID</label>
+                            </div>
+
+                            <!-- Input (Initially hidden) -->
+                            <div id="studentIdInputWrapper" style="display: none;">
+                                <label for="id_no_placeholder" class="form-label mb-0 me-2">Add Column Name</label>
+                                <input
+                                    type="text"
+                                    name="id_no_placeholder"
+                                    id="id_no_placeholder"
+                                    class="form-control"
+                                    value="{{ old('id_no_placeholder') }}">
+                            </div>
                         </div>
 
                         <div>
-                            <label>Logo</label>
+                            <label>Exam Logo</label>
                             <input type="file" name="logo" id="logoInput" class="form-control">
                             <img id="previewImage" src="#" alt="Preview" style="display: none; max-height: 100px; margin-top: 10px;">
                         </div>
@@ -112,6 +126,32 @@
 @endsection
 
 @section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkbox = document.getElementById('collectStudentIdCheckbox');
+            const inputWrapper = document.getElementById('studentIdInputWrapper');
+            const inputField = document.getElementById('id_no_placeholder');
+
+            function toggleInputRequirement() {
+                if (checkbox.checked) {
+                    inputWrapper.style.display = 'block';
+                    inputField.setAttribute('required', 'required');
+                } else {
+                    inputWrapper.style.display = 'none';
+                    inputField.removeAttribute('required');
+                }
+            }
+
+            checkbox.addEventListener('change', toggleInputRequirement);
+
+            // Run on page load (e.g. after validation error)
+            if ("{{ old('id_no_placeholder') }}") {
+                checkbox.checked = true;
+            }
+            toggleInputRequirement();
+        });
+    </script>
+
     <script>
         $(document).ready(function() {
             $('#logoInput').on('change', function(event) {

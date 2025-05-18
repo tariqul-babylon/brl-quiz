@@ -41,8 +41,21 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'dashboard'], function () {
         Route::delete('questions/{question}', [ExamQuestionController::class, 'destroy'])->name('exam_questions.destroy');
     });
 
+
+    Route::post('/exam/assign-user', [ExamController::class, 'assignUser'])->name('exam.assign-user');
+    Route::get('/users/search/ajax', [ExamController::class, 'search'])->name('users.search');
+
+    Route::post('/exam/assign-teacher', [ExamController::class, 'assignTeacher'])->name('exam.assign-teacher');
+    Route::post('/exam/assign-student', [ExamController::class, 'assignStudent'])->name('exam.assign-student');
+
+
     Route::get('exam/create-link/{exam}', [ExamController::class, 'createLink'])->name('exam.create-link');
     Route::resource('exams', ExamController::class);
+});
+
+
+Route::get('/test-search', function() {
+    return ['message' => 'Test route works!'];
 });
 
 

@@ -28,6 +28,7 @@ class ExamRequest extends FormRequest
             'is_option_random',
             'is_sign_in_required',
             'is_specific_student',
+            'collect_student_id',
         ];
 
         $normalized = [];
@@ -62,8 +63,10 @@ class ExamRequest extends FormRequest
             'is_option_random' => ['sometimes', 'boolean'],
             'is_sign_in_required' => ['sometimes', 'boolean'],
             'is_specific_student' => ['sometimes', 'boolean'],
+            'collect_student_id' => ['sometimes', 'boolean'],
 
-            'id_no_placeholder' => ['nullable', 'string', 'max:255'],
+
+            'id_no_placeholder' => ['required_if:collect_student_id,1', 'string', 'max:255'],
             'logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'exam_link' => ['nullable', 'string', 'max:255'],
         ];
