@@ -1,0 +1,83 @@
+#submitFormModal {
+    background-color: rgba(0, 0, 0, 0.25);
+    .modal-dialog {
+        margin: auto;
+        max-width: 520px;
+        .modal-content {
+            border-radius: 24px;
+            .modal-body {
+                padding: 39px 85px;
+                padding-bottom: 89px;
+                text-align: center;
+                img {
+                    width: 290px;
+                }
+                .title {
+                    margin-top: 33px;
+                    color: $purple950;
+                    font-size: 16px;
+                    font-weight: 700;
+                }
+                .summery {
+                    color: $purple950;
+                    font-size: 14px;
+                    font-weight: 500;
+                    margin-bottom: 15px;
+                    .count {
+                        color: $purple500;
+                        font-weight: 700;
+                    }
+                }
+                .buttons {
+                    .btn {
+                        width: 100%;
+                        border-radius: 12px;
+                        border-bottom: 3px solid #16a34a;
+                        background: #4ade80;
+                        color: #052e16;
+                        font-size: 12px;
+                        padding: 12px 18px;
+                        font-weight: 700;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        &:hover {
+                            background: darken(#4ade80, 10%);
+                        }
+                        &.cancel {
+                            margin-top: 12px;
+                            border-bottom: 3px solid #fda4af;
+                            background: #fff1f2;
+                            &:hover {
+                                background: darken(#fff1f2, 2.5%);
+                            }
+                        }
+                        .material-symbols-outlined {
+                            margin-right: 6px;
+                            font-size: 16px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    #submitFormModal {
+        .modal-dialog {
+            .modal-content {
+                background-color: transparent;
+                padding: 12px;
+                .modal-body {
+                    border-radius: 24px;
+                    background-color: $white;
+                    padding: 39px 12px;
+                    img {
+                        width: 220px;
+                    }
+                }
+            }
+        }
+    }
+}

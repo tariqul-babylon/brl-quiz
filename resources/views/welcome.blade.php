@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skill Shoper - Online Quiz Exam Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <style>
         :root {
             --dark-blue: #101845;
@@ -301,7 +302,7 @@
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
+                        <span class="material-symbols-outlined">flash_on</span>
                     </div>
                     <h3>Instant Results</h3>
                     <p>Get immediate feedback on your performance with detailed analytics and explanations for each
@@ -309,14 +310,14 @@
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-book"></i>
+                        <span class="material-symbols-outlined">menu_book</span>
                     </div>
                     <h3>Comprehensive Tests</h3>
                     <p>Access thousands of questions across multiple categories to thoroughly test your knowledge.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
+                       <span class="material-symbols-outlined">show_chart</span>
                     </div>
                     <h3>Progress Tracking</h3>
                     <p>Monitor your improvement over time with our advanced progress tracking and reporting system.</p>

@@ -609,3 +609,32 @@ label {
 #lang-menu .dropdown-menu .item .dropdown-item:hover {
     background-color: #e7f5ec;
 }
+
+.modal-body .form-label {
+    text-align: left !important;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+/* TomSelect option styling to reduce gap and align left */
+.ts-control {
+    text-align: left !important;
+}
+
+/* Dropdown option container */
+.ts-dropdown .ts-dropdown-content .ts-option {
+    padding-left: 0.5rem !important;
+    text-align: left !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Fix image margin inside options */
+.ts-dropdown .ts-dropdown-content .ts-option img {
+    margin-right: 0.5rem !important;
+}
+
+/* Remove any extra margin/padding inside option text container */
+.ts-dropdown .ts-dropdown-content .ts-option > div {
+    margin-left: 0 !important;
+}

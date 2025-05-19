@@ -1,0 +1,89 @@
+#header {
+    .logout {
+        margin-left: auto;
+        .nav-link {
+            &.button {
+                padding: 12px 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 12px;
+                margin-left: 16px;
+                line-height: 1.28;
+                margin-left: auto;
+                .material-symbols-outlined {
+                    font-size: 17px;
+                    margin-right: 5px;
+                }
+                &.light {
+                    background: #f3e8ff;
+                    color: $black;
+                }
+            }
+        }
+    }
+    &.light {
+        background-image: unset;
+        background-color: $white;
+        position: sticky;
+        top: 0;
+        z-index: 99;
+        .overlay {
+            background-image: unset;
+            nav {
+                height: 86px;
+                .navbar-brand {
+                    .tag {
+                        color: $purple950;
+                    }
+                }
+                .navbar-nav {
+                    .nav-item {
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    #header {
+        .logout {
+            .nav-link {
+                &.button {
+                    .material-symbols-outlined {
+                        margin-right: 0;
+                    }
+                    &.light {
+                        background: #f3e8ff;
+                        color: $black;
+                    }
+                }
+            }
+        }
+    }
+
+    #header.light {
+        .overlay {
+            nav {
+                height: 60px;
+                .navbar-nav {
+                    margin-top: 0 !important;
+                    margin-bottom: 0 !important;
+                    .nav-item {
+                        .nav-link {
+                            &.button {
+                                .name {
+                                    display: none;
+                                }
+                                .material-symbols-outlined {
+                                    margin-right: 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

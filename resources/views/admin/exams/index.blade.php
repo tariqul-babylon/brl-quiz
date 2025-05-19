@@ -101,6 +101,17 @@
                                     @endif
 
                                     <li>
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#addTeacherModal" data-exam-id="{{ $exam->id }}">
+                                            <span class="material-symbols-outlined">person_add</span> Add Teacher
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#addStudentModal" data-exam-id="{{ $exam->id }}">
+                                            <span class="material-symbols-outlined">person_add_alt</span> Add Student
+                                        </a>
+                                    </li>
+
+                                    <li>
                                         <form action="{{ route('exams.destroy', $exam->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete this exam?');">
                                             @csrf
                                             @method('DELETE')
@@ -111,6 +122,56 @@
                                     </li>
                                 </ul>
                             </div>
+
+                            <div class="modal fade" id="addTeacherModal" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <form method="POST" action="{{ route('exam.assign-teacher') }}" id="assignTeacherForm">
+                                        @csrf
+                                        <!-- Removed hidden exam_id input -->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Assign Teacher</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3 d-flex flex-column">
+                                                    <label for="teacherSelect" class="form-label">Select Teacher:</label>
+                                                    <select id="teacherSelect" name="user_id" class="form-control"></select>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-primary">Assign</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Add Student Modal -->
+                            <div class="modal fade" id="addStudentModal" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <form method="POST" action="{{ route('exam.assign-student') }}" id="assignStudentForm">
+                                        @csrf
+                                        <!-- Removed hidden exam_id input -->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Assign Student</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3 d-flex flex-column">
+                                                    <label for="studentSelect" class="form-label">Select Student:</label>
+                                                    <select id="studentSelect" name="user_id" class="form-control"></select>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-primary">Assign</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
                         </td>
                     </tr>
                 @endforeach
@@ -119,4 +180,78 @@
             {!! $exams->links() !!}
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        function initTomSelect(selector, userType, examId) {
+            const element = document.querySelector(selector);
+
+            // Destroy if already initialized
+            if (element.tomselect) {
+                element.tomselect.destroy();
+            }
+
+            new TomSelect(selector, {
+                valueField: 'id',
+                labelField: 'name',
+                searchField: 'name',
+                loadThrottle: 300,
+                maxOptions: 10,
+                minQueryLength: 3,
+                render: {
+                    option: function(item) {
+                        const imgSrc = item.image ?? '{{ asset('img/logo.png') }}';
+                        const disabledBadge = item.disabled
+                            ? `<span class="badge bg-secondary ms-auto">Already Exist</span>`
+                            : '';
+
+                        return `
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-start">
+                                    <img src="${imgSrc}" class="rounded-circle me-2" width="40" height="40" />
+                                    <div>
+                                        <div class="fw-bold">${item.name}</div>
+                                        <small>${item.email}</small>
+                                    </div>
+                                </div>
+                                ${disabledBadge}
+                            </div>
+                        `;
+                    }
+                },
+                load: function(query, callback) {
+                    const url = `/dashboard/users/search/ajax?q=${encodeURIComponent(query)}&type=${userType}&exam_id=${examId}`;
+                    fetch(url)
+                        .then(res => res.json())
+                        .then(data => callback(data))
+                        .catch(() => callback([]));
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('[data-bs-target="#addTeacherModal"]').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const examId = this.dataset.examId;
+                    const form = document.getElementById('assignTeacherForm');
+                    const baseUrl = "{{ route('exam.assign-teacher') }}";
+                    form.action = `${baseUrl}?exam_id=${examId}`;
+
+                    initTomSelect('#teacherSelect', 1, examId); // Pass examId here
+                });
+            });
+
+            document.querySelectorAll('[data-bs-target="#addStudentModal"]').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const examId = this.dataset.examId;
+                    const form = document.getElementById('assignStudentForm');
+                    const baseUrl = "{{ route('exam.assign-student') }}";
+                    form.action = `${baseUrl}?exam_id=${examId}`;
+
+                    initTomSelect('#studentSelect', 2, examId); // Pass examId here
+                });
+            });
+        });
+    </script>
 @endsection

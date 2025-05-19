@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ExamRequest;
 use App\Models\Exam;
+use App\Models\ExamUser;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ExamController extends Controller
 {
@@ -72,9 +75,10 @@ class ExamController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $exam = Exam::with(['questions.options'])->findOrFail($id);
+        return view('admin.exams.show', compact('exam'));
     }
 
     /**
@@ -131,5 +135,115 @@ class ExamController extends Controller
         ]);
 
         return redirect()->route('exams.index')->with('success', 'Exam Link Created successfully.');
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->get('q');
+        $type = $request->get('type');  // You can still use this for filtering if needed
+        $examId = $request->get('exam_id');
+
+        $users = User::where(function ($q) use ($query) {
+            $q->where('name', 'like', "%{$query}%")
+                ->orWhere('email', 'like', "%{$query}%");
+        })
+            ->limit(10)
+            ->get(['id', 'name', 'email', 'photo']);  // corrected to match your property name
+
+        // Fetch assigned user IDs for this exam (assuming pivot table exam_user with user_id and exam_id)
+        $assignedUserIds = [];
+        if ($examId) {
+            $assignedUserIds = ExamUser::where('exam_id', $examId)
+                ->pluck('user_id')
+                ->toArray();
+        }
+
+        // Map users, add disabled property if assigned
+        return $users->map(function ($user) use ($assignedUserIds) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'image' => $user->profile_photo_path ? asset('storage/' . $user->profile_photo_path) : null,
+                'disabled' => in_array($user->id, $assignedUserIds),  // Add this flag
+            ];
+        });
+    }
+
+
+    // ExamController.php
+
+    public function assignTeacher(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required',
+        ]);
+
+        $examId = $request->query('exam_id');
+        $userId = $request->user_id;
+
+        // Check if user is already assigned in conflicting role
+        if ($this->hasConflictingAssignment($examId, $userId, 1)) {
+            return redirect()->back()->withErrors([
+                'user_id' => 'This user is already assigned as a student for this exam, or already assigned as teacher.'
+            ]);
+        }
+
+        ExamUser::create([
+            'user_id' => $userId,
+            'exam_id' => $examId,
+            'user_type' => 1,
+        ]);
+
+        return redirect()->back()->with('success', 'Teacher assigned successfully.');
+    }
+
+    public function assignStudent(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required',
+        ]);
+
+        $examId = $request->query('exam_id');
+        $userId = $request->user_id;
+
+        // Check if user is already assigned in conflicting role
+        if ($this->hasConflictingAssignment($examId, $userId, 2)) {
+            return redirect()->back()->withErrors([
+                'user_id' => 'This user is already assigned as a teacher for this exam, or already assigned as student.'
+            ]);
+        }
+
+        ExamUser::create([
+            'user_id' => $userId,
+            'exam_id' => $examId,
+            'user_type' => 2,
+        ]);
+
+        return redirect()->back()->with('success', 'Student assigned successfully.');
+    }
+
+    private function hasConflictingAssignment($examId, $userId, $currentUserType)
+    {
+        // The conflicting user_type is the opposite of current one
+        $conflictingUserType = $currentUserType === 1 ? 2 : 1;
+
+        // Check if user already assigned as conflicting user_type
+        $conflictExists = ExamUser::where('exam_id', $examId)
+            ->where('user_id', $userId)
+            ->where('user_type', $conflictingUserType)
+            ->exists();
+
+        if ($conflictExists) {
+            return true;
+        }
+
+        // Also check if user already assigned with the current user_type (avoid duplicates)
+        $alreadyAssigned = ExamUser::where('exam_id', $examId)
+            ->where('user_id', $userId)
+            ->where('user_type', $currentUserType)
+            ->exists();
+
+        return $alreadyAssigned;
     }
 }
