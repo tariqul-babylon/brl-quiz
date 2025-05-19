@@ -2,11 +2,15 @@
 
 namespace Database\Seeders;
 
+use App\ExamHelper;
+use App\Models\Exam;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class ExamSeeder extends Seeder
 {
+    use ExamHelper;
+
     public function run()
     {
         DB::transaction(function () {
@@ -39,6 +43,10 @@ class ExamSeeder extends Seeder
                 'id_no_placeholder' => 'Enter ID',
                 'logo' => null,
                 'exam_link' => null,
+                'exam_code' => $this->makeExamCode(),
+                'exam_source' => Exam::SOURCE_WEB,
+                'created_by' => 1,
+                'updated_by' => 1,
             ],
             [
                 'title' => 'Physics Intermediate',
@@ -61,6 +69,10 @@ class ExamSeeder extends Seeder
                 'id_no_placeholder' => 'Student ID here',
                 'logo' => null,
                 'exam_link' => null,
+                'exam_code' => $this->makeExamCode(),
+                'exam_source' => Exam::SOURCE_API,
+                'created_by' => 1,
+                'updated_by' => 1,
             ],
             [
                 'title' => 'English Language',
@@ -83,6 +95,89 @@ class ExamSeeder extends Seeder
                 'id_no_placeholder' => null,
                 'logo' => null,
                 'exam_link' => null,
+                'exam_code' => $this->makeExamCode(),
+                'exam_source' => Exam::SOURCE_API,
+                'created_by' => 1,
+                'updated_by' => 1,
+            ],
+            //3 data for web 
+            [
+                'title' => 'Mathematics Basic',
+                'tagline' => 'Basic Math Exam',
+                'start_at' => now()->addDay(),
+                'end_at' => now()->addDays(2),
+                'instruction' => 'Answer all questions.',
+                'full_mark' => 100,
+                'negative_mark' => 0.25,
+                'duration' => '01:30:00',
+                'is_bluer' => false,
+                'is_timer' => true,
+                'exam_status' => true,
+                'user_result_view' => true,
+                'user_answer_view' => true,
+                'is_question_random' => true,
+                'is_option_random' => true,
+                'is_sign_in_required' => true,
+                'is_specific_student' => false,
+                'id_no_placeholder' => 'Enter ID',
+                'logo' => null,
+                'exam_link' => null,
+                'exam_code' => $this->makeExamCode(),
+                'exam_source' => Exam::SOURCE_WEB,
+                'created_by' => 1,
+                'updated_by' => 1,
+            ],
+            [
+                'title' => 'Mathematics Basic',
+                'tagline' => 'Basic Math Exam',
+                'start_at' => now()->addDay(),
+                'end_at' => now()->addDays(2),
+                'instruction' => 'Answer all questions.',
+                'full_mark' => 100,
+                'negative_mark' => 0.25,
+                'duration' => '01:30:00',
+                'is_bluer' => false,
+                'is_timer' => true,
+                'exam_status' => true,
+                'user_result_view' => true,
+                'user_answer_view' => true,
+                'is_question_random' => true,
+                'is_option_random' => true,
+                'is_sign_in_required' => true,
+                'is_specific_student' => false,
+                'id_no_placeholder' => 'Enter ID',
+                'logo' => null,
+                'exam_link' => null,
+                'exam_code' => $this->makeExamCode(),
+                'exam_source' => Exam::SOURCE_WEB,
+                'created_by' => 1,
+                'updated_by' => 1,
+            ],
+            [
+                'title' => 'Mathematics Basic',
+                'tagline' => 'Basic Math Exam',
+                'start_at' => now()->addDay(),
+                'end_at' => now()->addDays(2),
+                'instruction' => 'Answer all questions.',
+                'full_mark' => 100,
+                'negative_mark' => 0.25,
+                'duration' => '01:30:00',
+                'is_bluer' => false,
+                'is_timer' => true,
+                'exam_status' => true,
+                'user_result_view' => true,
+                'user_answer_view' => true,
+                'is_question_random' => true,
+                'is_option_random' => true,
+                'is_sign_in_required' => true,
+                'is_specific_student' => false,
+                'id_no_placeholder' => 'Enter ID',
+                'logo' => null,
+                'exam_link' => null,
+                'exam_code' => $this->makeExamCode(),
+                'exam_source' => Exam::SOURCE_WEB,
+                'created_by' => 1,
+                'updated_by' => 1,
             ],
         ];
 
@@ -156,6 +251,75 @@ class ExamSeeder extends Seeder
                         ['title' => 'Sad', 'is_correct' => false],
                         ['title' => 'Joyful', 'is_correct' => true],
                         ['title' => 'Angry', 'is_correct' => false],
+                    ],
+                ],
+            ],
+            //3 data for api
+            [
+                [
+                    'title' => 'What is 2 + 2?',
+                    'question_type' => 0,
+                    'status' => 1,
+                    'options' => [
+                        ['title' => '3', 'is_correct' => false],
+                        ['title' => '4', 'is_correct' => true],
+                        ['title' => '5', 'is_correct' => false],
+                    ],
+                ],
+                [
+                    'title' => 'What is the square root of 16?',
+                    'question_type' => 0,
+                    'status' => 1,
+                    'options' => [
+                        ['title' => '3', 'is_correct' => false],
+                        ['title' => '4', 'is_correct' => true],
+                        ['title' => '5', 'is_correct' => false],
+                    ],
+                ],
+            ],
+            //4 data for api
+            [
+                [
+                    'title' => 'What is 2 + 2?',
+                    'question_type' => 0,
+                    'status' => 1,
+                    'options' => [
+                        ['title' => '3', 'is_correct' => false],
+                        ['title' => '4', 'is_correct' => true],
+                        ['title' => '5', 'is_correct' => false],
+                    ],
+                ],
+                [
+                    'title' => 'What is the square root of 16?',
+                    'question_type' => 0,
+                    'status' => 1,
+                    'options' => [
+                        ['title' => '3', 'is_correct' => false],
+                        ['title' => '4', 'is_correct' => true],
+                        ['title' => '5', 'is_correct' => false],
+                    ],
+                ],
+            ],
+            //5 data for api
+            [
+                [
+                    'title' => 'What is 2 + 2?',
+                    'question_type' => 0,
+                    'status' => 1,
+                    'options' => [
+                        ['title' => '3', 'is_correct' => false],
+                        ['title' => '4', 'is_correct' => true],
+                        ['title' => '5', 'is_correct' => false],
+                    ],
+                ],
+                [
+                    'title' => 'What is the square root of 16?',
+                    'question_type' => 0,
+                    'status' => 1,
+                    'options' => [
+                        ['title' => '3', 'is_correct' => false],
+                        ['title' => '4', 'is_correct' => true],
+                        ['title' => '5', 'is_correct' => false],
                     ],
                 ],
             ],
