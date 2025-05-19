@@ -17,7 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'verify.sanctum' => \App\Http\Middleware\VerifySanctumToken::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

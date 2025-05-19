@@ -19,13 +19,13 @@ return new class extends Migration
             $table->string('id_no', 50)->nullable();
             $table->string('contact', 20)->nullable();
             $table->dateTime('join_at', 3);
-            $table->dateTime('end_at', 3);
-            $table->dateTime('duration');
-            $table->integer('correct_ans');
-            $table->integer('incorrect_ans');
-            $table->integer('not_answered');
-            $table->boolean('end_method');
-            $table->boolean('exam_stats');
+            $table->dateTime('end_at', 3)->nullable();
+            $table->dateTime('duration')->nullable();
+            $table->integer('correct_ans')->nullable();
+            $table->integer('incorrect_ans')->nullable();
+            $table->integer('not_answered')->nullable();
+            $table->boolean('end_method')->nullable();
+            $table->boolean('exam_status')->nullable();
 
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');

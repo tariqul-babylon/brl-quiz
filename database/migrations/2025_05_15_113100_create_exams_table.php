@@ -38,8 +38,12 @@ return new class extends Migration
             $table->string('logo')->nullable();
             $table->string('exam_link')->nullable();
             $table->string('exam_code')->unique();
+            $table->boolean('exam_source')->default(1);
 
-            $table->timestamps();
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
             $table->softDeletes();
         });
 

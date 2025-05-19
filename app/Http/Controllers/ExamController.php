@@ -9,9 +9,11 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\ExamHelper;
 
 class ExamController extends Controller
 {
+    use ExamHelper;
     /**
      * Display a listing of the resource.
      */
@@ -62,15 +64,6 @@ class ExamController extends Controller
         return redirect()->route('exams.index')->with('success', 'Exam created successfully.');
     }
 
-    private function makeExamCode($digits=6){
-        $characters = "123456789ABCDEF123456789GHJ123456789KMN123456789PQRST123456789UVW123456789XYZ123456789";
-        $characters = str_shuffle($characters);
-        $code = '';
-        for ($i = 0; $i < $digits; $i++) {
-            $code .= $characters[rand(0, strlen($characters) - 1)];
-        }
-        return $code;
-    }
 
     /**
      * Display the specified resource.
