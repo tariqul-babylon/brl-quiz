@@ -21,7 +21,7 @@ class ExamQuestionController extends Controller
                 'title' => ['required', 'string', 'max:255', function ($attribute, $value, $fail) use ($exam_id) {
                     ExamQuestion::where('title', $value)->where('exam_id', $exam_id)->exists() ? $fail('Question title already exists.') : true;
                 }],
-                'question_type' => 'required|boolean',
+                'question_type' => 'required|in:1,2,3',
                 'options' => [
                     'required',
                     'array',
@@ -31,17 +31,9 @@ class ExamQuestionController extends Controller
                         if ($duplicate->isNotEmpty()) {
                             $fail('Option title must be unique.');
                         }
-                        // For multiple choice questions, ensure at least one correct answer
-                        if (request('question_type') == 1) {
-                            $hasCorrect = collect($value)->contains('is_correct', true);
-                            if (!$hasCorrect) {
-                                $fail('At least one option must be marked as correct.');
-                            }
-                        }
-                        
-                        // For true/false questions, ensure exactly one correct answer
-                        if (request('question_type') == 0 && collect($value)->filter(fn($o) => $o['is_correct'])->count() !== 1) {
-                            $fail('True/False questions must have exactly one correct option.');
+                        $hasCorrect = collect($value)->contains('is_correct', true);
+                        if (!$hasCorrect) {
+                            $fail('At least one option must be marked as correct.');
                         }
                     }
                 ],
@@ -127,7 +119,7 @@ class ExamQuestionController extends Controller
                 'title' => ['required', 'string', 'max:255', function ($attribute, $value, $fail) use ($exam_id, $question_id) {
                     ExamQuestion::where('title', $value)->where('exam_id', $exam_id)->where('id', '!=', $question_id)->exists() ? $fail('Question title already exists.') : true;
                 }],
-                'question_type' => 'required|boolean',
+                'question_type' => 'required|in:1,2,3',
                 // option title must be unique
                 'options' => [
                     'required',
@@ -139,17 +131,9 @@ class ExamQuestionController extends Controller
                         if ($duplicate->isNotEmpty()) {
                             $fail('Option title must be unique.');
                         }
-                        // For multiple choice questions, ensure at least one correct answer
-                        if (request('question_type') == 1) {
-                            $hasCorrect = collect($value)->contains('is_correct', true);
-                            if (!$hasCorrect) {
-                                $fail('At least one option must be marked as correct.');
-                            }
-                        }
-                        
-                        // For true/false questions, ensure exactly one correct answer
-                        if (request('question_type') == 0 && collect($value)->filter(fn($o) => $o['is_correct'])->count() !== 1) {
-                            $fail('True/False questions must have exactly one correct option.');
+                        $hasCorrect = collect($value)->contains('is_correct', true);
+                        if (!$hasCorrect) {
+                            $fail('At least one option must be marked as correct.');
                         }
                     }
                 ],
