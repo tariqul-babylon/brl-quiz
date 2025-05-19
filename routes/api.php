@@ -12,5 +12,10 @@ Route::post('get-token', [AuthController::class, 'getToken']);
 
 Route::middleware('verify.sanctum')->name('api.')->group(function () {
     Route::apiResource('exam', ExamController::class);
-    Route::apiResource('exam-question/{exam_id}', ExamQuestionController::class);
+    // store 
+    Route::post('exam-question/{exam_id}', [ExamQuestionController::class, 'store']);
+    //update
+    Route::put('exam-question/{exam_id}/{question_id}', [ExamQuestionController::class, 'update']);
+    //destroy
+    Route::delete('exam-question/{exam_id}/{question_id}', [ExamQuestionController::class, 'destroy']);
 });
