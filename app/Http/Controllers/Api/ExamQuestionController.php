@@ -99,6 +99,8 @@ class ExamQuestionController extends Controller
         }
     }
 
+    
+
     public function show(Request $request, $question_id)
     {
         try {
@@ -148,10 +150,6 @@ class ExamQuestionController extends Controller
         try {
 
             $exam_question = ExamQuestion::where('id', $question_id)
-                ->whereHas('exam', function ($query) use ($request) {
-                    $query->where('exam_source', 2);
-                    $query->where('created_by', $request->user()->id);
-                })
                 ->first();
 
             if (!$exam_question) {
@@ -162,6 +160,24 @@ class ExamQuestionController extends Controller
             }
 
             $exam_id = $exam_question->exam_id;
+            $exam = Exam::where('id', $exam_id)
+                ->where('exam_source', 2)
+                ->where('created_by', $request->user()->id)
+                ->first();
+
+            if (!$exam) {
+                return response()->json([
+                    'code' => 404,
+                    'message' => 'Exam not found',
+                ], 404);
+            }
+
+            if ($exam->exam_status != 1) {
+                return response()->json([
+                    'code' => 403,
+                    'message' => 'Exam is not in draft status. You can not update this exam.',
+                ], 403);
+            }
 
             $rules = [
                 'title' => ['required', 'string', 'max:255', function ($attribute, $value, $fail) use ($exam_id, $question_id) {

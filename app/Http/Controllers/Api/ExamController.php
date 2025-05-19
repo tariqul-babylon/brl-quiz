@@ -216,6 +216,66 @@ class ExamController extends Controller
         }
     }
 
+    public function updateStatus(Request $request, $exam_id)
+    {
+        try {
+            $rules = [
+                'status' => 'required|in:1,2,3',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'code' => 422,
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            $exam = Exam::where('id', $exam_id)
+                ->where('exam_source', 2)
+                ->where('created_by', $request->user()->id)
+                ->first();
+
+            if (!$exam) {
+                return response()->json([
+                    'code' => 404,
+                    'message' => 'Exam not found',
+                ], 404);
+            }
+
+
+            if ($exam->exam_status != 1 && $request->status == 2) {
+                return response()->json([
+                    'code' => 403,
+                    'message' => 'Exam is not in draft status. You can not update this exam.',
+                ], 403);
+            }
+
+            if ($exam->exam_status != 2 && $request->status == 3) {
+                return response()->json([
+                    'code' => 403,
+                    'message' => 'Exam not published yet. You can not update completed status before exam publish.',
+                ], 403);
+            }
+
+            $exam->update([
+                'exam_status' => $request->status,
+            ]);
+
+            return response()->json([
+                'code' => 200,
+                'message' => 'Exam status updated successfully',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     //delete exam
     public function destroy(Request $request, $id)
     {
