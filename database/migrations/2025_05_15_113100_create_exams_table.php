@@ -19,19 +19,19 @@ return new class extends Migration
             $table->timestamp('end_at')->nullable();
             $table->text('instruction')->nullable(); // assuming nullable for flexibility
             $table->integer('full_mark');
-            $table->float('negative_mark')->default(0);
+            $table->float('negative_mark')->nullable();
             $table->time('duration');
 
             // Booleans (true/false values)
-            $table->boolean('is_bluer')->default(false);
-            $table->boolean('is_timer')->default(false);
-            $table->boolean('exam_status')->default(false);
-            $table->boolean('user_result_view')->default(false);
-            $table->boolean('user_answer_view')->default(false);
-            $table->boolean('is_question_random')->default(false);
-            $table->boolean('is_option_random')->default(false);
-            $table->boolean('is_sign_in_required')->default(false);
-            $table->boolean('is_specific_student')->default(false);
+            $table->boolean('is_bluer')->nullable();
+            $table->boolean('is_timer')->nullable();
+            $table->boolean('exam_status')->nullable();
+            $table->boolean('user_result_view')->nullable();
+            $table->boolean('user_answer_view')->nullable();
+            $table->boolean('is_question_random')->nullable();
+            $table->boolean('is_option_random')->nullable();
+            $table->boolean('is_sign_in_required')->nullable();
+            $table->boolean('is_specific_student')->nullable();
 
             // Other fields
             $table->string('id_no_placeholder')->nullable();

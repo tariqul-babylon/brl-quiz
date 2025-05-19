@@ -3,14 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ExamQuestion extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'exam_id',
         'title',
         'question_type',
         'status',
+        'created_by',
+        'updated_by',
     ];
 
     const QUESTION_TYPE = [

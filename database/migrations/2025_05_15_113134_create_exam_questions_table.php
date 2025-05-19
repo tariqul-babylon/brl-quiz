@@ -17,7 +17,12 @@ return new class extends Migration
             $table->string('title');
             $table->boolean('question_type');
             $table->boolean('status')->default(1);
-            $table->timestamps();
+           
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
+            $table->softDeletes();
 
             $table->unique(['exam_id', 'title'], 'exam_title_unique');
         });
