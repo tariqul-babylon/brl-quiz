@@ -35,8 +35,8 @@ class ExamController extends Controller
         }
 
         // Parse datetime if needed
-        $data['exam_start_time'] = Carbon::parse($request->input('exam_start_time'))->format('Y-m-d H:i:s');
-        $data['exam_end_time'] = Carbon::parse($request->input('exam_end_time'))->format('Y-m-d H:i:s');
+        $data['start_at'] = Carbon::parse($request->input('exam_start_time'))->format('Y-m-d H:i:s');
+        $data['end_at'] = Carbon::parse($request->input('exam_end_time'))->format('Y-m-d H:i:s');
 
         // Duration handling remains the same
         $hours = max(0, (int) $request->input('duration_hours', 0));
