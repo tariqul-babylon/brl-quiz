@@ -16,8 +16,8 @@ class ExamQuestionController extends Controller
     public function store(Request $request, $exam_id)
     {
         try {
-          $rules = [
-            // make array 
+            $rules = [
+                // make array 
                 'title' => ['required', 'string', 'max:255', function ($attribute, $value, $fail) use ($exam_id) {
                     ExamQuestion::where('title', $value)->where('exam_id', $exam_id)->exists() ? $fail('Question title already exists.') : true;
                 }],
@@ -26,7 +26,7 @@ class ExamQuestionController extends Controller
                     'required',
                     'array',
                     'min:2', // Minimum 2 options
-                    function ($attribute, $value, $fail) use ($request)  {
+                    function ($attribute, $value, $fail) use ($request) {
                         $duplicate = collect($request->options)->pluck('title')->duplicates();
                         if ($duplicate->isNotEmpty()) {
                             $fail('Option title must be unique.');
@@ -71,7 +71,7 @@ class ExamQuestionController extends Controller
                 ], 404);
             }
 
-            if($exam->exam_status != 1){
+            if ($exam->exam_status != 1) {
                 return response()->json([
                     'code' => 403,
                     'message' => 'Exam is not in draft status. You can not update this exam.',
@@ -91,8 +91,6 @@ class ExamQuestionController extends Controller
                 'message' => 'Exam question created successfully',
                 'data' => new QuestionResource($exam_question),
             ]);
-           
-            
         } catch (\Exception $e) {
             return response()->json([
                 'code' => 500,
@@ -101,20 +99,58 @@ class ExamQuestionController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $exam_id, $question_id)
+    public function show(Request $request, $question_id)
     {
         try {
+            $exam_question = ExamQuestion::where('id', $question_id)
+                ->whereHas('exam', function ($query) use ($request) {
+                    $query->where('exam_status', 1);
+                    $query->where('exam_source', 2);
+                    $query->where('created_by', $request->user()->id);
+                })
+                ->first();
+
+            if (!$exam_question) {
+                return response()->json([
+                    'code' => 404,
+                    'message' => 'Exam question not found',
+                ], 404);
+            }
+
+            return response()->json([
+                'code' => 200,
+                'message' => 'Exam question found',
+                'data' => new QuestionResource($exam_question),
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function update(Request $request, $question_id)
+    {
+        try {
+
+            $exam_question = ExamQuestion::where('id', $question_id)
+                ->whereHas('exam', function ($query) use ($request) {
+                    $query->where('exam_source', 2);
+                    $query->where('created_by', $request->user()->id);
+                })
+                ->first();
+
+            if (!$exam_question) {
+                return response()->json([
+                    'code' => 404,
+                    'message' => 'Exam question not found',
+                ], 404);
+            }
+
+            $exam_id = $exam_question->exam_id;
+
             $rules = [
                 'title' => ['required', 'string', 'max:255', function ($attribute, $value, $fail) use ($exam_id, $question_id) {
                     ExamQuestion::where('title', $value)->where('exam_id', $exam_id)->where('id', '!=', $question_id)->exists() ? $fail('Question title already exists.') : true;
@@ -139,7 +175,7 @@ class ExamQuestionController extends Controller
                 ],
                 'options.*.title' => ['required', 'string', 'max:255', function ($attribute, $value, $fail) use ($exam_id, $question_id, $request) {
                     // need find is any duplicate reqution option title exists
-                    
+
 
                     ExamQuestion::where('title', $value)->where('exam_id', $exam_id)->where('id', '!=', $question_id)->where('exam_id', $request->exam_id)->exists() ? $fail('Option title already exists.') : true;
                 }],
@@ -176,16 +212,14 @@ class ExamQuestionController extends Controller
                 ], 404);
             }
 
-            if($exam->exam_status != 1){
+            if ($exam->exam_status != 1) {
                 return response()->json([
                     'code' => 403,
                     'message' => 'Exam is not in draft status. You can not update this exam.',
                 ], 403);
             }
 
-            $exam_question = ExamQuestion::where('id', $question_id)
-                ->where('exam_id', $exam_id)
-                ->first();
+
 
             if (!$exam_question) {
                 return response()->json([
@@ -218,16 +252,16 @@ class ExamQuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, $exam_id, $question_id)
+    public function destroy(Request $request,  $question_id)
     {
         try {
             DB::beginTransaction();
             $exam_question = ExamQuestion::where('id', $question_id)
-            ->whereHas('exam', function ($query) use ( $request) {
-                $query->where('created_by', $request->user()->id);
-                $query->where('exam_source', 2);
-            })
-            ->first();
+                ->whereHas('exam', function ($query) use ($request) {
+                    $query->where('created_by', $request->user()->id);
+                    $query->where('exam_source', 2);
+                })
+                ->first();
 
             if (!$exam_question) {
                 return response()->json([
@@ -235,7 +269,7 @@ class ExamQuestionController extends Controller
                     'message' => 'Exam question not found',
                 ], 404);
             }
-            $exam_question->options()->delete();    
+            $exam_question->options()->delete();
             $exam_question->delete();
             DB::commit();
             return response()->json([

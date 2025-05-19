@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ExamController;
 use App\Http\Controllers\Api\ExamQuestionController;
+use App\Http\Controllers\Api\UserExamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,10 @@ Route::middleware('verify.sanctum')->name('api.')->group(function () {
 
     //exam question
     Route::post('exam-question/{exam_id}', [ExamQuestionController::class, 'store']);
-    Route::put('exam-question/{exam_id}/{question_id}', [ExamQuestionController::class, 'update']);
-    Route::delete('exam-question/{exam_id}/{question_id}', [ExamQuestionController::class, 'destroy']);
+    Route::get('exam-question/{question_id}', [ExamQuestionController::class, 'show']);
+    Route::put('exam-question/{question_id}', [ExamQuestionController::class, 'update']);
+    Route::delete('exam-question/{question_id}', [ExamQuestionController::class, 'destroy']);
+
+    //user exam
+    // Route::post('user-exam/{exam_id}', [UserExamController::class, 'show']);
 });
