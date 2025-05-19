@@ -18,6 +18,7 @@ Route::middleware('verify.sanctum')->name('api.')->group(function () {
     Route::post('exam-question/{exam_id}', [ExamQuestionController::class, 'store']);
     Route::get('exam-question/{question_id}', [ExamQuestionController::class, 'show']);
     Route::put('exam-question/{question_id}', [ExamQuestionController::class, 'update']);
+    Route::put('exam-question/{question_id}/update-status', [ExamQuestionController::class, 'updateStatus']);
     Route::delete('exam-question/{question_id}', [ExamQuestionController::class, 'destroy']);
 
     //user exam

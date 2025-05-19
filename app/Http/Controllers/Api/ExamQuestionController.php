@@ -103,11 +103,6 @@ class ExamQuestionController extends Controller
     {
         try {
             $exam_question = ExamQuestion::where('id', $question_id)
-                ->whereHas('exam', function ($query) use ($request) {
-                    $query->where('exam_status', 1);
-                    $query->where('exam_source', 2);
-                    $query->where('created_by', $request->user()->id);
-                })
                 ->first();
 
             if (!$exam_question) {
@@ -115,6 +110,23 @@ class ExamQuestionController extends Controller
                     'code' => 404,
                     'message' => 'Exam question not found',
                 ], 404);
+            }
+
+            $exam = Exam::where('id', $exam_question->exam_id)
+                ->where('exam_source', 2)
+                ->where('created_by', $request->user()->id)
+                ->first();
+
+            if (!$exam) {
+                return response()->json([
+                    'code' => 404,
+                    'message' => 'Exam not found',
+                ], 404);
+            }else if($exam->exam_status != 1){
+                return response()->json([
+                    'code' => 403,
+                    'message' => 'Exam is not in draft status. You can not update this exam.',
+                ], 403);
             }
 
             return response()->json([
