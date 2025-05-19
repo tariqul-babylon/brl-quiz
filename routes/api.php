@@ -24,5 +24,5 @@ Route::middleware('verify.sanctum')->name('api.')->group(function () {
 
     //user exam
     Route::get('user-exam/{exam_code}', [UserExamController::class, 'show']);
-    Route::get('user-exam/{exam_code}/questions', [UserExamController::class, 'showQuestions']);
+    Route::post('user-exam/{exam_code}/start-exam', [UserExamController::class, 'startExam']);
 });

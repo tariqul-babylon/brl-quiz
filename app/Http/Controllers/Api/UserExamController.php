@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ExamResource;
 use App\Models\Exam;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserExamController extends Controller
 {
@@ -45,9 +46,12 @@ class UserExamController extends Controller
         ], 500);
        }
     }
-    public function showQuestions(Request $request, $exam_code)
+    public function startExam(Request $request, $exam_code)
     {
        try {
+
+        
+
         $exam = Exam::with('questions.options')
             ->where('exam_code', $exam_code)
             ->where('exam_source', 2)
@@ -68,25 +72,59 @@ class UserExamController extends Controller
             ], 403);
         }
 
+        $rules = [
+            'name' => 'required|string|max:255',
+            'contact' => 'required|max:20',
+            'id_no' => ['max:100',function ($attribute, $value, $fail) use ($exam) {
+                if ($exam->id_no_placeholder && !$value) {
+                    $fail('ID number is required.');
+                }
+            }],
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'code' => 422,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+       
+        $response_questions = [];
+        $input_questions = $exam->questions;
         if ($exam->is_question_random) {
-            $exam->questions = $exam->questions->random();
+            $input_questions = $input_questions->shuffle();
         }
 
-        if ($exam->is_option_random) {
-            $exam->questions->options = $exam->questions->options->random();
-        }
-        $questions = [];
-        foreach ($exam->questions->random() as $question) {
-            $questions[] = [
+        foreach ($input_questions as $question) {
+            $options = $question->options;
+            if ($exam->is_option_random) {
+                $options = $options->shuffle();
+            }
+
+            $response_options = [];
+            foreach ($options as $option) {
+                $response_options[] = [
+                    'id' => $option->id,
+                    'title' => $option->title,
+                ];
+            }
+            $response_questions[] = [
+                'id' => $question->id,
                 'question' => $question->title,
-                'options' => $question->options,
+                'options' => $response_options,
             ];
         }
 
         return response()->json([
             'code' => 200,
             'message' => 'Exam found',
-            'data' => $exam,
+            'data' => [
+                'exam' => new ExamResource($exam),
+                'questions' => $response_questions,
+            ],
         ], 200);
 
 
