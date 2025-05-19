@@ -20,6 +20,7 @@ class ExamViewResource extends JsonResource
             'tagline' => $this->tagline,
             'negative_mark' => round($this->negative_mark, 2),
             'duration' => $this->duration,
+            'full_mark' => $this->full_mark,
             'exam_status' => $this->exam_status,
             'is_question_random' => $this->is_question_random,
             'is_option_random' => $this->is_option_random,

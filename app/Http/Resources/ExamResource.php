@@ -16,7 +16,7 @@ class ExamResource extends JsonResource
             // 'start_at' => $this->start_at,
             // 'end_at' => $this->end_at,
             // 'instruction' => $this->instruction,
-            // 'full_mark' => $this->full_mark,
+            'full_mark' => $this->full_mark,
             'negative_mark' => round($this->negative_mark, 2),
             'duration' => $this->duration,
             // 'is_bluer' => $this->is_bluer,
