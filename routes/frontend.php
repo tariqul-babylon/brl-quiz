@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\Front\FrontController;
 use App\Http\Controllers\Front\JoinExamController;
 use Illuminate\Support\Facades\Route;
+
+
+Route::get('/', [FrontController::class, 'home'])->name('front.home');
 
 
 Route::get('join-exam', [JoinExamController::class, 'joinExam'])->name('front.join-exam');

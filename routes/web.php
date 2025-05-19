@@ -15,10 +15,6 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes([
     'login' => true,
     'register' => true,

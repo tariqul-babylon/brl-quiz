@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-light ">
     <div class="container">
         <!-- Brand/Logo -->
-        <a class="navbar-brand" href="#">
-            <img class="logo" src="{{ asset('front') }}/img/Logo Dark-01.png" alt="">
+        <a class="navbar-brand" href="{{route('front.home')}}">
+            <img class="logo" src="{{asset('front')}}/img/Logo Dark-01.png" alt="">
             <span class="tag">Exam System</span>
         </a>
 
@@ -16,7 +16,7 @@
             <!-- Left-aligned Menu Items -->
             <ul class="navbar-nav mx-auto mb-2 mb-sm-0">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Home</a>
+                    <a class="nav-link active" href="{{route('front.home')}}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('front.join-exam') }}">Join Exam</a>
