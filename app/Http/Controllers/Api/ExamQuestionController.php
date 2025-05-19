@@ -26,7 +26,11 @@ class ExamQuestionController extends Controller
                     'required',
                     'array',
                     'min:2', // Minimum 2 options
-                    function ($attribute, $value, $fail) {
+                    function ($attribute, $value, $fail) use ($request)  {
+                        $duplicate = collect($request->options)->pluck('title')->duplicates();
+                        if ($duplicate->isNotEmpty()) {
+                            $fail('Option title must be unique.');
+                        }
                         // For multiple choice questions, ensure at least one correct answer
                         if (request('question_type') == 1) {
                             $hasCorrect = collect($value)->contains('is_correct', true);
@@ -129,7 +133,12 @@ class ExamQuestionController extends Controller
                     'required',
                     'array',
                     'min:2', // Minimum 2 options
-                    function ($attribute, $value, $fail) {
+                    function ($attribute, $value, $fail) use ($request) {
+                        //find duplicate option title
+                        $duplicate = collect($request->options)->pluck('title')->duplicates();
+                        if ($duplicate->isNotEmpty()) {
+                            $fail('Option title must be unique.');
+                        }
                         // For multiple choice questions, ensure at least one correct answer
                         if (request('question_type') == 1) {
                             $hasCorrect = collect($value)->contains('is_correct', true);
@@ -144,8 +153,11 @@ class ExamQuestionController extends Controller
                         }
                     }
                 ],
-                'options.*.title' => ['required', 'string', 'max:255', function ($attribute, $value, $fail) use ($exam_id, $question_id) {
-                    ExamQuestion::where('title', $value)->where('exam_id', $exam_id)->where('id', '!=', $question_id)->exists() ? $fail('Option title already exists.') : true;
+                'options.*.title' => ['required', 'string', 'max:255', function ($attribute, $value, $fail) use ($exam_id, $question_id, $request) {
+                    // need find is any duplicate reqution option title exists
+                    
+
+                    ExamQuestion::where('title', $value)->where('exam_id', $exam_id)->where('id', '!=', $question_id)->where('exam_id', $request->exam_id)->exists() ? $fail('Option title already exists.') : true;
                 }],
                 'options.*.is_correct' => 'required|boolean',
             ];
@@ -202,9 +214,8 @@ class ExamQuestionController extends Controller
                 ...$validator->validated(),
             ]);
 
-            return $exam_question->options;
-            $exam_question->options->each->delete();
-            // $exam_question->options()->createMany($validator->validated()['options']);
+            $exam_question->options()->delete();
+            $exam_question->options()->createMany($validator->validated()['options']);
             DB::commit();
             return response()->json([
                 'code' => 200,
@@ -223,8 +234,36 @@ class ExamQuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, $exam_id, $question_id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $exam_question = ExamQuestion::where('id', $question_id)
+            ->whereHas('exam', function ($query) use ( $request) {
+                $query->where('created_by', $request->user()->id);
+                $query->where('exam_source', 2);
+            })
+            ->first();
+
+            if (!$exam_question) {
+                return response()->json([
+                    'code' => 404,
+                    'message' => 'Exam question not found',
+                ], 404);
+            }
+            $exam_question->options()->delete();    
+            $exam_question->delete();
+            DB::commit();
+            return response()->json([
+                'code' => 200,
+                'message' => 'Exam question deleted successfully',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'code' => 500,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

@@ -21,7 +21,6 @@ return new class extends Migration
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
-            $table->softDeletes();
 
             $table->unique(['question_id', 'title'], 'question_option_unique');
         });
