@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ExamRequest;
 use App\Models\Exam;
 use App\Http\Resources\ExamResource;
+use App\Http\Resources\ExamViewResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -113,6 +114,36 @@ class ExamController extends Controller
                 'code' => 200,
                 'message' => 'Exam created successfully',
                 'data' => new ExamResource($exam),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    //show exam
+    public function show(Request $request, $id)
+    {
+        try {
+            $exam = Exam::with('questions.options')
+            ->where('exam_source', 2)
+            ->where('created_by', $request->user()->id)
+            ->where('id', $id)
+            ->first();
+
+            if (!$exam) {
+                return response()->json([
+                    'code' => 404,
+                    'message' => 'Exam not found',
+                ], 404);
+            }
+
+            return response()->json([
+                'code' => 200,
+                'message' => 'Exam found',
+                'data' => new ExamViewResource($exam),
             ]);
         } catch (\Exception $e) {
             return response()->json([
