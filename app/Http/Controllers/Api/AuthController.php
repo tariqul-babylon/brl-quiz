@@ -11,30 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string',
-            'contact' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6'
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'contact' => $request->contact,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
-
-        $token = $user->createToken('api_token')->plainTextToken;
-
-        return response()->json([
-            'user' => $user,
-            'token' => $token
-        ], 201);
-    }
-
     public function getToken(Request $request)
     {
         $rules = [
@@ -60,7 +36,7 @@ class AuthController extends Controller
             if (!Hash::check($request->password, $user->password)) {
                 return response()->json([
                     'code' => 401,
-                    'message' => 'Invalid credentials'
+                    'message' => 'Invalid credentials. You can reset your password by forget password link.'
                 ], 401);
             }
         } else {
@@ -82,16 +58,5 @@ class AuthController extends Controller
                 'token' => $token
             ]
         ]);
-    }
-
-    public function profile(Request $request)
-    {
-        return response()->json($request->user());
-    }
-
-    public function logout(Request $request)
-    {
-        $request->user()->currentAccessToken()->delete();
-        return response()->json(['message' => 'Logged out']);
     }
 }
