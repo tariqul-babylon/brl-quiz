@@ -2,7 +2,7 @@
     <div class="container">
         <div class="content">
             <div class="copyright">
-                &copy; 2023 
+                &copy; {{date('Y')}} 
             </div>
             <div class="menu">
                 <a href="">Help</a>
