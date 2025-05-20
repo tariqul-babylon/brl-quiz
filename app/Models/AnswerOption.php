@@ -21,4 +21,19 @@ class AnswerOption extends Model
         'answer_status',
         'answer_at',
     ]; 
+
+    public function question()
+    {
+        return $this->belongsTo(ExamQuestion::class, 'question_id');
+    }
+
+    public function answerOptionChoices()
+    {
+        return $this->hasMany(AnswerOptionChoice::class, 'answer_option_id');
+    }
+
+    public function answer()
+    {
+        return $this->belongsTo(Answer::class);
+    }
 }

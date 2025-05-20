@@ -50,4 +50,53 @@ class ExamResultController extends Controller
         ], 500);
        }
     }
+
+    public function showResultDetail(Request $request, $answer_id) {
+        try {
+            $answer = Answer::with([])
+            ->whereHas('exam', function ($query) use ($request) {
+                $query->where('exam_source', Exam::SOURCE_API)
+                ->where('created_by', $request->user()->id);
+            })
+            ->where('id', $answer_id)
+                ->first();
+
+            if (!$answer) {
+                return response()->json([
+                    'code' => 404,
+                    'message' => 'Answer not found',
+                ], 404);
+            }
+
+            $data = [];
+
+            foreach ($answer->answerOptions as $answer_option) {
+                $data[] = [
+                    'question_id' => $answer_option->question_id,
+                    'answer_status' => $answer_option->answer_status,
+                    'question'=> [
+                        'title' => $answer_option->question->title,
+                        'user_answer_options' => $answer_option->answerOptionChoices,
+                        'options' => $answer_option->question->options->select('id', 'title', 'is_correct'),
+                    ]
+                ];
+            }
+
+            return $data;
+            return response()->json([
+                'code' => 200,
+                'message' => 'Data found',
+                'data' => [
+                    'exam' => new ExamResource($answer->exam),
+                    'answer' => new AnswerResource($answer),
+                    'questions' => $answer->answerOptions,
+                ],
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

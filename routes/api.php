@@ -30,5 +30,5 @@ Route::middleware('verify.sanctum')->name('api.')->group(function () {
 
     // exam result
     Route::get('exam-result/{exam}/answer', [ExamResultController::class, 'showResult']);
-    Route::get('exam-result/{exam}/answer-detail', [ExamResultController::class, 'showResultDetail']);
+    Route::get('exam-result/{answer}/answer-detail', [ExamResultController::class, 'showResultDetail']);
 });
