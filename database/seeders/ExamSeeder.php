@@ -44,7 +44,7 @@ class ExamSeeder extends Seeder
                 'logo' => null,
                 'exam_link' => null,
                 'exam_code' => $this->makeExamCode(),
-                'exam_source' => Exam::SOURCE_WEB,
+                'exam_source' => Exam::SOURCE_API,
                 'created_by' => 1,
                 'updated_by' => 1,
             ],
