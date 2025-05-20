@@ -191,12 +191,12 @@ class ExamController extends Controller
                 ], 404);
             }
 
-            if($exam->exam_status != 1){
-                return response()->json([
-                    'code' => 403,
-                    'message' => 'Exam is not in draft status. You can not update this exam.',
-                ], 403);
-            }
+            // if($exam->exam_status != 1){
+            //     return response()->json([
+            //         'code' => 403,
+            //         'message' => 'Exam is not in draft status. You can not update this exam.',
+            //     ], 403);
+            // }
 
             $exam->update([
                 ...$validator->validated(),
