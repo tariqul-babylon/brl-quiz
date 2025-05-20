@@ -18,10 +18,14 @@ class GoogleController extends Controller
 
     public function handleGoogleCallback()
     {
+
         $googleUser = Socialite::driver('google')->stateless()->user();
+        return $googleUser;
 
         $user = User::updateOrCreate(
-            ['email' => $googleUser->getEmail()],
+            [
+                'email' => $googleUser->getEmail()
+            ],
             [
                 'name' => $googleUser->getName(),
                 'email_verified_at' => now(),
@@ -32,6 +36,6 @@ class GoogleController extends Controller
 
         Auth::login($user);
 
-        return redirect()->intended('/dashboard'); // Change this to your desired landing page
+        // return redirect()->intended('/dashboard'); // Change this to your desired landing page
     }
 }
