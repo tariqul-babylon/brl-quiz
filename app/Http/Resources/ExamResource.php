@@ -9,6 +9,7 @@ class ExamResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $total_questions = $this->questions?->count() ?? 0;
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -17,6 +18,8 @@ class ExamResource extends JsonResource
             // 'end_at' => $this->end_at,
             // 'instruction' => $this->instruction,
             'mark_per_question' => $this->mark_per_question,
+            'full_mark' => $this->mark_per_question * $total_questions,
+            'total_question' => $total_questions,
             'negative_mark' => round($this->negative_mark, 2),
             'duration' => $this->duration,
             // 'is_bluer' => $this->is_bluer,

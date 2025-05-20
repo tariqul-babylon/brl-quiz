@@ -14,6 +14,8 @@ class ExamViewResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
+        $total_questions = $this->questions?->count() ?? 0;
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -22,6 +24,8 @@ class ExamViewResource extends JsonResource
             'duration' => $this->duration,
             'mark_per_question' => $this->mark_per_question,
             'exam_status' => $this->exam_status,
+            'full_mark' => $this->mark_per_question * $total_questions,
+            'total_question' => $total_questions,
             'user_answer_view' => $this->user_answer_view,
             'is_question_random' => $this->is_question_random,
             'is_option_random' => $this->is_option_random,
