@@ -23,6 +23,7 @@ Route::middleware('verify.sanctum')->name('api.')->group(function () {
     Route::delete('exam-question/{question_id}', [ExamQuestionController::class, 'destroy']);
 
     //user exam
-    Route::get('user-exam/{exam_code}', [UserExamController::class, 'show']);
-    Route::post('user-exam/{exam_code}/start-exam', [UserExamController::class, 'startExam']);
+    Route::get('user-exam/show/{exam_code}', [UserExamController::class, 'show']);
+    Route::post('user-exam/start-exam', [UserExamController::class, 'startExam']);
+    Route::post('user-exam/{exam_code}/submit-exam', [UserExamController::class, 'submitExam']);
 });

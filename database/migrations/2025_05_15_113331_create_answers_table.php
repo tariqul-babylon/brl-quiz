@@ -25,14 +25,13 @@ return new class extends Migration
             $table->integer('incorrect_ans')->nullable();
             $table->integer('not_answered')->nullable();
             $table->boolean('end_method')->nullable();
+            $table->string('exam_token')->nullable();
             $table->boolean('exam_status')->nullable();
 
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
-
-            $table->softDeletes();
 
             // Composite unique constraint
             $table->unique(['exam_id', 'user_id'], 'answers_exam_user_unique');

@@ -26,6 +26,7 @@ class Answer extends Model
         'incorrect_ans',
         'not_answered',
         'end_method',
+        'exam_token',
         'exam_status',
         'created_by',
         'updated_by',

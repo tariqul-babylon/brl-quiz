@@ -16,9 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('answer_id');
             $table->unsignedBigInteger('question_id');
             $table->unsignedInteger('sl_no');
-            $table->boolean('answer_status');
-            $table->timestamp('answer_at');
-            $table->timestamps();
+            $table->boolean('answer_status')->default(1)->comment('1=Not Answered, 2=Answered');
+            $table->timestamp('answer_at')->nullable();
 
             $table->unique(['answer_id', 'question_id'], 'answer_question_unique');
         });
