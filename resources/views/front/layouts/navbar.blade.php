@@ -34,7 +34,17 @@
                     <div class="dropdown">
                         <a href="#" class="nav-link d-flex align-items-center dropdown-toggle" id="logoutDropdown"
                             data-bs-toggle="dropdown">
-                            <img src="{{ asset('front') }}/img/avater.png" class="me-2" width="30" alt="">
+                            @if (auth()->user()->photo)
+                                <img src="{{ asset(auth()->user()->photo) }}" class="me-2 rounded-circle" width="40"
+                                    height="40" alt="">
+                            @elseif(auth()->user()->google_avater)
+                                <img src="{{ auth()->user()->google_avater }}" class="me-2 rounded-circle"
+                                    width="40" height="40" alt="">
+                            @else
+                                <img src="{{ asset('front') }}/img/avater.png" class="me-2 rounded-circle" width="40"
+                                    height="40" alt="">
+                            @endif
+
                             <span class="d-none d-sm-inline">{{ auth()->user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">

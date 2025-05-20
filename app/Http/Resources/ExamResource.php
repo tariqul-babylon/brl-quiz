@@ -27,7 +27,7 @@ class ExamResource extends JsonResource
             'exam_status' => $this->exam_status,
             // 'user_result_view' => $this->user_result_view,
             'user_answer_view' => $this->user_answer_view,
-            'is_question_random' => $this->is_question_random,
+            '' => $this->is_question_random,
             'is_option_random' => $this->is_option_random,
             // 'is_sign_in_required' => $this->is_sign_in_required,
             // 'is_specific_student' => $this->is_specific_student,
