@@ -18,8 +18,8 @@ return new class extends Migration
             $table->timestamp('start_at')->nullable();
             $table->timestamp('end_at')->nullable();
             $table->text('instruction')->nullable(); // assuming nullable for flexibility
-            $table->integer('full_mark');
-            $table->float('negative_mark')->nullable();
+            $table->decimal('mark_per_question', 10, 2);
+            $table->decimal('negative_mark', 10,2)->nullable();
             $table->time('duration');
 
             // Booleans (true/false values)

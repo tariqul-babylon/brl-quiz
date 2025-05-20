@@ -19,7 +19,7 @@ class Exam extends Model
 
     protected $fillable = [
         'title', 'tagline', 'start_at', 'end_at',
-        'instruction', 'full_mark','negative_mark', 'duration',
+        'instruction', 'mark_per_question','negative_mark', 'duration',
         'is_bluer', 'is_timer',  'exam_status',
         'user_result_view', 'user_answer_view',
         'is_question_random', 'is_option_random',

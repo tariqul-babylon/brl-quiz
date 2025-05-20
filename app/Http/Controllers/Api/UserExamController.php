@@ -148,7 +148,7 @@ class UserExamController extends Controller
             'name' => $request->name,
             'id_no' => $exam->id_no_placeholder ? $request->id_no : null,
             'contact' => $request->contact,
-            'join_at' => Carbon::now()->format('Y-m-d H:i:s.v'),
+            'join_at' => Carbon::now()->format('Y-m-d H:i:s.u'),
             'exam_status' => Answer::JOINED,
             'exam_token' => $exam_token,
             'created_by' => $request->user()->id,
@@ -194,7 +194,7 @@ class UserExamController extends Controller
     public function submitExam(Request $request)
     {
        try {
-
+        $submit_at = Carbon::now();
         $rules = [
             'answer_id' => 'required',
             'exam_token' => 'required|string|max:200',
@@ -216,7 +216,6 @@ class UserExamController extends Controller
 
         $answer = Answer::with('exam.questions.options', 'answerOptions')
             ->where('id', $request->answer_id)
-            ->where('exam_token', $request->exam_token)
             ->whereHas('exam', function ($query) use ($request) {
                 $query->where('exam_source', Exam::SOURCE_API);
                 $query->where('created_by', $request->user()->id);  
@@ -230,6 +229,59 @@ class UserExamController extends Controller
             ], 404);
         }
 
+        if (!$answer->exam_token) {
+            return response()->json([
+                'code' => 404,
+                'message' => 'Exam token expired.',
+            ], 404);
+        }
+
+        if ($answer->exam_token != $request->exam_token) {
+            return response()->json([
+                'code' => 404,
+                'message' => 'Exam token not matched.',
+            ], 404);
+        }
+
+        if ($answer->exam_status == Answer::ENDED) {
+            return response()->json([
+                'code' => 404,
+                'message' => 'Answer already submitted.',
+            ], 404);
+        }
+
+        $start_at = Carbon::createFromFormat('Y-m-d H:i:s.u', $answer->join_at);
+        $strat_time = Carbon::createFromFormat('Y-m-d H:i:s.u', $answer->join_at);
+        $exam_time_duration = Carbon::createFromFormat('H:i:s', $answer->exam->duration);
+
+
+
+        $diffInMicroseconds = $start_at->diffInMicroseconds($submit_at);
+
+        $hours = floor($diffInMicroseconds / 3600000000); 
+        $minutes = floor(($diffInMicroseconds % 3600000000) / 60000000); 
+        $seconds = floor(($diffInMicroseconds % 60000000) / 1000000); 
+        $microseconds = $diffInMicroseconds % 1000000; 
+
+        $duration = sprintf('%02d:%02d:%02d.%06d', $hours, $minutes, $seconds, $microseconds);
+
+        $user_time_spent = Carbon::createFromFormat('H:i:s.u', $duration)->addSeconds(10); // 10 second buffering time
+
+        if ($exam_time_duration->greaterThan($user_time_spent)) {
+            return response()->json([
+                'code' => 404,
+                'message' => 'The allotted time for the exam has expired.',
+            ], 404);
+        }
+
+        $max_end_time = $strat_time->addHours($exam_time_duration->hour)->addMinutes($exam_time_duration->minute)->addSeconds($exam_time_duration->second);
+
+        $exam_end_at = $submit_at->format('Y-m-d H:i:s.u');
+        
+        if  ($submit_at->greaterThan($max_end_time)) {
+            $exam_end_at = $max_end_time->format('Y-m-d H:i:s.u');
+        }
+
         $exam = $answer->exam;
         $exam_questions = $answer->exam->questions; 
 
@@ -237,9 +289,15 @@ class UserExamController extends Controller
         $correct_answer = 0;
         $incorrect_answer = 0;
         $not_answered = 0;
-        DB::beginTransaction();
 
-        // $request->answers ia an array I need to remove duplicate question_id
+        $mark_per_question = $exam->mark_per_question;
+        $full_mark = round($mark_per_question * count($exam_questions));
+        $obtained_mark = 0;
+        $negative_mark =0;
+        $final_obtained_mark = 0;
+
+
+        DB::beginTransaction();
         if (count($request->answers)) {
            foreach (array_unique($request->answers, SORT_REGULAR) as $user_answer) {
                 $question_id = $user_answer['question_id'];
@@ -263,12 +321,14 @@ class UserExamController extends Controller
                         'answer_at' => Carbon::now()->format('Y-m-d H:i:s.v'),
                     ]);
                     $correct_answer++;
+                    $obtained_mark += $mark_per_question;
                 }else{
                     $answer_option->update([
                         'answer_status' => AnswerOption::INCORRECT,
                         'answer_at' => Carbon::now()->format('Y-m-d H:i:s.v'),
                     ]);
                     $incorrect_answer++;
+                    $negative_mark += $exam->negative_mark;
                 }
 
                 
@@ -283,15 +343,22 @@ class UserExamController extends Controller
 
         AnswerOptionChoice::insert($answer_option_choices);
 
+       
+
         $not_answered = $answer->answerOptions->count() - $correct_answer - $incorrect_answer;
         $answer->update([
             'correct_ans' => $correct_answer,
             'incorrect_ans' => $incorrect_answer,
             'not_answered' => $not_answered,
-            'end_at' => Carbon::now()->format('Y-m-d H:i:s.v'),
-            // 'duration' => Carbon::now()->diffInSeconds($answer->join_at)->format('Y-m-d H:i:s.v'),
+            'end_at' => $exam_end_at,
+            'duration' => $duration,
+            'obtained_mark' => round($obtained_mark,2),
+            'negative_mark' => round($negative_mark,2),
+            'full_mark' => round($full_mark,2),
+            'final_obtained_mark' => round($obtained_mark - $negative_mark,2),
             'exam_status' => Answer::ENDED,
             'end_method' => Answer::END_BY_USER,
+            'exam_token' => null,
         ]);
        
         $response_data = [];

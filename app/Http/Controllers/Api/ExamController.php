@@ -81,7 +81,7 @@ class ExamController extends Controller
             $rules = [
                 'title' => 'required|string|max:255',
                 'tagline' => 'required|string|max:255',
-                'full_mark' => 'required|integer|min:0',
+                'mark_per_question' => 'required|numeric|min:0',
                 'negative_mark' => 'nullable|numeric|min:0',
                 'duration' => 'required|date_format:H:i:s',
                 'id_no_placeholder' => 'nullable|string|max:255',
@@ -160,7 +160,7 @@ class ExamController extends Controller
             $rules = [
                 'title' => 'required|string|max:255',
                 'tagline' => 'required|string|max:255',
-                'full_mark' => 'required|integer|min:0',
+                'mark_per_question' => 'required|integer|min:0',
                 'negative_mark' => 'nullable|numeric|min:0',
                 'duration' => 'required|date_format:H:i:s',
                 'id_no_placeholder' => 'nullable|string|max:255',

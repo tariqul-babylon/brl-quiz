@@ -8,7 +8,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     */
+     */ 
     public function up(): void
     {
         Schema::create('answers', function (Blueprint $table) {
@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('name', 150);
             $table->string('id_no', 50)->nullable();
             $table->string('contact', 20)->nullable();
-            $table->dateTime('join_at', 3);
-            $table->dateTime('end_at', 3)->nullable();
-            $table->time('duration',3)->nullable();
+            $table->dateTime('join_at', 6);
+            $table->dateTime('end_at', 6)->nullable();
+            $table->time('duration',6)->nullable();
             $table->integer('correct_ans')->nullable();
             $table->integer('incorrect_ans')->nullable();
             $table->integer('not_answered')->nullable();
