@@ -9,7 +9,7 @@ class AnswerOptionChoice extends Model
     public  $timestamps = false;
 
     protected $fillable = [
-        'answer_id',
         'answer_option_id',
+        'exam_question_option_id',
     ];
 }

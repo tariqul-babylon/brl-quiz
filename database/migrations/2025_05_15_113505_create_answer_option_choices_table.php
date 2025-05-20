@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('answer_option_choices', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('answer_id');
             $table->unsignedBigInteger('answer_option_id');
+            $table->unsignedBigInteger('exam_question_option_id');
 
-            $table->unique(['answer_id', 'answer_option_id'], 'answer_choice_unique');
+            $table->unique(['answer_option_id', 'exam_question_option_id'], 'answer_choice_unique');
         });
     }
 

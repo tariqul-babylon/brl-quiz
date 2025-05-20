@@ -43,7 +43,7 @@ class ExamSeeder extends Seeder
                 'id_no_placeholder' => 'Enter ID',
                 'logo' => null,
                 'exam_link' => null,
-                'exam_code' => $this->makeExamCode(),
+                'exam_code' => 'EXAM01',
                 'exam_source' => Exam::SOURCE_API,
                 'created_by' => 1,
                 'updated_by' => 1,
@@ -69,7 +69,7 @@ class ExamSeeder extends Seeder
                 'id_no_placeholder' => 'Student ID here',
                 'logo' => null,
                 'exam_link' => null,
-                'exam_code' => $this->makeExamCode(),
+                'exam_code' => 'EXAM02',
                 'exam_source' => Exam::SOURCE_API,
                 'created_by' => 1,
                 'updated_by' => 1,
@@ -95,7 +95,7 @@ class ExamSeeder extends Seeder
                 'id_no_placeholder' => null,
                 'logo' => null,
                 'exam_link' => null,
-                'exam_code' => $this->makeExamCode(),
+                'exam_code' => 'EXAM03',
                 'exam_source' => Exam::SOURCE_API,
                 'created_by' => 1,
                 'updated_by' => 1,
@@ -122,8 +122,8 @@ class ExamSeeder extends Seeder
                 'id_no_placeholder' => 'Enter ID',
                 'logo' => null,
                 'exam_link' => null,
-                'exam_code' => $this->makeExamCode(),
-                'exam_source' => Exam::SOURCE_WEB,
+                'exam_code' => 'EXAM04',
+                'exam_source' => Exam::SOURCE_API,
                 'created_by' => 1,
                 'updated_by' => 1,
             ],
@@ -148,8 +148,8 @@ class ExamSeeder extends Seeder
                 'id_no_placeholder' => 'Enter ID',
                 'logo' => null,
                 'exam_link' => null,
-                'exam_code' => $this->makeExamCode(),
-                'exam_source' => Exam::SOURCE_WEB,
+                'exam_code' => 'EXAM05',
+                'exam_source' => Exam::SOURCE_API,
                 'created_by' => 1,
                 'updated_by' => 1,
             ],
@@ -174,8 +174,8 @@ class ExamSeeder extends Seeder
                 'id_no_placeholder' => 'Enter ID',
                 'logo' => null,
                 'exam_link' => null,
-                'exam_code' => $this->makeExamCode(),
-                'exam_source' => Exam::SOURCE_WEB,
+                'exam_code' => 'EXAM06',
+                'exam_source' => Exam::SOURCE_API,
                 'created_by' => 1,
                 'updated_by' => 1,
             ],
@@ -327,7 +327,6 @@ class ExamSeeder extends Seeder
 
         foreach ($examsData as $index => $examData) {
             // Generate unique exam_code
-            $examData['exam_code'] = $this->generateUniqueExamCode();
             $examData['created_at'] = now();
             $examData['updated_at'] = now();
 

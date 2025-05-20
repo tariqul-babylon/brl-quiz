@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AnswerResource;
 use App\Http\Resources\ExamResource;
 use App\Models\Answer;
 use App\Models\AnswerOption;
+use App\Models\AnswerOptionChoice;
 use App\Models\Exam;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -189,32 +191,130 @@ class UserExamController extends Controller
        }
     }
 
-    public function submitExam(Request $request, $exam_code)
+    public function submitExam(Request $request)
     {
        try {
 
         $rules = [
-            'answer_id' => 'required|exists:answers,id',
+            'answer_id' => 'required',
+            'exam_token' => 'required|string|max:200',
+            'answers' => 'nullable|array',
+            'answers.*.question_id' => 'required|numeric',
+            'answers.*.exam_question_option_ids' => 'required|array',
+            'answers.*.exam_question_option_ids.*' => 'numeric',
         ];
 
+        $validator = Validator::make($request->all(), $rules);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'code' => 422,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $answer = Answer::with('exam.questions.options', 'answerOptions')
+            ->where('id', $request->answer_id)
+            ->where('exam_token', $request->exam_token)
+            ->whereHas('exam', function ($query) use ($request) {
+                $query->where('exam_source', Exam::SOURCE_API);
+                $query->where('created_by', $request->user()->id);  
+            })
+            ->first();
+
+        if (!$answer) {
+            return response()->json([
+                'code' => 404,
+                'message' => 'Answer not found',
+            ], 404);
+        }
+
+        $exam = $answer->exam;
+        $exam_questions = $answer->exam->questions; 
+
+        $answer_option_choices = [];
+        $correct_answer = 0;
+        $incorrect_answer = 0;
+        $not_answered = 0;
         DB::beginTransaction();
 
-        
+        // $request->answers ia an array I need to remove duplicate question_id
+        if (count($request->answers)) {
+           foreach (array_unique($request->answers, SORT_REGULAR) as $user_answer) {
+                $question_id = $user_answer['question_id'];
+                $exam_question_option_ids = array_values(array_unique($user_answer['exam_question_option_ids'], SORT_REGULAR));
+                
+                $exam_question = $exam_questions->where('id', $question_id)->first();
+                if (!$exam_question) {
+                  continue; 
+                }
 
-        
+                $exam_question_correct_options =array_unique( $exam_question?->options?->where('is_correct', 1)?->pluck('id')->toArray(), SORT_REGULAR);
+                
+                $answer_option= $answer->answerOptions->where('question_id', $question_id)->where('answer_status', AnswerOption::NOT_ANSWERED)->first();
+                if (!$answer_option) {
+                    continue;
+                }
+
+                if ($exam_question_correct_options == $exam_question_option_ids) {
+                    $answer_option->update([
+                        'answer_status' => AnswerOption::CORRECT,
+                        'answer_at' => Carbon::now()->format('Y-m-d H:i:s.v'),
+                    ]);
+                    $correct_answer++;
+                }else{
+                    $answer_option->update([
+                        'answer_status' => AnswerOption::INCORRECT,
+                        'answer_at' => Carbon::now()->format('Y-m-d H:i:s.v'),
+                    ]);
+                    $incorrect_answer++;
+                }
+
+                
+                foreach ($exam_question_option_ids as $key => $exam_question_option_id) {
+                    $answer_option_choices[] = [
+                        'answer_option_id' => $answer_option->id,
+                        'exam_question_option_id' => $exam_question_option_id,
+                    ];
+                }
+           }
+        }
+
+        AnswerOptionChoice::insert($answer_option_choices);
+
+        $not_answered = $answer->answerOptions->count() - $correct_answer - $incorrect_answer;
+        $answer->update([
+            'correct_ans' => $correct_answer,
+            'incorrect_ans' => $incorrect_answer,
+            'not_answered' => $not_answered,
+            'end_at' => Carbon::now()->format('Y-m-d H:i:s.v'),
+            // 'duration' => Carbon::now()->diffInSeconds($answer->join_at)->format('Y-m-d H:i:s.v'),
+            'exam_status' => Answer::ENDED,
+            'end_method' => Answer::END_BY_USER,
+        ]);
+       
+        $response_data = [];
+        if ($exam->user_result_view) {
+           $response_data = [
+            'exam' => new ExamResource($exam),
+            'answer' => new AnswerResource($answer),
+           ];
+        }
 
         DB::commit();
 
         return response()->json([
             'code' => 200,
             'message' => 'Exam submitted successfully',
+            'data' =>$response_data,
         ], 200);
        } catch (\Exception $e) {
         DB::rollBack();
         return response()->json([
             'code' => 500,
             'message' => $e->getMessage(),
+            'error_line_no' => $e->getLine(),
         ], 500);
        }
     }

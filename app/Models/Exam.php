@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Exam extends Model
 {
     use SoftDeletes;
+    
     const DRAFT = 1;
     const PUBLISHED = 2;
     const COMPLETED = 3;

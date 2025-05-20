@@ -32,4 +32,12 @@ class Answer extends Model
         'updated_by',
     ];
     
+    public function exam()
+    {
+        return $this->belongsTo(Exam::class);
+    }
+    public function answerOptions()
+    {
+        return $this->hasMany(AnswerOption::class);
+    }
 }
