@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ExamController;
 use App\Http\Controllers\Api\ExamQuestionController;
+use App\Http\Controllers\Api\ExamResultController;
 use App\Http\Controllers\Api\UserExamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,4 +27,6 @@ Route::middleware('verify.sanctum')->name('api.')->group(function () {
     Route::get('user-exam/show/{exam_code}', [UserExamController::class, 'show']);
     Route::post('user-exam/start-exam', [UserExamController::class, 'startExam']);
     Route::post('user-exam/{exam_code}/submit-exam', [UserExamController::class, 'submitExam']);
+
+    Route::get('exam-result/{exam}/answer', [ExamResultController::class, 'showResult']);
 });
