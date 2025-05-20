@@ -2,16 +2,12 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AnswerResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         return [
@@ -27,6 +23,10 @@ class AnswerResource extends JsonResource
             'correct_ans'     => $this->correct_ans,
             'incorrect_ans'   => $this->incorrect_ans,
             'not_answered'    => $this->not_answered,
+            'full_mark'       => $this->full_mark,
+            'obtained_mark'   => $this->obtained_mark,
+            'negative_mark'   => $this->negative_mark,
+            'final_obtained_mark'   => $this->final_obtained_mark,
             'end_method'      => $this->end_method,
             'exam_status'     => $this->exam_status,
         ];

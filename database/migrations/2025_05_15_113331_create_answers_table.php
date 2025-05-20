@@ -20,10 +20,16 @@ return new class extends Migration
             $table->string('contact', 20)->nullable();
             $table->dateTime('join_at', 3);
             $table->dateTime('end_at', 3)->nullable();
-            $table->dateTime('duration')->nullable();
+            $table->time('duration',3)->nullable();
             $table->integer('correct_ans')->nullable();
             $table->integer('incorrect_ans')->nullable();
             $table->integer('not_answered')->nullable();
+
+            $table->integer('full_mark')->nullable();
+            $table->integer('obtained_mark')->nullable();
+            $table->integer('negative_mark')->nullable();
+            $table->integer('final_obtained_mark')->nullable();
+
             $table->boolean('end_method')->nullable();
             $table->string('exam_token')->nullable();
             $table->boolean('exam_status')->nullable();

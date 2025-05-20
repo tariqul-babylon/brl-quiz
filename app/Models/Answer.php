@@ -25,6 +25,12 @@ class Answer extends Model
         'correct_ans',
         'incorrect_ans',
         'not_answered',
+
+        'full_mark',
+        'obtained_mark',
+        'negative_mark',
+        'final_obtained_mark',
+
         'end_method',
         'exam_token',
         'exam_status',

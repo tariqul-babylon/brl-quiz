@@ -68,10 +68,10 @@ class ExamResultController extends Controller
                 ], 404);
             }
 
-            $data = [];
+            $questions = [];
 
             foreach ($answer->answerOptions as $answer_option) {
-                $data[] = [
+                $questions[] = [
                     'question_id' => $answer_option->question_id,
                     'answer_status' => $answer_option->answer_status,
                     'question'=> [
@@ -82,14 +82,13 @@ class ExamResultController extends Controller
                 ];
             }
 
-            return $data;
             return response()->json([
                 'code' => 200,
                 'message' => 'Data found',
                 'data' => [
                     'exam' => new ExamResource($answer->exam),
                     'answer' => new AnswerResource($answer),
-                    'questions' => $answer->answerOptions,
+                    'questions' => $questions,
                 ],
             ], 200);
         } catch (\Exception $e) {
