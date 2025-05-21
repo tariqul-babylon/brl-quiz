@@ -295,7 +295,7 @@ class ExamStartController extends Controller
                 'negative_mark' => round($negative_mark, 2),
                 'full_mark' => round($full_mark, 2),
                 'final_obtained_mark' => round($obtained_mark - $negative_mark, 2),
-                // 'exam_status' => Answer::ENDED,
+                'exam_status' => Answer::ENDED,
                 'end_method' => Answer::END_BY_USER,
                 'exam_token' => null,
             ]);
