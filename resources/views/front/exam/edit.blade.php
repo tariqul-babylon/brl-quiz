@@ -129,22 +129,18 @@
                         </div>
                     </div>
 
-                    <div class="mt-3">
+                    {{-- <div class="mt-3">
                         <label>Instruction</label>
                         <textarea name="instruction" class="form-control @error('instruction') is-invalid @enderror" rows="3">{{ old('instruction', $exam->instruction) }}</textarea>
                         @error('instruction')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <div class="row row-cols-3 g-3 mt-3">
-                        @foreach([
-                            'is_bluer', 'is_timer', 'is_date_enabled',
-                            'exam_status', 'user_result_view', 'user_answer_view',
-                            'is_question_random', 'is_option_random',
-                            'is_sign_in_required', 'is_specific_student'
-                        ] as $boolean)
-                            <div>
+                        {{-- @foreach(['is_bluer', 'is_timer', 'is_date_enabled','exam_status', 'user_result_view', 'user_answer_view','is_question_random', 'is_option_random','is_sign_in_required', 'is_specific_student' ] as $boolean) --}}
+                         @foreach([ 'user_result_view', 'user_answer_view','is_question_random', 'is_option_random' ] as $boolean)
+                        <div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="{{ $boolean }}" id="{{ $boolean }}" {{ old($boolean, $exam->$boolean) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="{{ $boolean }}">{{ ucwords(str_replace('_', ' ', $boolean)) }}</label>
