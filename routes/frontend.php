@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Front\FrontController;
 use App\Http\Controllers\Front\JoinExamController;
+use App\Http\Controllers\Front\ExamController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,3 +17,4 @@ Route::post('exam/{exam_code}', [JoinExamController::class, 'examSubmit'])->name
 Route::get('exam/{exam_code}/alert', [JoinExamController::class, 'examAlert'])->name('front.exam-alert');
 
 Route::get('exam-form/{exam_code}', [JoinExamController::class, 'examForm'])->name('front.exam-form');
+Route::resource('exams', ExamController::class);

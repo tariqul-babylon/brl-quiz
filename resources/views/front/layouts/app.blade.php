@@ -11,6 +11,9 @@
     <link href="{{ asset('front') }}/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('front') }}/scss/main.css">
     <link rel="stylesheet" href="{{ asset('front') }}/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+
+
     @stack('css')
 </head>
 
@@ -23,11 +26,15 @@
         </div>
     </header>
 
-    @yield('content')
+   <div class="container" style="min-height: 80vh;">
+     @yield('content')
+   </div>
 
     @include('front.layouts.footer')
     <script src="{{ asset('front') }}/js/jquery-3.7.0.min.js"></script>
     <script src="{{ asset('front') }}/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
     @stack('js')
     <script>
         $(document).ready(function() {
@@ -43,6 +50,19 @@
                 }
             });
         });
+         flatpickr("#exam_start_time", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        time_24hr: true,
+        // optionally set minDate, maxDate here
+    });
+
+    flatpickr("#exam_end_time", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        time_24hr: true,
+        // optionally set minDate, maxDate here
+    });
     </script>
 </body>
 

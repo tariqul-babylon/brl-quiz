@@ -22,7 +22,7 @@
                     <a class="nav-link" href="{{ route('front.join-exam') }}">Join Exam</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Create Exam</a>
+                    <a class="nav-link" href="{{ url('/exams') }}"> Exam</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact</a>
