@@ -19,3 +19,5 @@ Route::get('exam/{exam_code}/alert', [JoinExamController::class, 'examAlert'])->
 Route::get('exam-form/{exam_code}', [JoinExamController::class, 'examForm'])->name('front.exam-form');
 
 Route::get('exam-start', [ExamStartController::class, 'examStart'])->name('front.exam-start');
+Route::post('exam-start', [ExamStartController::class, 'examSubmit'])->name('front.exam-submit');
+

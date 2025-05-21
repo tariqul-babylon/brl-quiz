@@ -15,8 +15,7 @@
 <div class="body">
     <section id="quiz">
         <div class="container">
-            <form class="content" action="{{ url('student/submit_questions') }}" id="questionForm" method="POST">
-                <input type="hidden" name="exam_id" value="{{ Request::segment(3) }}">
+            <form class="content" action="{{ route('front.exam-submit') }}" id="questionForm" method="POST">
                 @csrf
                 <div class="head p-24">
                     <div class="timer">
@@ -87,7 +86,7 @@
                             <div class="options">
                                 @foreach ($question['options'] as $option)
                                     <label class="option" for="option-{{$loop->iteration}}{{ $qid }}">
-                                        <input class="form-check-input" name="ans{{ $qid }}"
+                                        <input class="form-check-input" name="ans{{$qid}}"
                                             value="{{ $option['id'] }}" type="radio" id="option-{{$loop->iteration}}{{ $qid }}">
                                         <span class="form-check-label">{{ $option['title'] }}</span>
                                     </label>
