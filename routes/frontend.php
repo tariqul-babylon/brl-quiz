@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Front\ExamStartController;
 use App\Http\Controllers\Front\FrontController;
 use App\Http\Controllers\Front\JoinExamController;
 use App\Http\Controllers\Front\ExamController;
@@ -18,3 +19,5 @@ Route::get('exam/{exam_code}/alert', [JoinExamController::class, 'examAlert'])->
 
 Route::get('exam-form/{exam_code}', [JoinExamController::class, 'examForm'])->name('front.exam-form');
 Route::resource('exams', ExamController::class);
+
+Route::get('exam-start', [ExamStartController::class, 'examStart'])->name('front.exam-start');

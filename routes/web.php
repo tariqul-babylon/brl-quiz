@@ -37,10 +37,6 @@ Route::middleware(['auth'])->prefix(prefix: 'admin')->name('admin.')->group(func
     Route::post('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
 });
 
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
@@ -72,8 +68,5 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'dashboard'], function () {
 });
 
 
-Route::get('/test-search', function() {
-    return ['message' => 'Test route works!'];
-});
 
 

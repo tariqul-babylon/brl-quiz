@@ -16,10 +16,12 @@ return new class extends Migration {
             $table->string('contact', 20)->nullable();
             $table->string('email', 100)->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->string('photo')->nullable();
+            $table->string('google_avater')->nullable();
             $table->string('org_logo')->nullable();
             $table->string('google_id')->nullable();
+            $table->boolean('register_method')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -267,12 +267,12 @@ class UserExamController extends Controller
 
         $user_time_spent = Carbon::createFromFormat('H:i:s.u', $duration)->addSeconds(10); // 10 second buffering time
 
-        if ($exam_time_duration->greaterThan($user_time_spent)) {
-            return response()->json([
-                'code' => 404,
-                'message' => 'The allotted time for the exam has expired.',
-            ], 404);
-        }
+        // if ($exam_time_duration->greaterThan($user_time_spent)) {
+        //     return response()->json([
+        //         'code' => 404,
+        //         'message' => 'The allotted time for the exam has expired.',
+        //     ], 404);
+        // }
 
         $max_end_time = $strat_time->addHours($exam_time_duration->hour)->addMinutes($exam_time_duration->minute)->addSeconds($exam_time_duration->second);
 
