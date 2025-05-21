@@ -43,7 +43,7 @@ class ExamStartController extends Controller
             $join_at_deration = $join_at->diffInSeconds($now);
             $examDuration = Carbon::parse($exam->duration);
             $exam_duration = $examDuration->hour * 3600 + $examDuration->minute * 60 + $examDuration->second;
-            if ($exam?->authAnswer?->exam_stats == Answer::ENDED) {
+            if ($exam?->authAnswer?->exam_status == Answer::ENDED) {
                 return view('front.exam.exam-alert', ['message' => 'You have already finished this exam.']);
             } else if ($join_at_deration > $exam_duration) {
                 return view('front.exam.exam-alert', ['message' => 'Exam time is over.']);
@@ -182,7 +182,7 @@ class ExamStartController extends Controller
                 $join_at_deration = $join_at->diffInSeconds($now);
                 $examDuration = Carbon::parse($answer->exam->duration);
                 $exam_duration = $examDuration->hour * 3600 + $examDuration->minute * 60 + $examDuration->second;
-                if ($answer->exam?->authAnswer?->exam_stats == Answer::ENDED) {
+                if ($answer->exam?->authAnswer?->exam_status == Answer::ENDED) {
                     return view('front.exam.exam-alert', ['message' => 'You have already finished this exam.']);
                 }
             }
