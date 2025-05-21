@@ -27,7 +27,7 @@
         </div>
     </header>
 
-   <div class="container" style="min-height: 80vh;">
+   <div class="" style="min-height: 80vh;">
      @yield('content')
    </div>
 
