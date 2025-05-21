@@ -255,7 +255,11 @@ class ExamStartController extends Controller
 
             }
             
-            AnswerOptionChoice::insert($answer_option_choices);
+
+            AnswerOptionChoice::upsert(
+                $answer_option_choices,
+                ['answer_option_id', 'exam_question_option_id'],
+            );
     
             $not_answered = $answer->answerOptions->count() - $correct_answer - $incorrect_answer;
            

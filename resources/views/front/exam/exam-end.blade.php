@@ -21,3 +21,16 @@
     </div>
 </section>
 @endsection
+
+@push('js')
+    <script>
+                window.onload = function() {
+            if (window.history.replaceState) {
+                // Prevent form resubmission dialog
+                window.history.replaceState(null, null, window.location.href);
+            }
+            // Optionally clear form inputs
+            document.querySelectorAll('form input, form textarea, form select').forEach(el => el.value = '');
+        };
+    </script>
+@endpush

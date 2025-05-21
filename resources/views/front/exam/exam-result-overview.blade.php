@@ -14,12 +14,10 @@
             margin-bottom: 30px;
         }
         .result-header h1 {
-            color: #2c3e50;
             margin: 0;
             font-size: 32px;
         }
         .tagline {
-            color: #7f8c8d;
             font-style: italic;
         }
         .exam-info {
@@ -140,7 +138,7 @@
     </section>
 
     
-    <div class="result-container">
+    <div class="result-container mb-5">
 
         <header class="result-header">
             <small>Exam Code: {{ $exam->exam_code }}</small>
@@ -219,3 +217,16 @@
 
  
 @endsection
+
+@push('js')
+    <script>
+                window.onload = function() {
+            if (window.history.replaceState) {
+                // Prevent form resubmission dialog
+                window.history.replaceState(null, null, window.location.href);
+            }
+            // Optionally clear form inputs
+            document.querySelectorAll('form input, form textarea, form select').forEach(el => el.value = '');
+        };
+    </script>
+@endpush
