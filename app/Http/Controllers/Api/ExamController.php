@@ -88,7 +88,8 @@ class ExamController extends Controller
                 'exam_status' => 'required|in:1,2,3',
 
                 'is_question_random' => 'nullable|in:0,1',
-                'is_option_random' => 'nullable|in:0,1',
+                'is_question_random' => 'nullable|in:0,1',
+                'user_result_view' => 'nullable|in:0,1',
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -168,6 +169,7 @@ class ExamController extends Controller
 
                 'is_question_random' => 'nullable|in:0,1',
                 'is_option_random' => 'nullable|in:0,1',
+                'user_result_view' => 'nullable|in:0,1',
             ];
 
             $validator = Validator::make($request->all(), $rules);

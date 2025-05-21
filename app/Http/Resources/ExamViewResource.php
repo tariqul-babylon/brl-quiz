@@ -26,7 +26,7 @@ class ExamViewResource extends JsonResource
             'exam_status' => $this->exam_status,
             'full_mark' => $this->mark_per_question * $total_questions,
             'total_question' => $total_questions,
-            'user_answer_view' => $this->user_answer_view,
+            'user_result_view' => $this->user_result_view,
             'is_question_random' => $this->is_question_random,
             'is_option_random' => $this->is_option_random,
             'id_no_placeholder' => $this->id_no_placeholder,

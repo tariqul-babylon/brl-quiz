@@ -1,7 +1,7 @@
 @extends('front.layouts.app')
 @push('css')
 <style>
-    :root {
+        :root {
             --dark-blue: #101845;
             --medium-purple: #6161e2;
             --light-purple: #6261e2;
@@ -146,7 +146,7 @@
 @section('content')
 
 <section class="hero">
-    <div class="container">
+    <div class="">
         <h1>Master Your Skills with Online Quiz Exams</h1>
         <p>Skill Shoper provides comprehensive online testing solutions to help you assess and improve your knowledge in various domains.</p>
         <div class="hero-btns">

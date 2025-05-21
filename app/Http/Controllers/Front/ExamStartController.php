@@ -148,7 +148,7 @@ class ExamStartController extends Controller
             if (!$answer) {
                 return response()->json([
                     'code' => 404,
-                    'message' => 'Answer not found',
+                    'message' => 'Exam start information not found',
                 ], 404);
             }
     
