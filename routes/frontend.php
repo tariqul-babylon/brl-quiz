@@ -24,4 +24,5 @@ Route::resource('exams', ExamController::class);
 Route::get('exam-start', [ExamStartController::class, 'examStart'])->name('front.exam-start');
 Route::get('/exam-results', [ExamResultController::class, 'index'])->name('exam.results');
 
+Route::post('exam-start', [ExamStartController::class, 'examSubmit'])->name('front.exam-submit');
 
