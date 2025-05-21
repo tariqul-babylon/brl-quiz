@@ -62,7 +62,7 @@
                                     <label for="name">Enter Full Name</label>
                                     <div class="input-with-icon">
                                         <span class="material-symbols-outlined input-icon">person</span>
-                                        <input type="name" name="name" required>
+                                        <input type="text" name="name" required>
                                     </div>
                                     @error('name')
                                         <small class="text-danger">{{ $message }}</small>

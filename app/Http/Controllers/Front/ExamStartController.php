@@ -18,8 +18,7 @@ class ExamStartController extends Controller
 {
     public function examStart(Request $request)
     {
-        $session = Session::get('exam_exam_start_data');
-
+        $session = Session::get('exam_start_data');
         if (!$session) {
             return redirect()->route('front.join-exam');
         }
@@ -122,7 +121,6 @@ class ExamStartController extends Controller
 
             AnswerOption::upsert($answer_options, ['question_id', 'answer_id']);
 
-            Session::put('exam_start_data', $answer->id);
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();

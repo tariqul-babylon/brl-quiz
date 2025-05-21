@@ -134,7 +134,6 @@ class JoinExamController extends Controller
       'id_no'=> $request->id_no,
       'exam_code'=> $exam->exam_code,
     ]);
-
     return redirect()->route('front.exam-start');
   }
 }
