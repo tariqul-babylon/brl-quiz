@@ -33,20 +33,21 @@
                             <h2 class="exam-title m-0">{{ $exam->title }}</h2>
                             <p class="exam-tagline">{{ $exam->tagline }}</p>
                         </div>
-                        <form class="signup-form">
+                        <form class="signup-form" action="{{ route('front.exam-form-submit', $exam->exam_code) }}" method="POST">
+                            @csrf
                             @auth
                                 <div class="form-group">
                                     <label for="name">Enter Full Name</label>
                                     <div class="input-with-icon">
                                         <span class="material-symbols-outlined input-icon">person</span>
-                                        <input value="{{ auth()->user()->name }}" type="text" name="name">
+                                        <input readonly value="{{ auth()->user()->name }}" type="text" name="name">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">Enter Phone Number</label>
                                     <div class="input-with-icon">
                                         <span class="material-symbols-outlined input-icon">phone</span>
-                                        <input value="{{ auth()->user()->contact }}" type="tel" name="contact">
+                                        <input @if( auth()->user()->contact) readonly @endif value="{{ auth()->user()->contact }}" type="tel" name="contact">
                                     </div>
                                 </div>
                             @endauth
