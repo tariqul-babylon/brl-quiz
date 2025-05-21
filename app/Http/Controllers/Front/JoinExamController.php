@@ -7,6 +7,8 @@ use App\Models\Answer;
 use App\Models\Exam;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class JoinExamController extends Controller
 {
@@ -91,6 +93,7 @@ class JoinExamController extends Controller
       ->where('exam_source', Exam::SOURCE_WEB)
       ->first();
 
+
     $now = Carbon::now();
     if (!$exam) {
       return view('front.exam.exam-alert', ['message' => 'The allotted time for the exam has expired.']);
@@ -111,7 +114,27 @@ class JoinExamController extends Controller
       }
     }
 
-    return view('front.exam.exam-form', compact('exam'));
-    
+    $rules = [
+      'name' => 'required|string|max:150',
+      'contact' => 'required|string|max:20',
+    ];
+    if ($exam->id_no_placeholder) {
+      $rules['id_no'] = 'required|string|max:100';
+    }
+
+    $validator = Validator::make($request->all(), $rules);
+
+    if ($validator->fails()) {
+      return redirect()->route('front.exam', $exam->exam_code)->withErrors($validator)->withInput();
+    }
+
+    Session::put('exam_start_data', [
+      'name'=> $request->name,
+      'contact'=> $request->contact,
+      'id_no'=> $request->id_no,
+      'exam_code'=> $exam->exam_code,
+    ]);
+
+    return redirect()->route('front.exam-start');
   }
 }

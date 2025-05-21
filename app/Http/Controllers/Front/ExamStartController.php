@@ -18,49 +18,37 @@ class ExamStartController extends Controller
 {
     public function examStart(Request $request)
     {
-        Session::put('exam_code', 'EXAM01');
-        $exam_code = Session::get('exam_code');
-        $exam_token = Session::get('exam_token');
+        $session = Session::get('exam_exam_start_data');
+
+        if (!$session) {
+            return redirect()->route('front.join-exam');
+        }
+        $exam_code = $session['exam_code'];
+        $name = $session['name'];
+        $contact = $session['contact'];
+        $id_no = $session['id_no'];
 
         $exam = Exam::where('exam_code', $exam_code)
             ->where('exam_source', 1)
             ->first();
 
         if (!$exam) {
-            return response()->json([
-                'code' => 404,
-                'message' => 'Exam not found 2',
-            ], 404);
-        }
-
-        if ($exam->exam_status != 2) {
-            return response()->json([
-                'code' => 403,
-                'message' => 'Exam is not published. You can not join this exam.',
-            ], 403);
-        }
-
-        $request['name'] = 'Exam Start';
-        $request['contact'] = 'Exam Start';
-
-        $rules = [
-            'name' => 'required|string|max:255',
-            'contact' => 'required|max:20',
-            'id_no' => ['max:100', function ($attribute, $value, $fail) use ($exam) {
-                if ($exam->id_no_placeholder && !$value) {
-                    $fail('ID number is required.');
-                }
-            }],
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'code' => 422,
-                'message' => 'Validation failed',
-                'errors' => $validator->errors()
-            ], 422);
+            return view('front.exam.exam-alert', ['message' => 'The allotted time for the exam has expired.']);
+        } else if ($exam->exam_status != Exam::PUBLISHED) {
+            return view('front.exam.exam-alert', ['message' => 'The allotted time for the exam has expired.']);
+        } else if ($exam->is_sign_in_required && !auth()->check()) {
+            return redirect()->guest(route('login'));
+        } else if ($exam?->authAnswer) {
+            $now = Carbon::now();
+            $join_at = Carbon::parse($exam->authAnswer->join_at);
+            $join_at_deration = $join_at->diffInSeconds($now);
+            $examDuration = Carbon::parse($exam->duration);
+            $exam_duration = $examDuration->hour * 3600 + $examDuration->minute * 60 + $examDuration->second;
+            if ($exam?->authAnswer?->exam_stats == Answer::ENDED) {
+                return view('front.exam.exam-alert', ['message' => 'You have already finished this exam.']);
+            } else if ($join_at_deration > $exam_duration) {
+                return view('front.exam.exam-alert', ['message' => 'Exam time is over.']);
+            }
         }
 
         $response_questions = [];
@@ -96,25 +84,45 @@ class ExamStartController extends Controller
         }
         try {
             DB::beginTransaction();
-            $answer = Answer::create([
-                'exam_id' => $exam->id,
-                'name' => $request->name,
-                'id_no' => $exam->id_no_placeholder ? $request->id_no : null,
-                'contact' => $request->contact,
-                'join_at' => Carbon::now()->format('Y-m-d H:i:s.u'),
-                'exam_status' => Answer::JOINED,
-                'created_by' => auth()?->user()?->id,
-            ]);
-
+            //first or create answer
+            if (auth()->check()) {
+                $answer = Answer::firstOrCreate(
+                    [
+                        'exam_id' => $exam->id,
+                        'user_id' => auth()?->user()?->id,
+                    ],
+                    [
+                        'exam_id' => $exam->id,
+                        'user_id' => auth()?->user()?->id,
+                        'name' => $name,
+                        'id_no' => $exam->id_no_placeholder ? $id_no : null,
+                        'contact' => $contact,
+                        'join_at' => Carbon::now()->format('Y-m-d H:i:s.u'),
+                        'exam_status' => Answer::JOINED,
+                        'created_by' => auth()?->user()?->id,
+                    ]
+                );
+            } else {
+                $answer = Answer::create([
+                    'exam_id' => $exam->id,
+                    'user_id' => null,
+                    'name' => $name,
+                    'id_no' => $exam->id_no_placeholder ? $id_no : null,
+                    'contact' => $contact,
+                    'join_at' => Carbon::now()->format('Y-m-d H:i:s.u'),
+                    'exam_status' => Answer::JOINED,
+                    'created_by' => auth()?->user()?->id,
+                ]);
+            }
             // $add answer id to $answer_options with array map
             $answer_options = array_map(function ($option) use ($answer) {
                 $option['answer_id'] = $answer->id;
                 return $option;
             }, $answer_options);
 
-            AnswerOption::insert($answer_options);
+            AnswerOption::upsert($answer_options, ['question_id', 'answer_id']);
 
-            Session::put('answer_id', $answer->id);
+            Session::put('exam_start_data', $answer->id);
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -127,7 +135,13 @@ class ExamStartController extends Controller
         $exam_duration_in_hours = $exam_duration->hour;
         $exam_duration_in_minutes = $exam_duration->minute;
 
-        // return $response_questions;
+        //    session exam_start_data update 
+        Session::put('exam_start_data', [
+            ...Session::get('exam_start_data'),
+            'answer_id' => $answer->id,
+        ]);
+
+
         return view('front.exam.exam-start', compact('exam', 'response_questions', 'exam_duration_in_hours', 'exam_duration_in_minutes', 'minute_spent', 'second_spent'));
     }
 
@@ -135,7 +149,13 @@ class ExamStartController extends Controller
     {
         try {
             $submit_at = Carbon::now();
-            $answer_id = Session::get('answer_id');
+            $session = Session::get('exam_start_data');
+            Session::forget('exam_start_data');
+            if (!$session) {
+                return redirect()->route('front.join-exam');
+            }
+
+            $answer_id = $session['answer_id'];
 
             $answer = Answer::with('exam.questions.options', 'answerOptions')
                 ->where('id', $answer_id)
@@ -152,6 +172,22 @@ class ExamStartController extends Controller
                 return view('front.exam.exam-alert', ['message' => 'Answer already submitted.']);
             }
 
+            if (!$answer->exam) {
+                return view('front.exam.exam-alert', ['message' => 'The allotted time for the exam has expired.']);
+            } else if ($answer->exam->exam_status != Exam::PUBLISHED) {
+                return view('front.exam.exam-alert', ['message' => 'The allotted time for the exam has expired.']);
+            } else if ($answer->exam->is_sign_in_required && !auth()->check()) {
+                return redirect()->guest(route('login'));
+            } else if ($answer->exam?->authAnswer) {
+                $now = Carbon::now();
+                $join_at = Carbon::parse($answer->exam->authAnswer->join_at);
+                $join_at_deration = $join_at->diffInSeconds($now);
+                $examDuration = Carbon::parse($answer->exam->duration);
+                $exam_duration = $examDuration->hour * 3600 + $examDuration->minute * 60 + $examDuration->second;
+                if ($answer->exam?->authAnswer?->exam_stats == Answer::ENDED) {
+                    return view('front.exam.exam-alert', ['message' => 'You have already finished this exam.']);
+                }
+            }
 
             $start_at = Carbon::createFromFormat('Y-m-d H:i:s.u', $answer->join_at);
             $strat_time = Carbon::createFromFormat('Y-m-d H:i:s.u', $answer->join_at);
@@ -286,7 +322,8 @@ class ExamStartController extends Controller
         }
     }
 
-    public function examAlert(Request $request){
+    public function examAlert(Request $request)
+    {
         return view('front.exam.exam-alert');
     }
 }
