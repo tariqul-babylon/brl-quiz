@@ -87,12 +87,11 @@
                                             <span class="material-symbols-outlined">edit</span> Edit
                                         </a>
                                     </li>
-                                     <li>
-                                        <a class="dropdown-item" href="{{ route('exams.edit', $exam->id) }}">
-                                            <span class="material-symbols-outlined">edit</span> Edit
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('exam.results') }}">
+                                            <span class="material-symbols-outlined">edit</span> Exam Result
                                         </a>
                                     </li>
-                                    
                                     <li>
                                         <a class="dropdown-item" href="{{ route('exam_questions.index', $exam->id) }}">
                                             <span class="material-symbols-outlined">quiz</span> Questions Add
