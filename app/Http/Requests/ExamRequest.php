@@ -47,7 +47,7 @@ class ExamRequest extends FormRequest
             'exam_start_time' => ['required', 'date', 'after:now'],
             'exam_end_time' => ['required', 'date', 'after:exam_start_time'],
             'instruction' => ['nullable', 'string'],
-            'full_mark' => ['required', 'integer'],
+            'mark_per_question' => ['required', 'numeric'],
             'negative_mark' => ['nullable', 'numeric', 'min:0'],
             'duration_hours' => 'required|numeric|min:0|max:23',
             'duration_minutes' => 'required|numeric|min:0|max:59',

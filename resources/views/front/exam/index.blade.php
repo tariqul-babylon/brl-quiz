@@ -71,113 +71,41 @@
                                 @endif
                             @endforeach
                         </td>
-                        <td class="text-end">
-                            <div class="dropdown action">
-                                <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Action <span class="material-symbols-outlined">expand_more</span>
+                        <td class="text-end d-flex flex-wrap gap-2 justify-content-end">
+
+                            <a href="{{ route('exams.show', $exam->id) }}" class="btn btn-sm btn-primary">
+                                <span class="material-symbols-outlined">visibility</span> View
+                            </a>
+
+                            <a href="{{ route('exams.edit', $exam->id) }}" class="btn btn-sm btn-warning">
+                                <span class="material-symbols-outlined">edit</span> Edit
+                            </a>
+
+                            <a href="{{ route('front.exam_questions.index', $exam->id) }}" class="btn btn-sm btn-info">
+                                <span class="material-symbols-outlined">quiz</span> Questions Add
+                            </a>
+
+                            @if(!$exam->exam_link)
+                                <a href="{{ route('exam.create-link', $exam->id) }}" class="btn btn-sm btn-secondary">
+                                    <span class="material-symbols-outlined">link</span> Create Exam Link
+                                </a>
+                            @endif
+
+{{--                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addTeacherModal" data-exam-id="{{ $exam->id }}">--}}
+{{--                                <span class="material-symbols-outlined">person_add</span> Add Teacher--}}
+{{--                            </button>--}}
+
+{{--                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addStudentModal" data-exam-id="{{ $exam->id }}">--}}
+{{--                                <span class="material-symbols-outlined">person_add_alt</span> Add Student--}}
+{{--                            </button>--}}
+
+                            <form action="{{ route('exams.destroy', $exam->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete this exam?');" style="display:inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <span class="material-symbols-outlined">delete</span> Delete
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('exams.show', $exam->id) }}">
-                                            <span class="material-symbols-outlined">visibility</span> View
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('exams.edit', $exam->id) }}">
-                                            <span class="material-symbols-outlined">edit</span> Edit
-                                        </a>
-                                    </li>
-                                     <li>
-                                        <a class="dropdown-item" href="{{ route('exams.edit', $exam->id) }}">
-                                            <span class="material-symbols-outlined">edit</span> Edit
-                                        </a>
-                                    </li>
-                                    
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('exam_questions.index', $exam->id) }}">
-                                            <span class="material-symbols-outlined">quiz</span> Questions Add
-                                        </a>
-                                    </li>
-
-                                    @if(!$exam->exam_link)
-                                        <li>
-                                            <a class="dropdown-item" href="{{ route('exam.create-link', $exam->id) }}">
-                                                <span class="material-symbols-outlined">link</span> Create Exam Link
-                                            </a>
-                                        </li>
-                                    @endif
-
-                                    <li>
-                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#addTeacherModal" data-exam-id="{{ $exam->id }}">
-                                            <span class="material-symbols-outlined">person_add</span> Add Teacher
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#addStudentModal" data-exam-id="{{ $exam->id }}">
-                                            <span class="material-symbols-outlined">person_add_alt</span> Add Student
-                                        </a>
-                                    </li>
-
-                                    <li>
-                                        <form action="{{ route('exams.destroy', $exam->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete this exam?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="dropdown-item text-danger" style="border: none; background: none;">
-                                                <span class="material-symbols-outlined">delete</span> Delete
-                                            </button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="modal fade" id="addTeacherModal" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <form method="POST" action="{{ route('exam.assign-teacher') }}" id="assignTeacherForm">
-                                        @csrf
-                                        <!-- Removed hidden exam_id input -->
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Assign Teacher</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="mb-3 d-flex flex-column">
-                                                    <label for="teacherSelect" class="form-label">Select Teacher:</label>
-                                                    <select id="teacherSelect" name="user_id" class="form-control"></select>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn btn-primary">Assign</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
-                            <!-- Add Student Modal -->
-                            <div class="modal fade" id="addStudentModal" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <form method="POST" action="{{ route('exam.assign-student') }}" id="assignStudentForm">
-                                        @csrf
-                                        <!-- Removed hidden exam_id input -->
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Assign Student</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="mb-3 d-flex flex-column">
-                                                    <label for="studentSelect" class="form-label">Select Student:</label>
-                                                    <select id="studentSelect" name="user_id" class="form-control"></select>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn btn-primary">Assign</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+                            </form>
 
                         </td>
                     </tr>
