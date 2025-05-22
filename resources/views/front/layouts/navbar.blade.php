@@ -22,9 +22,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('front.join-exam') }}">Join Exam</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('exams.index') }}">Exam List</a>
-                     </li>
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('exams.index') }}">Exam List</a>
+                        </li>
+                    @endauth
                 </ul>
             @endif
         </div>

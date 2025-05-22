@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\CommonEvent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Exam extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, CommonEvent;
     
     const DRAFT = 1;
     const PUBLISHED = 2;
@@ -66,4 +67,6 @@ class Exam extends Model
     {
         return $this->hasOne(Answer::class)->where('user_id', auth()?->user()?->id);
     }
+
+    //created by user
 }

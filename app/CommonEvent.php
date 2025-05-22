@@ -10,12 +10,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 trait CommonEvent
 {
-    use LogsActivity, CommonEvent;
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()->logAll();
-    }
-
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by')->select('id', 'name');
