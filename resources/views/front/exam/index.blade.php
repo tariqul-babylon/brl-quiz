@@ -234,9 +234,9 @@
         <div class="header">
             <h3>Exam List</h3>
             <div class="d-flex gap-2 align-items-center flex-wrap">
-                <div class="search-filter">
+                {{-- <div class="search-filter">
                     <input type="text" placeholder="Search exams...">
-                </div>
+                </div> --}}
                 <a href="{{ route('exams.create') }}" class="btn-custom btn-show">
                     <span class="material-symbols-outlined">add</span> Add Exam
                 </a>
@@ -247,7 +247,6 @@
             @forelse ($exams as $exam)
                 {{-- @dump($exam) --}}
                 @php
-                    // Map status to class and label
                     $statusClass = match ($exam->exam_status) {
                         2 => 'exam-card-published',
                         3 => 'exam-card-closed',
@@ -295,7 +294,7 @@
                             <span><span class="material-symbols-outlined">event</span> Total
                                 {{ $exam->questions_count ?? '0' }} Questions</span>
                             <span><span class="material-symbols-outlined">access_time</span> Duration:
-                                {{ $exam->duration ?? '00:00:00' }}</span>
+                                {{ $exam->duration }}</span>
                         </div>
                         <div class="detail-group">
                             <span><span class="material-symbols-outlined">check_circle</span> Total Mark :
@@ -306,44 +305,31 @@
                         <div class="detail-group">
                             @if ($exam->is_sign_in_required)
                                 <span><span class="material-symbols-outlined">people</span> Only Logged in Students</span>
+                            @else
+                                <span><span class="material-symbols-outlined">people</span> Any User can join exam</span>
                             @endif
                             @if ($exam->is_question_random && $exam->is_option_random)
                                 <span><span class="material-symbols-outlined">shuffle</span> Question and Options
                                     Randomized</span>
+                            @elseif($exam->is_question_random )
+                                <span><span class="material-symbols-outlined">shuffle</span>  Question Randomized</span>
+                            @elseif($exam->is_option_random)
+                                <span><span class="material-symbols-outlined">shuffle</span> Options Randomized</span>
+                                @else 
+                                <span><span class="material-symbols-outlined">shuffle</span> Randomize Disabled</span>
                             @endif
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-between flex-wrap align-items-start">
                         <div class="exam-actions">
-                            <a href="{{ route('exam_questions.index', $exam->id) }}" class="btn-custom btn-add">
+                            @if ($exam->exam_status == 1)
+                            <a href="{{ route('front.exam_questions.index', $exam->id) }}" class="btn-custom btn-add">
                                 <span class="material-symbols-outlined">add</span> Add Question
                             </a>
                             <a href="{{ route('exams.edit', $exam->id) }}" class="btn-custom btn-edit">
                                 <span class="material-symbols-outlined">edit</span> Edit
                             </a>
-
-                            <a href="{{ route('front.exam_questions.index', $exam->id) }}" class="btn btn-sm btn-info">
-                                <span class="material-symbols-outlined">quiz</span> Questions Add
-                            </a>
-
-                            <a href="{{ route('front.exam.results', $exam->id) }}" class="btn btn-sm btn-info">
-                                <span class="material-symbols-outlined">quiz</span> Result
-                            </a>
-
-                            @if(!$exam->exam_link)
-                                <a href="{{ route('exam.create-link', $exam->id) }}" class="btn btn-sm btn-secondary">
-                                    <span class="material-symbols-outlined">link</span> Create Exam Link
-                                </a>
-                            @endif
-
-{{--                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addTeacherModal" data-exam-id="{{ $exam->id }}">--}}
-{{--                                <span class="material-symbols-outlined">person_add</span> Add Teacher--}}
-{{--                            </button>--}}
-
-{{--                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addStudentModal" data-exam-id="{{ $exam->id }}">--}}
-{{--                                <span class="material-symbols-outlined">person_add_alt</span> Add Student--}}
-{{--                            </button>--}}
 
                             <form action="{{ route('exams.destroy', $exam->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete this exam?');" style="display:inline-block;">
                                 @csrf
@@ -353,6 +339,10 @@
                                     <span class="material-symbols-outlined">delete</span> Delete
                                 </button>
                             </form>
+                            @endif
+                           
+
+
                             <a href="{{ route('exams.show', $exam->id) }}" class="btn-custom btn-show">
                                 <span class="material-symbols-outlined">visibility</span> View Details
                             </a>

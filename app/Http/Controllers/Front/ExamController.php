@@ -20,7 +20,9 @@ class ExamController extends Controller
      */
     public function index()
     {
-        $exams = Exam::with('questions')->latest()->paginate(10);
+        $exams = Exam::with('questions')
+        ->latest()
+        ->paginate(10);
         return view('front.exam.index', compact('exams'));
     }
 

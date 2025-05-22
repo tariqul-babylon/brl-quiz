@@ -1,7 +1,7 @@
 @extends('front.layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container mt-4 mb-5">
         <div class="page-title">
             <div class="d-flex justify-content-between align-items-end">
                 <h1 class="title">Create Exam</h1>
