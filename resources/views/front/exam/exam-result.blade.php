@@ -240,13 +240,16 @@
                     </div>
                 </small>
             </div>
-            <form class=" d-flex align-items-center gap-2">
-                <select name="" style="width: 150px;" class="form-select" >
+            <form method="GET" action="{{ route('front.exam.winner') }}" class="d-flex align-items-center gap-2">
+                <input type="hidden" name="exam_code" value="{{ $exam->exam_code }}">
+
+                <select name="rank" style="width: 150px;" class="form-select">
                     <option value="">All Student</option>
                     @foreach (range(1, 20) as $rank)
-                        <option value="{{ $rank }}"> {{ $rank }} Student Rank</option>
+                        <option value="{{ $rank }}">{{ $rank }} Student Rank</option>
                     @endforeach
                 </select>
+
                 <button class="btn btn-success" style="width: 200px;">Get Student Rank</button>
             </form>
         </div>
