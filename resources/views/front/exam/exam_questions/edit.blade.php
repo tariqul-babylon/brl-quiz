@@ -1,13 +1,16 @@
 @extends('front.layouts.app')
 @section('content')
-    <div class="container">
-        <h2>Edit Question for Exam: {{ $exam->title }}</h2>
+    <div class="container mt-4 mb-5">
+            <h2 class="text-center">Update Question</h2>
+            <div class="text-center">
+                <span>Exam Title: {{ $exam->title }}</span>
+            </div>
 
-        <div class="row">
+        <div class="row mt-3 justify-content-center">
             <!-- Form for Editing Question -->
             <div class="col-md-6">
                 <div class="card p-4">
-                    <h4>Edit Question</h4>
+                    <h4 class="text-center">Edit Question</h4>
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <strong>Whoops!</strong> Please fix the following errors:
@@ -77,8 +80,10 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Update Question</button>
+                       <div class="d-flex justify-content-between gap-2 mt-4">
                         <a href="{{ route('front.exam_questions.index', $exam->id) }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Update Question</button>
+                       </div>
                     </form>
                 </div>
             </div>
