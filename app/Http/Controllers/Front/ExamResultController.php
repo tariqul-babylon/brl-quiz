@@ -16,4 +16,15 @@ class ExamResultController extends Controller
         return view('front.exam.exam-result',compact('exam','answers'));
     }
 
+    public function show($id)
+    {
+        $answer = Answer::with([
+            'exam.questions.options',
+            'answerOptions.question', // Add this to eager-load the question
+            'answerOptions.answerOptionChoices.examQuestionOption.question'
+        ])->findOrFail($id);
+
+        return view('front.exam.exam-result-details', compact('answer'));
+    }
+
 }

@@ -35,127 +35,39 @@
                         <tr>
                             <th>#</th>
                             <th>Name</th>
-                            <th>Email</th>
+                            <th>Contact</th>
                             <th>Correct</th>
                             <th>Wrong</th>
                             <th>Unanswered</th>
                             <th>Completion Time</th>
                             <th>Duration</th>
-                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-id="1" class="top-score" data-status="top3">
-                            <td>1</td>
-                            <td>Arzeful Alam</td>
-                            <td>arzeful.iahkder81@gmail.com</td>
-                            <td class="fw-bold">11</td>
-                            <td>4</td>
-                            <td>0</td>
-                            <td>01:56:57 PM</td>
-                            <td>06:22</td>
-                            <td><span class="badge badge-warning">Top Winner</span></td>
+                    @foreach($answers as $key => $answer)
+                        <tr data-id="{{ $answer->id }}">
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $answer->name }}</td>
+                            <td>{{ $answer->contact }}</td>
+                            <td class="fw-bold">{{ $answer->correct_ans }}</td>
+                            <td>{{ $answer->incorrect_ans }}</td>
+                            <td>{{ $answer->not_answered }}</td>
+                            <td>{{ \Carbon\Carbon::parse($answer->end_at)->format('h:i:s A') }}</td>
+                            <td>
+                                @if($answer->duration)
+                                    {{ \Carbon\CarbonInterval::createFromFormat('H:i:s.u', $answer->duration)->format('%I:%S') }}
+                                @else
+                                    N/A
+                                @endif
+                            </td>
+                            <td>
+                                <a href="{{ route('front.exam.results.show',$answer->id) }}" class="btn btn-sm btn-primary">Result Details</a>
+                            </td>
                         </tr>
-                        <tr data-id="2" class="passed" data-status="passed">
-                            <td>2</td>
-                            <td>Aysha Siddiqua</td>
-                            <td>aysha.siddiqua011@gmail.com</td>
-                            <td class="fw-bold">9</td>
-                            <td>6</td>
-                            <td>0</td>
-                            <td>01:57:00 PM</td>
-                            <td>10:16</td>
-                            <td><span class="badge badge-success">Passed</span></td>
-                        </tr>
-                        <tr data-id="3" class="passed" data-status="passed">
-                            <td>3</td>
-                            <td>Nafiya Sultana</td>
-                            <td>maliyasultana@gmail.com</td>
-                            <td class="fw-bold">9</td>
-                            <td>6</td>
-                            <td>0</td>
-                            <td>01:56:57 PM</td>
-                            <td>09:20</td>
-                            <td><span class="badge badge-success">Passed</span></td>
-                        </tr>
-                        <tr data-id="4" class="passed" data-status="passed">
-                            <td>4</td>
-                            <td>Sonia</td>
-                            <td>soniaakter812@gmail.com</td>
-                            <td class="fw-bold">9</td>
-                            <td>6</td>
-                            <td>0</td>
-                            <td>01:56:55 PM</td>
-                            <td>06:26</td>
-                            <td><span class="badge badge-success">Passed</span></td>
-                        </tr>
-                        <tr data-id="5" class="passed" data-status="passed">
-                            <td>5</td>
-                            <td>Syeda Prianka</td>
-                            <td>priankamasud@gmail.com</td>
-                            <td class="fw-bold">9</td>
-                            <td>6</td>
-                            <td>0</td>
-                            <td>01:57:02 PM</td>
-                            <td>06:12</td>
-                            <td><span class="badge badge-success">Passed</span></td>
-                        </tr>
-                        <tr data-id="6" class="passed" data-status="passed">
-                            <td>6</td>
-                            <td>Marina Jahan</td>
-                            <td>marinamoly@gmail.com</td>
-                            <td>8</td>
-                            <td>7</td>
-                            <td>0</td>
-                            <td>01:56:55 PM</td>
-                            <td>08:26</td>
-                            <td><span class="badge badge-success">Passed</span></td>
-                        </tr>
-                        <tr data-id="7" class="passed" data-status="passed">
-                            <td>7</td>
-                            <td>Md. Musifqur Rahman Alif</td>
-                            <td>musifqurrahmanalif@gmail.com</td>
-                            <td>8</td>
-                            <td>7</td>
-                            <td>0</td>
-                            <td>01:56:54 PM</td>
-                            <td>07:45</td>
-                            <td><span class="badge badge-success">Passed</span></td>
-                        </tr>
-                        <tr data-id="8" data-status="participant">
-                            <td>8</td>
-                            <td>MD. ALIF AL MAHAMUD</td>
-                            <td>APON1992@GMAIL.COM</td>
-                            <td>7</td>
-                            <td>8</td>
-                            <td>0</td>
-                            <td>01:56:51 PM</td>
-                            <td>10:59</td>
-                            <td><span class="badge badge-secondary">Participated</span></td>
-                        </tr>
-                        <tr data-id="9" data-status="participant">
-                            <td>9</td>
-                            <td>Kazi Raihan Rahman</td>
-                            <td>firaihankaz101@gmail.com</td>
-                            <td>7</td>
-                            <td>8</td>
-                            <td>0</td>
-                            <td>01:56:55 PM</td>
-                            <td>06:32</td>
-                            <td><span class="badge badge-secondary">Participated</span></td>
-                        </tr>
-                        <tr data-id="10" data-status="participant">
-                            <td>10</td>
-                            <td>Pinky Datta</td>
-                            <td>dattapinky20272027@gmail.com</td>
-                            <td>6</td>
-                            <td>8</td>
-                            <td>1</td>
-                            <td>01:57:05 PM</td>
-                            <td>10:22</td>
-                            <td><span class="badge badge-secondary">Participated</span></td>
-                        </tr>
+                    @endforeach
                     </tbody>
+
                 </table>
             </div>
 
