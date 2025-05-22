@@ -46,4 +46,9 @@ class Answer extends Model
     {
         return $this->hasMany(AnswerOption::class);
     }
+
+    public function setFinalObtainedMarkAttribute($value)
+    {
+        $this->attributes['final_obtained_mark'] = round($value, 2) < 0 ? 0 : round($value, 2);
+    }
 }

@@ -15,8 +15,7 @@
 <div class="body">
     <section id="quiz">
         <div class="container">
-            <form class="content" action="{{ url('student/submit_questions') }}" id="questionForm" method="POST">
-                <input type="hidden" name="exam_id" value="{{ Request::segment(3) }}">
+            <form class="content" action="{{ route('front.exam-submit') }}" id="questionForm" method="POST">
                 @csrf
                 <div class="head p-24">
                     <div class="timer">
@@ -87,7 +86,7 @@
                             <div class="options">
                                 @foreach ($question['options'] as $option)
                                     <label class="option" for="option-{{$loop->iteration}}{{ $qid }}">
-                                        <input class="form-check-input" name="ans{{ $qid }}"
+                                        <input class="form-check-input" name="ans{{$qid}}"
                                             value="{{ $option['id'] }}" type="radio" id="option-{{$loop->iteration}}{{ $qid }}">
                                         <span class="form-check-label">{{ $option['title'] }}</span>
                                     </label>
@@ -151,7 +150,7 @@
     </div>
 </div>
 
-    
+
 @endsection
 
 @push('js')
@@ -305,43 +304,56 @@
             setActiveClassInput();
         });
 
-        const minuteSpent = "{{ $minute_spent }}";
-        const secondSpent = "{{ $second_spent }}";
-        // const totalExamMomentObject = moment("{{ $exam_duration_in_minutes }}", "minutes");
-        const totalExamMomentObject = moment();
+        const minuteSpent = parseInt("{{ $minute_spent }}") || 0;
+        const secondSpent = parseInt("{{ $second_spent }}") || 0;
 
-        // Adding 1 hour and 30 minutes
-        totalExamMomentObject.add({{ $exam_duration_in_hours }}, 'hours').add({{ $exam_duration_in_minutes }}, 'minutes');
+        const examDurationHours = parseInt("{{ $exam_duration_in_hours }}") || 0;
+        const examDurationMinutes = parseInt("{{ $exam_duration_in_minutes }}") || 0;
 
-        const totalExamTimeDuration = totalExamMomentObject.hours() * 3600 + totalExamMomentObject.minutes() * 60 +
-            totalExamMomentObject.seconds();
+        // Calculate total exam duration in seconds
+        const totalExamSeconds = examDurationHours * 3600 + examDurationMinutes * 60;
 
-        const totalTime = moment();
-        totalTime.add( {{ $exam_duration_in_hours }}, 'hours').add({{ $exam_duration_in_minutes }}, 'minutes');
+        // Calculate total seconds already spent
+        const spentSeconds = minuteSpent * 60 + secondSpent;
 
-        totalTime.subtract(parseInt(minuteSpent), 'minutes');
-        totalTime.subtract(parseInt(secondSpent), 'seconds');
+        // Remaining seconds
+        let remainingSeconds = totalExamSeconds - spentSeconds;
 
-        var remainigTimeInt = totalTime.hours() * 3600 + totalTime.minutes() * 60 + totalTime.seconds();
+        // Function to format seconds as HH:mm:ss
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            return [
+                h.toString().padStart(2, '0'),
+                m.toString().padStart(2, '0'),
+                s.toString().padStart(2, '0')
+            ].join(':');
+        }
 
-        function setTimerLoader(params) {
-            let progress = (remainigTimeInt * 100 / totalExamTimeDuration).toFixed(2);
+        // Update progress bar width (if you have one)
+        function setTimerLoader() {
+            let progress = ((remainingSeconds / totalExamSeconds) * 100).toFixed(2);
             $("#quiz .content .head .timer .success").css('width', progress + '%');
         }
-        setTimerLoader();
 
         function clockStart() {
-            setTimerLoader();
-            if (totalTime.format('HH:mm:ss') == "00:00:00") {
+            if (remainingSeconds <= 0) {
                 clearInterval(clock);
+                $('#totalTime').html("00:00:00");
                 $('#questionForm').submit();
             } else {
-                totalTime.subtract(1, 'seconds');
-                $('#totalTime').html(totalTime.format('HH:mm:ss'));
+                $('#totalTime').html(formatTime(remainingSeconds));
+                setTimerLoader();
+                remainingSeconds--;
             }
-            remainigTimeInt = totalTime.hours() * 3600 + totalTime.minutes() * 60 + totalTime.seconds();
         }
-        clockStart();
+
+        // Initialize display right away
+        $('#totalTime').html(formatTime(remainingSeconds));
+        setTimerLoader();
+
+        // Start the countdown timer
         const clock = setInterval(clockStart, 1000);
 
         $("#quiz-indicator .question").click(function(e) {
