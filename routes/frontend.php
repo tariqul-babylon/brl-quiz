@@ -6,6 +6,7 @@ use App\Http\Controllers\Front\FrontController;
 use App\Http\Controllers\Front\JoinExamController;
 use App\Http\Controllers\Front\ExamController;
 use App\Http\Controllers\Front\ExamResultController;
+use App\Models\Exam;
 use Illuminate\Support\Facades\Route;
 
 
@@ -33,11 +34,21 @@ Route::get('exam-start', [ExamStartController::class, 'examStart'])->name('front
 Route::post('exam-start', [ExamStartController::class, 'examSubmit'])->name('front.exam-submit');
 
 Route::get('exam-results/{exam_id}', [ExamResultController::class, 'index'])->name('front.exam.results');
+Route::get('/results/{answer}', [ExamResultController::class, 'show'])->name('front.exam.results.show');
 
 
 Route::view('demo-exam-list', 'front.demo.exam-list');
 Route::view('demo-exam-create', 'front.demo.exam-create');
+Route::view('demo-exam-show', 'front.demo.exam-show');
+Route::view('demo-exam-result', 'front.demo.exam-result');
+Route::view('demo-exam-winner', 'front.demo.exam-winner');
+Route::view('demo-exam-result-detail', 'front.demo.exam-result-detail');
 
 Route::put('exam/{question_id}/update-status', [ExamController::class, 'updateStatus']);
 
 
+Route::get('demo-exam-winner-data', function () {
+    $exam = Exam::findOrFail($exam_id ?? 1);
+    $winners = $exam->winners(20);
+    return $winners;
+});

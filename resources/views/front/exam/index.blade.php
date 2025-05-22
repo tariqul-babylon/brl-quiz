@@ -322,7 +322,34 @@
                             <a href="{{ route('exams.edit', $exam->id) }}" class="btn-custom btn-edit">
                                 <span class="material-symbols-outlined">edit</span> Edit
                             </a>
+<<<<<<< HEAD
                             <form action="{{ route('exams.destroy', $exam->id) }}" method="POST" style="display:inline;">
+=======
+
+                            <a href="{{ route('front.exam_questions.index', $exam->id) }}" class="btn btn-sm btn-info">
+                                <span class="material-symbols-outlined">quiz</span> Questions Add
+                            </a>
+
+                            <a href="{{ route('front.exam.results', $exam->id) }}" class="btn btn-sm btn-info">
+                                <span class="material-symbols-outlined">quiz</span> Result
+                            </a>
+
+                            @if(!$exam->exam_link)
+                                <a href="{{ route('exam.create-link', $exam->id) }}" class="btn btn-sm btn-secondary">
+                                    <span class="material-symbols-outlined">link</span> Create Exam Link
+                                </a>
+                            @endif
+
+{{--                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addTeacherModal" data-exam-id="{{ $exam->id }}">--}}
+{{--                                <span class="material-symbols-outlined">person_add</span> Add Teacher--}}
+{{--                            </button>--}}
+
+{{--                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addStudentModal" data-exam-id="{{ $exam->id }}">--}}
+{{--                                <span class="material-symbols-outlined">person_add_alt</span> Add Student--}}
+{{--                            </button>--}}
+
+                            <form action="{{ route('exams.destroy', $exam->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete this exam?');" style="display:inline-block;">
+>>>>>>> cec2eb6b2cd5d2e1f31510f4cc0afbbfc7b7e121
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn-custom btn-delete"
