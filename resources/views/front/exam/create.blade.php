@@ -23,7 +23,7 @@
                 <div class="card-body">
                     <form action="{{ route('exams.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-
+                        <input type="hidden" name="exam_status" value="1">
                         <div class="row row-cols-4 g-3">
                             <div>
                                 <label>Title</label>
