@@ -33,6 +33,19 @@ class Exam extends Model
         return $this->hasMany(ExamQuestion::class);
     }
 
+    public function winners($take = null)
+    {
+        return $this->hasMany(Answer::class)
+            ->orderBy('final_obtained_mark', 'desc')
+            ->orderBy('duration', 'asc')
+            ->orderBy('incorrect_ans', 'asc')
+            ->orderBy('join_at', 'asc')
+            ->orderBy('id', 'desc')
+            ->when($take, function ($query) use ($take) {   
+                return $query->take($take);
+            });
+    }
+    
     public function students()
     {
         return $this->hasMany(ExamUser::class)->where('user_type', 2);
