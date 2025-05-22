@@ -35,3 +35,5 @@ Route::post('exam-start', [ExamStartController::class, 'examSubmit'])->name('fro
 Route::get('exam-results/{exam_id}', [ExamResultController::class, 'index'])->name('front.exam.results');
 
 
+Route::view('demo-exam-list', 'front.demo.exam-list');
+
