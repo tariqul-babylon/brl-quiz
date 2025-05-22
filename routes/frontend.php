@@ -34,7 +34,7 @@ Route::middleware('auth')->prefix('exams/{exam}')->group(function () {
 
     Route::get('questions/{question}/edit', [ExamQuestionController::class, 'edit'])->name('front.exam_questions.edit');
     Route::put('questions/{question}', [ExamQuestionController::class, 'update'])->name('front.exam_questions.update');
-    Route::delete('questions', [ExamQuestionController::class, 'destroy'])->name('front.exam_questions.destroy');
+    Route::delete('questions/{question}', [ExamQuestionController::class, 'destroy'])->name('front.exam_questions.destroy');
 });
 
 Route::middleware('auth')->group(function () {
