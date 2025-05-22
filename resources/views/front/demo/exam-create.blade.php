@@ -60,7 +60,7 @@
     <div class="container mt-4">
         <div class="form-card">
             <div class="form-header">
-                <span class="material-symbols-outlined">quiz</span>
+                <span class="material-symbols-outlined text-primary">quiz</span>
                 <h1 class="form-title">Create New Exam</h1>
             </div>
 
@@ -105,19 +105,19 @@
                     <div class="col-12">
                         <b >Exam Settings</b>
                         <div class="checkbox-group">
-                            <input type="checkbox" id="random-questions" checked>
+                            <input type="checkbox" class="me-1" id="random-questions" checked>
                             <label for="random-questions">Randomize Questions</label>
                         </div>
                         <div class="checkbox-group">
-                            <input type="checkbox" id="random-options" checked>
+                            <input type="checkbox" class="me-1" id="random-options" checked>
                             <label for="random-options">Randomize Options</label>
                         </div>
                         <div class="checkbox-group">
-                            <input type="checkbox" id="login-required">
+                            <input type="checkbox"  class="me-1" id="login-required">
                             <label for="login-required">Require Student Login</label>
                         </div>
                         <div class="checkbox-group">
-                            <input type="checkbox" id="show-results" checked>
+                            <input type="checkbox"  class="me-1" id="show-results" checked>
                             <label for="show-results">Show Results to Students</label>
                         </div>
                     </div>
