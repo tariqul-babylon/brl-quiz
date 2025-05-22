@@ -32,6 +32,11 @@ class Exam extends Model
     {
         return $this->hasMany(ExamQuestion::class);
     }
+    
+    public function scopeOwn($query)
+    {
+        return $query->where('created_by', auth()?->user()?->id);
+    }
 
     public function winners($take = null)
     {
