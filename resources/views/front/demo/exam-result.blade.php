@@ -223,7 +223,8 @@
 
                 <small>
                     <span>Duration : <b>01:00:00</b></span> | 
-                <span>Full Mark : <b>100</b></span>  
+                    <span>Full Mark : <b>100</b></span>  
+                    <span>Negative Mark : <b >-.25</b></span>  
                 <div>
                     <span>Attended : <b>100</b></span> 
                 <span>Submitted : <b>80</b></span> | 
