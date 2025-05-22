@@ -36,6 +36,7 @@ class Exam extends Model
     public function winners($take = null)
     {
         return $this->hasMany(Answer::class)
+            ->where('exam_status',2)
             ->orderBy('final_obtained_mark', 'desc')
             ->orderBy('duration', 'asc')
             ->orderBy('incorrect_ans', 'asc')

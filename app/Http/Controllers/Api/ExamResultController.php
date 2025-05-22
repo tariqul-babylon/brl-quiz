@@ -99,14 +99,13 @@ class ExamResultController extends Controller
         }
     }
 
-    public function showWinners(Request $request, $exam_id, $take = 20) {
+    public function showWinners(Request $request, $exam_id, $take = null) {
         try {
-            $exam = Exam::with([])
-            ->where('id', $exam_id)
-            ->where('exam_status', '<>', Exam::DRAFT)
-            ->where('exam_source', Exam::SOURCE_API)
-            ->where('created_by', $request->user()->id)
-            ->first();
+            $exam = Exam::query()
+                ->where('exam_source', Exam::SOURCE_API)
+                ->where('created_by', $request->user()->id)
+                ->where('id', $exam_id)
+                ->first();
 
             if (!$exam) {
                 return response()->json([
@@ -115,13 +114,17 @@ class ExamResultController extends Controller
                 ], 404);
             }
 
-            $winners = $exam->winners($take);
+            $winners = $exam->winners($take)->get();
 
             return response()->json([
                 'code' => 200,
                 'message' => 'Data found',
-                'data' => $winners,
+                'data' => [
+                    'winners' => AnswerResource::collection($winners),
+                    'exam' => new ExamResource($exam),
+                ],
             ], 200);
+
         } catch (\Exception $e) {
             return response()->json([
                 'code' => 500,
