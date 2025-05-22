@@ -32,10 +32,16 @@ class Exam extends Model
     {
         return $this->hasMany(ExamQuestion::class);
     }
+    
+    public function scopeOwn($query)
+    {
+        return $query->where('created_by', auth()?->user()?->id);
+    }
 
     public function winners($take = null)
     {
         return $this->hasMany(Answer::class)
+            ->where('exam_status',2)
             ->orderBy('final_obtained_mark', 'desc')
             ->orderBy('duration', 'asc')
             ->orderBy('incorrect_ans', 'asc')
