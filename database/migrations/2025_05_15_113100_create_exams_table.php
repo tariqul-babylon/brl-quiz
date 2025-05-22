@@ -25,7 +25,7 @@ return new class extends Migration
             // Booleans (true/false values)
             $table->boolean('is_bluer')->nullable();
             $table->boolean('is_timer')->nullable();
-            $table->boolean('exam_status')->nullable();
+            $table->boolean('exam_status')->default(1);
             $table->boolean('user_result_view')->nullable();
             $table->boolean('user_answer_view')->nullable();
             $table->boolean('is_question_random')->nullable();

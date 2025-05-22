@@ -271,7 +271,8 @@
                         $fullMark = count($exam->questions) * $exam->mark_per_question;
                     }
                 @endphp
-                <div class="exam-card {{ $statusClass }}">
+                {{-- <div class="exam-card {{ $statusClass }}"> --}}
+                <div class="exam-card ">
                     <div class="exam-header">
                         <div class="exam-info">
                             <h3 class="exam-title m-0 lh-1">
@@ -324,43 +325,48 @@
                     <div class="d-flex justify-content-between flex-wrap align-items-start">
                         <div class="exam-actions">
                             @if ($exam->exam_status == 1)
-                            <a href="{{ route('front.exam_questions.index', $exam->id) }}" class="btn-custom btn-add">
-                                <span class="material-symbols-outlined">add</span> Add Question
-                            </a>
-                            <a href="{{ route('exams.edit', $exam->id) }}" class="btn-custom btn-edit">
-                                <span class="material-symbols-outlined">edit</span> Edit
-                            </a>
+                                <a href="{{ route('front.exam_questions.index', $exam->id) }}" class="btn-custom btn-add">
+                                    <span class="material-symbols-outlined">add</span> Add Question
+                                </a>
+                                <a href="{{ route('exams.edit', $exam->id) }}" class="btn-custom btn-edit">
+                                    <span class="material-symbols-outlined">edit</span> Edit
+                                </a>
 
-                            <form action="{{ route('exams.destroy', $exam->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete this exam?');" style="display:inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-custom btn-delete"
-                                    onclick="return confirm('Are you sure?')">
-                                    <span class="material-symbols-outlined">delete</span> Delete
-                                </button>
-                            </form>
+                                <form action="{{ route('exams.destroy', $exam->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete this exam?');" style="display:inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-custom btn-delete"
+                                        onclick="return confirm('Are you sure?')">
+                                        <span class="material-symbols-outlined">delete</span> Delete
+                                    </button>
+                                </form>
                             @endif
                            
-
-
                             <a href="{{ route('exams.show', $exam->id) }}" class="btn-custom btn-show">
-                                <span class="material-symbols-outlined">visibility</span> View Details
+                                <span class="material-symbols-outlined">visibility</span> 
+                                View Details
                             </a>
-                            <a href="{{ route('front.exam.results', $exam->id) }}" class="btn-custom btn-result">
-                                <span class="material-symbols-outlined">assessment</span> Result
-                            </a>
+                            
+                            @if ($exam->exam_status !=1 && $exam?->participants?->count())
+                                <a href="{{ route('front.exam.results', $exam->id) }}" class="btn-custom btn-result">
+                                    <span class="material-symbols-outlined">assessment</span> Result
+                                </a>
+                            @endif
 
                             @if ($exam->exam_status == 1)
                                 <button class="btn-custom btn-show btn-update-status" data-exam-id="{{ $exam->id }}"
                                     data-status="2" data-action="publish">
                                     <span class="material-symbols-outlined">publish</span> Publish Exam
                                 </button>
-                            @endif
-
-                            @if ($exam->exam_status == 2)
+                            @elseif ($exam->exam_status == 2)
                                 <button class="btn-custom btn-close-exam btn-update-status"
                                     data-exam-id="{{ $exam->id }}" data-status="3" data-action="complete">
-                                    <span class="material-symbols-outlined">close</span> Complete Exam
+                                    <span class="material-symbols-outlined">close</span> Mas as Closed
+                                </button>
+                            @elseif ($exam->exam_status == 3)
+                                <button class="btn-custom btn-show btn-update-status" data-exam-id="{{ $exam->id }}"
+                                    data-status="2" data-action="publish">
+                                    <span class="material-symbols-outlined">publish</span> Publish Exam Again
                                 </button>
                             @endif
                         </div>
