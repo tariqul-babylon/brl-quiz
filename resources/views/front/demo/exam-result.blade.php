@@ -215,13 +215,21 @@
     <div class="container mt-4 mb-5">
         <div class="header align-items-start">
             <div>
-                <h1 class="page-title">
+                <h1 class="page-title mb-1">
                     <span class="material-symbols-outlined">assignment</span>
                     Results of Math Exam
                 </h1>
-                <span>Attended : <b>100</b></span> | 
+                <hr class="my-1">
+
+                <small>
+                    <span>Duration : <b>01:00:00</b></span> | 
+                <span>Full Mark : <b>100</b></span>  
+                <div>
+                    <span>Attended : <b>100</b></span> 
                 <span>Submitted : <b>80</b></span> | 
                 <span>Not Submitted : <b>20</b></span>
+                </div>
+                </small>
             </div>
             <form class=" d-flex align-items-center gap-2">
                 <select name="" style="width: 150px;" class="form-select" >
