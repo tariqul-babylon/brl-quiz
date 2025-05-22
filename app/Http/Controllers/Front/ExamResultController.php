@@ -11,7 +11,7 @@ class ExamResultController extends Controller
 {
      public function index($id)
     {
-        $exam = Exam::where('id',$id)->first();
+        $exam = Exam::own()->where('id',$id)->firstOrFail();
         $answers = Answer::where('exam_id',$id)->get();
         return view('front.exam.exam-result',compact('exam','answers'));
     }
@@ -22,7 +22,11 @@ class ExamResultController extends Controller
             'exam.questions.options',
             'answerOptions.question', // Add this to eager-load the question
             'answerOptions.answerOptionChoices.examQuestionOption.question'
-        ])->findOrFail($id);
+        ])
+        ->whereHas('exam', function ($query){
+            $query->own();
+        })
+        ->findOrFail($id);
 
         return view('front.exam.exam-result-details', compact('answer'));
     }
@@ -33,7 +37,7 @@ class ExamResultController extends Controller
         $rank = $request->input('rank');
 
         // Get the actual Exam model instance
-        $exam = Exam::where('exam_code', $examCode)->firstOrFail();
+        $exam = Exam::own()->where('exam_code', $examCode)->firstOrFail();
 
         // Call the relationship method (this returns a query builder, so call ->get())
         $winners = $exam->winners($rank)->get();

@@ -10,15 +10,17 @@ use Illuminate\Support\Facades\DB;
 
 class ExamQuestionController extends Controller
 {
-    public function index(Exam $exam)
+    public function index($exam_id)
     {
+        $exam = Exam::own()->where('id', $exam_id)->firstOrFail();
         $questions = $exam->questions()->latest()->get();
 
         return view('front.exam.exam_questions.index', compact('exam', 'questions'));
     }
 
-    public function store(Request $request, Exam $exam)
+    public function store(Request $request,  $exam_id)
     {
+        $exam = Exam::own()->where('id', $exam_id)->firstOrFail();
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'question_type' => 'required|in:1,2,3', // ✅ changed from boolean
@@ -56,8 +58,9 @@ class ExamQuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Exam $exam, ExamQuestion $question)
+    public function edit( ExamQuestion $question, $exam_id)
     {
+        $exam = Exam::own()->where('id', $exam_id)->firstOrFail();
         // Ensure the question belongs to the exam
         if ($question->exam_id !== $exam->id) {
             abort(404);
@@ -69,8 +72,9 @@ class ExamQuestionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Exam $exam, ExamQuestion $question)
+    public function update(Request $request, ExamQuestion $question, $exam_id)
     {
+        $exam = Exam::own()->where('id', $exam_id)->firstOrFail();
         if ($question->exam_id !== $exam->id) {
             abort(404);
         }
@@ -107,8 +111,9 @@ class ExamQuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Exam $exam, ExamQuestion $question)
+    public function destroy(ExamQuestion $question, $exam_id)
     {
+        $exam = Exam::own()->where('id', $exam_id)->firstOrFail();
         if ($question->exam_id !== $exam->id) {
             abort(404);
         }
