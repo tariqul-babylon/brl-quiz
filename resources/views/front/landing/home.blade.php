@@ -59,7 +59,6 @@
         /* Features Section */
         .features {
             padding: 80px 0;
-            background-color: var(--white);
         }
         
         .section-title {

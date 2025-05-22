@@ -33,9 +33,10 @@
         </div>
     </header>
 
-   <div class="" style="min-height: 80vh;">
+   <div class="mb-5" style="min-height: 80vh;">
      @yield('content')
    </div>
+
 
     @include('front.layouts.footer')
     <script src="{{ asset('front') }}/js/jquery-3.7.0.min.js"></script>
