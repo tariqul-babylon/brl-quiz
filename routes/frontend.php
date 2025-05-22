@@ -37,4 +37,6 @@ Route::get('exam-results/{exam_id}', [ExamResultController::class, 'index'])->na
 
 Route::view('demo-exam-list', 'front.demo.exam-list');
 Route::view('demo-exam-create', 'front.demo.exam-create');
+Route::view('demo-exam-show', 'front.demo.exam-show');
+Route::view('demo-exam-result', 'front.demo.exam-result');
 

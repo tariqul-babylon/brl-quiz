@@ -12,6 +12,12 @@
     <link rel="stylesheet" href="{{ asset('front') }}/scss/main.css">
     <link rel="stylesheet" href="{{ asset('front') }}/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    <style>
+        .form-control:focus,
+        .form-select:focus {
+            box-shadow: none;
+        }
+    </style>
     @stack('css')
 </head>
 
