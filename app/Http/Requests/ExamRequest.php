@@ -66,7 +66,7 @@ class ExamRequest extends FormRequest
             'collect_student_id' => ['sometimes', 'boolean'],
 
 
-            'id_no_placeholder' => ['required_if:collect_student_id,1', 'string', 'max:255'],
+            'id_no_placeholder' => ['required_if:collect_student_id,1', 'max:255'],
             'logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'exam_link' => ['nullable', 'string', 'max:255'],
         ];
