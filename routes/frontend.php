@@ -6,6 +6,7 @@ use App\Http\Controllers\Front\FrontController;
 use App\Http\Controllers\Front\JoinExamController;
 use App\Http\Controllers\Front\ExamController;
 use App\Http\Controllers\Front\ExamResultController;
+use App\Models\Exam;
 use Illuminate\Support\Facades\Route;
 
 
@@ -40,4 +41,11 @@ Route::view('demo-exam-list', 'front.demo.exam-list');
 Route::view('demo-exam-create', 'front.demo.exam-create');
 Route::view('demo-exam-show', 'front.demo.exam-show');
 Route::view('demo-exam-result', 'front.demo.exam-result');
+Route::view('demo-exam-winner', 'front.demo.exam-winner');
+Route::view('demo-exam-result-detail', 'front.demo.exam-result-detail');
 
+Route::get('demo-exam-winner-data', function () {
+    $exam = Exam::findOrFail($exam_id ?? 1);
+    $winners = $exam->winners(20);
+    return $winners;
+});
