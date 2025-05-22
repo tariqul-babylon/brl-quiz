@@ -68,10 +68,10 @@ class JoinExamController extends Controller
       return view('front.exam.exam-alert', ['message' => 'The allotted time for the exam has expired.']);
     } else if ($exam->exam_status != Exam::PUBLISHED) {
       return view('front.exam.exam-alert', ['message' => 'The allotted time for the exam has expired.']);
-    } 
+    }
     // else if ($exam->is_sign_in_required && !auth()->check()) {
     //   return redirect()->guest(route('login'));
-    // } 
+    // }
     // else if ($exam?->authAnswer && auth()->check()) {
     //   $now = Carbon::now();
     //   $join_at = Carbon::parse($exam->authAnswer->join_at);

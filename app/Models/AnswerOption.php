@@ -20,7 +20,7 @@ class AnswerOption extends Model
         'sl_no',
         'answer_status',
         'answer_at',
-    ]; 
+    ];
 
     public function question()
     {
