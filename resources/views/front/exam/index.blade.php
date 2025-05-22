@@ -19,9 +19,9 @@
                     <th>No</th>
                     <th>Title</th>
                     <th>Exam Code</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    <th>Full Mark</th>
+{{--                    <th>Start Time</th>--}}
+{{--                    <th>End Time</th>--}}
+{{--                    <th>Full Mark</th>--}}
                     <th>Duration (Hr)</th>
                     <th>Exam Status</th>
                     <th>Logo</th>
@@ -35,9 +35,9 @@
                         <td>{{ $exams->firstItem() + $loop->index }}</td>
                         <td>{{ $exam->title }}</td>
                         <td>{{ $exam->exam_code }}</td>
-                        <td>{{ \Carbon\Carbon::parse($exam->exam_start_time)->format('d-m-Y H:i') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($exam->exam_end_time)->format('d-m-Y H:i') }}</td>
-                        <td>{{ $exam->full_mark }}</td>
+{{--                        <td>{{ \Carbon\Carbon::parse($exam->exam_start_time)->format('d-m-Y H:i') }}</td>--}}
+{{--                        <td>{{ \Carbon\Carbon::parse($exam->exam_end_time)->format('d-m-Y H:i') }}</td>--}}
+{{--                        <td>{{ $exam->full_mark }}</td>--}}
                         <td>{{ $exam->duration }}</td>
                         <td>
                             @if($exam->exam_status)
@@ -85,11 +85,7 @@
                                 <span class="material-symbols-outlined">quiz</span> Questions Add
                             </a>
 
-                            <a href="{{ route('front.exam.results', $exam->id) }}" class="btn btn-sm btn-info" title="View Results">
-                                <span class="material-symbols-outlined">quiz</span> Result
-                            </a>
-
-                        @if(!$exam->exam_link)
+                            @if(!$exam->exam_link)
                                 <a href="{{ route('exam.create-link', $exam->id) }}" class="btn btn-sm btn-secondary">
                                     <span class="material-symbols-outlined">link</span> Create Exam Link
                                 </a>

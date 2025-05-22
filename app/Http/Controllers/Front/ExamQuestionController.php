@@ -115,7 +115,7 @@ class ExamQuestionController extends Controller
 
         $question->delete();
 
-        return redirect()->route('exam_questions.index', $exam->id)
+        return redirect()->route('front.exam_questions.index', $exam->id)
             ->with('success', 'Question deleted successfully.');
     }
 }
