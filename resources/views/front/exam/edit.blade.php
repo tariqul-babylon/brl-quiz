@@ -112,7 +112,7 @@
 
                     <div class="col-12">
                         <b>Exam Settings</b>
-                        @foreach(['is_question_random' => 'Randomize Questions', 'is_option_random' => 'Randomize Options', 'is_sign_in_required' => 'Require Student Login', 'user_result_view' => 'Show Results to Students', 'user_answer_view' => 'Show Correct Answers'] as $key => $label)
+                        @foreach(['is_question_random' => 'Randomize Questions', 'is_option_random' => 'Randomize Options', 'is_sign_in_required' => 'Require Student Login', 'user_result_view' => 'Show Results to Students'] as $key => $label)
                             <div class="checkbox-group">
                                 <input type="checkbox" class="me-1" name="{{ $key }}" id="{{ $key }}" {{ old($key, $exam->$key) ? 'checked' : '' }}>
                                 <label for="{{ $key }}">{{ $label }}</label>
