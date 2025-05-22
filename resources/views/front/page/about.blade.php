@@ -146,7 +146,7 @@
             grid-template-columns: 1fr;
         }
         
-        .container {
+        .container.custom {
             padding: 30px 15px;
         }
         
@@ -160,7 +160,7 @@
 @section('content')
 
 
-    <div class="container">
+    <div class="container custom">
         <header>
             <h1>About Us</h1>
         </header>

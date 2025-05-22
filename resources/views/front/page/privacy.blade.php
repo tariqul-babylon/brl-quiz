@@ -78,7 +78,7 @@
     }
     
     @media (max-width: 768px) {
-        .container {
+        .container.custom {
             padding: 20px 15px;
         }
         
@@ -97,7 +97,7 @@
 
    
 
-    <div class="container">
+    <div class="container custom">
         <header>
             <h1>Privacy Policy</h1>
             <p class="last-updated">Last Updated: June 10, 2023</p>

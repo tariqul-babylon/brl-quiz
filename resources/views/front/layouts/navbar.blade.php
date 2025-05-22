@@ -26,6 +26,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('exams.index') }}">Exam List</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('exams.create') }}">Create Exam</a>
+                        </li>
                     @endauth
                 </ul>
             @endif

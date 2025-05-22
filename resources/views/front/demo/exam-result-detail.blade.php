@@ -19,7 +19,7 @@
                 --light-bg: #f8f9fa;
             }
 
-            .container {
+            .container.custom {
                 max-width: 800px;
                 margin: 0 auto;
             }
@@ -280,7 +280,7 @@
     </head>
 
     <body>
-        <div class="container mt-4 mb-5">
+        <div class="container custom mt-4 mb-5">
             <!-- Exam Header -->
             <div class="exam-header">
                 <h1 class="exam-title">

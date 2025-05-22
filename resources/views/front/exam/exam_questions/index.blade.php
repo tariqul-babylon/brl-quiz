@@ -1,7 +1,12 @@
 @extends('front.layouts.app')
 @section('content')
     <div class="container mt-4 mb-5">
-        <h2>Manage Questions for Exam: {{ $exam->title }}</h2>
+        <div class="d-flex mb-2 justify-content-between flex-wrap align-items-center">
+            <h2>Exam Questions</h2>
+            <div>
+                <span>Exam Title: {{ $exam->title }}</span>
+            </div>
+        </div>
 
         <div class="row">
             <!-- Left column: Question List -->

@@ -2,7 +2,7 @@
 
 @push('css')
     <style>
-        .container {
+        .container.custom {
             max-width: 800px;
             margin: 0 auto;
         }
@@ -53,7 +53,7 @@
 @endpush
 
 @section('content')
-    <div class="container mt-4">
+    <div class="container custom mt-4">
         <div class="form-card">
             <div class="form-header">
                 <span class="material-symbols-outlined text-primary">edit</span>

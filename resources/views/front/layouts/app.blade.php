@@ -17,6 +17,9 @@
         .form-select:focus {
             box-shadow: none;
         }
+        #header .overlay nav .navbar-nav .nav-item .nav-link{
+            padding: 5px 12px;
+        }
     </style>
     @stack('css')
 </head>

@@ -11,7 +11,7 @@
         --correct: #E6F4EA;
     }
 
-    .container {
+    .container.custom {
         max-width: 800px;
         margin: 0 auto;
     }
@@ -164,7 +164,7 @@
 @section('content')
 
 
-    <div class="container mt-4 my-5">
+    <div class="container custom mt-4 my-5">
         <!-- Exam Header -->
         <div class="exam-header-card">
             <div class="d-flex justify-content-between flex-wrap align-items-start">
