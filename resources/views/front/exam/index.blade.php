@@ -322,9 +322,6 @@
                             <a href="{{ route('exams.edit', $exam->id) }}" class="btn-custom btn-edit">
                                 <span class="material-symbols-outlined">edit</span> Edit
                             </a>
-<<<<<<< HEAD
-                            <form action="{{ route('exams.destroy', $exam->id) }}" method="POST" style="display:inline;">
-=======
 
                             <a href="{{ route('front.exam_questions.index', $exam->id) }}" class="btn btn-sm btn-info">
                                 <span class="material-symbols-outlined">quiz</span> Questions Add
@@ -349,7 +346,6 @@
 {{--                            </button>--}}
 
                             <form action="{{ route('exams.destroy', $exam->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete this exam?');" style="display:inline-block;">
->>>>>>> cec2eb6b2cd5d2e1f31510f4cc0afbbfc7b7e121
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn-custom btn-delete"
