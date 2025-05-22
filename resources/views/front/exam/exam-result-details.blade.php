@@ -310,9 +310,15 @@
             <div class="student-meta">
                 <div><strong>ID:</strong> {{ $answer->id_no }}</div>
                 <div><strong>Contact:</strong> {{ $answer->contact }}</div>
-                <div><strong>Joined At:</strong> {{ $answer->join_at ? \Carbon\Carbon::parse($answer->join_at)->format('Y-m-d H:i') : 'N/A' }}</div>
-                <div><strong>Submitted At:</strong> {{ $answer->end_at ? \Carbon\Carbon::parse($answer->end_at)->format('Y-m-d H:i') : 'N/A' }}</div>
-                <div><strong>Time Spent:</strong> {{ \Carbon\CarbonInterval::createFromFormat('H:i:s.u', $answer->duration)->format('%I:%S') }}</div>
+                <div><strong>Joined At:</strong> {{ $answer->join_at ? \Carbon\Carbon::createFromFormat('Y-m-d H:i:s.u', $answer->join_at)->format('Y-m-d H:i') : 'N/A' }}</div>
+                <div><strong>Submitted At:</strong> {{ $answer->end_at ? \Carbon\Carbon::createFromFormat('Y-m-d H:i:s.u', $answer->end_at)->format('Y-m-d H:i') : 'N/A' }}</div>
+                <div><strong>Time Spent:</strong> 
+                    @if ($answer->duration)
+                        {{ \Carbon\Carbon::createFromFormat('H:i:s.u', $answer->duration)->format('%I:%S') }}
+                    @else
+                        N/A
+                    @endif
+                </div>
             </div>
         </div>
 
