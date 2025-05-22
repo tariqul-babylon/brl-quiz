@@ -276,7 +276,11 @@
                         <div class="student-meta">
                             <span class="meta-item">
                                 <span class="material-symbols-outlined">schedule</span>
-                                {{ \Carbon\CarbonInterval::createFromFormat('H:i:s.u', $answer->duration)->format('%I:%S') }}
+                                @if ($answer->duration)
+                                    {{ \Carbon\Carbon::createFromFormat('H:i:s.u', $answer->duration)->format('H:i:s') }}
+                                @else
+                                    N/A
+                                @endif
                             </span>
                         </div>
                         <div class="student-meta">

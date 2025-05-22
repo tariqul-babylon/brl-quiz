@@ -375,10 +375,12 @@
                             @endif
                         </div>
                         <div>
-                            <button class="btn-custom btn-copy-exam-link"
-                                data-exam-link="{{ route('front.exam', ['exam_code' => $exam->exam_code]) }}">
-                                <span class="material-symbols-outlined">content_copy</span> Copy Exam Link
-                            </button>
+                            @if ($exam->exam_status != 3)
+                                <button class="btn-custom btn-copy-exam-link"
+                                    data-exam-link="{{ route('front.exam', ['exam_code' => $exam->exam_code]) }}">
+                                    <span class="material-symbols-outlined">content_copy</span> Copy Exam Link
+                                </button>
+                            @endif
                         </div>
                     </div>
                 </div>
