@@ -11,18 +11,6 @@
         --correct: #E6F4EA;
     }
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Roboto', sans-serif;
-    }
-
-    body {
-        background: var(--light-bg);
-        padding: 20px;
-    }
-
     .container {
         max-width: 800px;
         margin: 0 auto;
