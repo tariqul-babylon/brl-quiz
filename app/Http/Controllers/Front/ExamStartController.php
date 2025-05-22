@@ -28,16 +28,16 @@ class ExamStartController extends Controller
         $id_no = $session['id_no'];
 
         $exam = Exam::where('exam_code', $exam_code)
-            ->where('exam_source', 1)
+            ->where('exam_source', Exam::SOURCE_WEB)
             ->first();
 
         if (!$exam) {
-            return view('front.exam.exam-alert', ['message' => 'The allotted time for the exam has expired.']);
+            return view('front.exam.exam-alert', ['message' => 'Exam not found.']);
         } else if ($exam->exam_status != Exam::PUBLISHED) {
-            return view('front.exam.exam-alert', ['message' => 'The allotted time for the exam has expired.']);
+            return view('front.exam.exam-alert', ['message' => 'Exam not published.']);
         } else if ($exam->is_sign_in_required && !auth()->check()) {
             return redirect()->guest(route('login'));
-        } else if ($exam?->authAnswer) {
+        } else if ($exam?->authAnswer && auth()->check()) {
             $now = Carbon::now();
             $join_at = Carbon::parse($exam->authAnswer->join_at);
             $join_at_deration = $join_at->diffInSeconds($now);
@@ -176,7 +176,7 @@ class ExamStartController extends Controller
                 return view('front.exam.exam-alert', ['message' => 'The allotted time for the exam has expired.']);
             } else if ($answer->exam->is_sign_in_required && !auth()->check()) {
                 return redirect()->guest(route('login'));
-            } else if ($answer->exam?->authAnswer) {
+            } else if ($answer->exam?->authAnswer && auth()->check()) {
                 $now = Carbon::now();
                 $join_at = Carbon::parse($answer->exam->authAnswer->join_at);
                 $join_at_deration = $join_at->diffInSeconds($now);
