@@ -66,9 +66,9 @@ class ExamController extends Controller
 
         $data['created_by'] = auth()->user()->id;
 
-        Exam::create($data);
+        $exam = Exam::create($data);
 
-        return redirect()->route('exams.index')->with('success', 'Exam created successfully.');
+        return redirect()->route('front.exam_questions.index', $exam->id)->with('success', 'Exam created successfully.');
     }
 
 

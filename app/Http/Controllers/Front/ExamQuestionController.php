@@ -58,7 +58,7 @@ class ExamQuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit( ExamQuestion $question, $exam_id)
+    public function edit(ExamQuestion $question, $exam_id)
     {
         $exam = Exam::own()->where('id', $exam_id)->firstOrFail();
         // Ensure the question belongs to the exam
@@ -111,13 +111,14 @@ class ExamQuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ExamQuestion $question, $exam_id)
+    public function destroy($question_id)
     {
-        $exam = Exam::own()->where('id', $exam_id)->firstOrFail();
-        if ($question->exam_id !== $exam->id) {
-            abort(404);
-        }
-
+        $question = ExamQuestion::where('id', $question_id)
+            ->whereHas('exam', function ($query) {
+                $query->own();
+            })
+            ->firstOrFail();
+        $exam = $question->exam;
         $question->delete();
 
         return redirect()->route('front.exam_questions.index', $exam->id)

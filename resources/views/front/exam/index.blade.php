@@ -207,6 +207,10 @@
             background: var(--primary);
             color: white;
         }
+        .btn-published {
+            background: #9c9c9c;
+            color: #fff;
+        }
 
         @media (max-width: 600px) {
             .exam-header {
@@ -342,7 +346,7 @@
                                 </form>
                             @endif
                            
-                            <a href="{{ route('exams.show', $exam->id) }}" class="btn-custom btn-show">
+                            <a href="{{ route('exams.show', $exam->id) }}" class="btn-custom btn-published">
                                 <span class="material-symbols-outlined">visibility</span> 
                                 View Details
                             </a>
@@ -353,7 +357,7 @@
                                 </a>
                             @endif
 
-                            @if ($exam->exam_status == 1)
+                            @if ($exam->exam_status == 1 && $exam->questions->count())
                                 <button class="btn-custom btn-show btn-update-status" data-exam-id="{{ $exam->id }}"
                                     data-status="2" data-action="publish">
                                     <span class="material-symbols-outlined">publish</span> Publish Exam
