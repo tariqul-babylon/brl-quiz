@@ -213,17 +213,25 @@
 
 @section('content')
     <div class="container mt-4 mb-5">
-        <div class="header">
-            <h1 class="page-title">
-                <span class="material-symbols-outlined">assignment</span>
-                Student Results
-            </h1>
-            <div class="search-filter">
-                <input type="text" placeholder="Search students...">
-                <button class="btn">
-                    <span class="material-symbols-outlined">filter_alt</span>
-                </button>
+        <div class="header align-items-start">
+            <div>
+                <h1 class="page-title">
+                    <span class="material-symbols-outlined">assignment</span>
+                    Results of Math Exam
+                </h1>
+                <span>Attended : <b>100</b></span> | 
+                <span>Submitted : <b>80</b></span> | 
+                <span>Not Submitted : <b>20</b></span>
             </div>
+            <form class=" d-flex align-items-center gap-2">
+                <select name="" style="width: 150px;" class="form-select" >
+                    <option value="">All Student</option>
+                    @foreach (range(1, 20) as $rank)
+                        <option value="{{ $rank }}"> {{ $rank }} Student Rank</option>
+                    @endforeach
+               </select>
+               <button class="btn btn-success" style="width: 200px;">Get Student Rank</button>
+            </form>
         </div>
         <div class="result-cards">
 
