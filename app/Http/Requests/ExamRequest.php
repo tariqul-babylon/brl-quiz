@@ -49,8 +49,8 @@ class ExamRequest extends FormRequest
             'instruction' => ['nullable', 'string'],
             'mark_per_question' => ['required', 'numeric'],
             'negative_mark' => ['nullable', 'numeric', 'min:0'],
-            'duration_hours' => 'required|numeric|min:0|max:23',
-            'duration_minutes' => 'required|numeric|min:0|max:59',
+            'duration_hours' => 'required_without:duration_minutes|nullable|numeric|min:0|max:23',
+            'duration_minutes' => 'required_without:duration_hours|nullable|numeric|min:0|max:59',
 
             // boolean fields
             'is_bluer' => ['sometimes', 'boolean'],
