@@ -42,13 +42,19 @@
                                         <span class="material-symbols-outlined input-icon">person</span>
                                         <input readonly value="{{ auth()->user()->name }}" type="text" name="name">
                                     </div>
+                                    @error('name')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="phone">Enter Phone Number</label>
+                                    <label for="contact">Enter Phone Number</label>
                                     <div class="input-with-icon">
                                         <span class="material-symbols-outlined input-icon">phone</span>
                                         <input @if( auth()->user()->contact) readonly @endif value="{{ auth()->user()->contact }}" type="tel" name="contact">
                                     </div>
+                                    @error('contact')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             @endauth
                             @guest
@@ -56,8 +62,11 @@
                                     <label for="name">Enter Full Name</label>
                                     <div class="input-with-icon">
                                         <span class="material-symbols-outlined input-icon">person</span>
-                                        <input type="name" name="name" required>
+                                        <input type="text" name="name" required>
                                     </div>
+                                    @error('name')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">Enter Phone Number</label>
@@ -65,6 +74,9 @@
                                         <span class="material-symbols-outlined input-icon">phone</span>
                                         <input type="tel" name="contact" required>
                                     </div>
+                                    @error('contact')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             @endguest
 
@@ -75,6 +87,9 @@
                                         <span class="material-symbols-outlined input-icon">phone</span>
                                         <input type="text" name="id_no" required>
                                     </div>
+                                    @error('id_no')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             @endif
 

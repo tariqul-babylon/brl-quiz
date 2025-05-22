@@ -45,6 +45,6 @@ class Exam extends Model
 
     public function authAnswer()
     {
-        return $this->hasOne(Answer::class)->where('user_id', auth()->user()->id);
+        return $this->hasOne(Answer::class)->where('user_id', auth()?->user()?->id);
     }
 }
