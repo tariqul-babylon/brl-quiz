@@ -1,191 +1,336 @@
 @extends('front.layouts.app')
 
-@section('content')
+@push('css')
+    <style>
+        :root {
+            --primary: #4285F4;
+            --danger: #EA4335;
+            --success: #34A853;
+            --warning: #FBBC05;
+            --dark: #202124;
+            --light-bg: #f8f9fa;
+        }
 
- <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <div>
-                <h4 class="m-0">Exam Result for : {{ $exam->title }}</h4>
-                <p class="m-0 small">Tagline: {{ $exam->tagline }}</p>
-            </div>
-            <div class="d-flex">
-                <div class="input-group search-box">
-                    <input type="text" id="searchInput" class="form-control" placeholder="Search by name or email...">
-                    <button class="btn btn-outline-light" type="button" id="searchBtn">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-                <div class="ms-3 winner-select">
-                    <select class="form-select" id="winnersFilter">
-                        <option value="" selected disabled>Select Winners</option>
-                        <option value="all">All Participants</option>
-                        <option value="top3">Top 3 Winners</option>
-                        <option value="passed">Passed (7+ Correct)</option>
-                    </select>
-                    <button id="saveWinnersBtn" class="btn btn-success save-winners-btn">
-                        <i class="fas fa-save"></i> Save
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover" id="resultsTable">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Contact</th>
-                            <th>Correct</th>
-                            <th>Wrong</th>
-                            <th>Unanswered</th>
-                            <th>Completion Time</th>
-                            <th>Duration</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($answers as $key => $answer)
-                        <tr data-id="{{ $answer->id }}">
-                            <td>{{ $key + 1 }}</td>
-                            <td>{{ $answer->name }}</td>
-                            <td>{{ $answer->contact }}</td>
-                            <td class="fw-bold">{{ $answer->correct_ans }}</td>
-                            <td>{{ $answer->incorrect_ans }}</td>
-                            <td>{{ $answer->not_answered }}</td>
-                            <td>{{ \Carbon\Carbon::parse($answer->end_at)->format('h:i:s A') }}</td>
-                            <td>
-                                @if($answer->duration)
-                                    {{ \Carbon\CarbonInterval::createFromFormat('H:i:s.u', $answer->duration)->format('%I:%S') }}
-                                @else
-                                    N/A
-                                @endif
-                            </td>
-                            <td>
-                                <a href="{{ route('front.exam.results.show',$answer->id) }}" class="btn btn-sm btn-primary">Result Details</a>
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
 
-                </table>
-            </div>
+        .page-title {
+            font-size: 1.5rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-            <div class="d-flex justify-content-between align-items-center mt-3">
-                <div class="pagination-info">
-                    Showing 1 to 10 of 12 entries
-                </div>
-                <nav aria-label="Page navigation">
-                    <ul class="pagination mb-0">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Previous</a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
+        .search-filter {
+            display: flex;
+            gap: 10px;
+        }
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Filter functionality
-        document.getElementById('winnersFilter').addEventListener('change', function() {
-            const filterValue = this.value;
-            const saveBtn = document.getElementById('saveWinnersBtn');
+        .search-filter input {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 250px;
+        }
 
-            // Show/hide save button
-            saveBtn.style.display = filterValue === 'all' ? 'none' : 'block';
+        .result-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
-            // Filter rows
-            const rows = document.querySelectorAll('#resultsTable tbody tr');
-            rows.forEach(row => {
-                const status = row.getAttribute('data-status');
+        .result-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 16px;
+            transition: all 0.3s ease;
+        }
 
-                switch(filterValue) {
-                    case 'all':
-                        row.style.display = '';
-                        break;
-                    case 'top3':
-                        row.style.display = status === 'top3' ? '' : 'none';
-                        break;
-                    case 'passed':
-                        row.style.display = status === 'passed' ? '' : 'none';
-                        break;
-                }
-            });
-        });
+        .student-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
 
-        // Save winners functionality
-        document.getElementById('saveWinnersBtn').addEventListener('click', function() {
-            const selectedFilter = document.getElementById('winnersFilter').value;
-            let winnerIds = [];
+        .student-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-            // Collect IDs of visible winners
-            document.querySelectorAll('#resultsTable tbody tr').forEach(row => {
-                if (row.style.display !== 'none') {
-                    const id = row.getAttribute('data-id');
-                    if (id) winnerIds.push(id);
-                }
-            });
+        .student-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 0.85rem;
+            color: #5f6368;
+        }
 
-            // In a real application, you would send this to your server
-            console.log('Saving winners with filter:', selectedFilter);
-            console.log('Winner IDs:', winnerIds);
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
 
-            // Show success message
-            alert(`Successfully saved ${winnerIds.length} winners!`);
+        .exam-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
 
-            // In a real app, you would use fetch() to send to your backend
-            // fetch('/save-winners', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({
-            //         filter_type: selectedFilter,
-            //         winner_ids: winnerIds
-            //     })
-            // })
-            // .then(response => response.json())
-            // .then(data => {
-            //     alert('Winners saved successfully!');
-            // });
-        });
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
 
-        // Search functionality
-        document.getElementById('searchBtn').addEventListener('click', function() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const rows = document.querySelectorAll('#resultsTable tbody tr');
+        .stat-label {
+            font-size: 0.75rem;
+            color: #5f6368;
+        }
 
-            rows.forEach(row => {
-                const name = row.cells[1].textContent.toLowerCase();
-                const email = row.cells[2].textContent.toLowerCase();
+        .stat-value {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
 
-                if (name.includes(searchTerm) || email.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
+        .stat-correct {
+            color: var(--success);
+        }
 
-        // Allow Enter key to trigger search
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                document.getElementById('searchBtn').click();
+        .stat-incorrect {
+            color: var(--danger);
+        }
+
+        .stat-neutral {
+            color: var(--warning);
+        }
+
+        .result-summary {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+
+        .total-mark {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .mark-details {
+            font-size: 0.85rem;
+            color: #5f6368;
+            text-align: right;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            gap: 4px;
+        }
+
+        .status-completed {
+            background: #E6F4EA;
+            color: var(--success);
+        }
+
+        .status-pending {
+            background: #FEF7E0;
+            color: var(--warning);
+        }
+
+        .result-card-link {
+            cursor: pointer;
+        }
+
+        .result-card:hover {
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 900px) {
+            .result-card {
+                grid-template-columns: 1fr;
             }
-        });
-    </script>
-@endsection
 
-@push ('js')
-    <script>
+            .result-summary {
+                align-items: flex-start;
+            }
 
+            .mark-details {
+                text-align: left;
+            }
 
-    </script>
+            .exam-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .search-filter {
+                width: 100%;
+            }
+
+            .search-filter input {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .student-meta {
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+
+        .material-symbols-outlined {
+            font-size: 20px;
+        }
+    </style>
 @endpush
+
+@section('content')
+    <div class="container mt-4 mb-5">
+        <div class="header align-items-start">
+            <div>
+                <h1 class="page-title mb-1">
+                    <span class="material-symbols-outlined">assignment</span>
+                    Results of {{ $exam->title }} Exam
+                </h1>
+                <hr class="my-1">
+
+                <small>
+                    <span>Duration : <b>{{ $exam->duration }}</b></span> |
+                    <span>Full Mark : <b>{{ count($exam->questions) * $exam->mark_per_question }}</b></span>
+                    <span>Negative Mark : <b >-{{ $exam->negative_mark }}</b></span>
+                    <div>
+                        @if($exam->exam_source == 1)
+                            <span>Attended : <b>{{ $exam->participants->count() }}</b></span>
+                        @endif
+
+                        @if($exam->exam_source == 1)
+                            <span>Submitted : <b>{{ $exam?->participants?->where('exam_status',2)?->count() }}</b></span>
+                        @endif
+
+                        @if($exam->exam_source == 1)
+                            <span>Not Submitted : <b>{{ $exam?->participants?->where('exam_status',1)->count() }}</b></span>
+                        @endif
+                    </div>
+                </small>
+            </div>
+            <form method="GET" action="{{ route('front.exam.winner') }}" class="d-flex align-items-center gap-2">
+                <input type="hidden" name="exam_code" value="{{ $exam->exam_code }}">
+
+                <select name="rank" style="width: 150px;" class="form-select">
+                    <option value="">All Student</option>
+                    @foreach (range(1, 20) as $rank)
+                        <option value="{{ $rank }}">{{ $rank }} Student Rank</option>
+                    @endforeach
+                </select>
+
+                <button class="btn btn-success" style="width: 200px;">Get Student Rank</button>
+            </form>
+        </div>
+        <div class="result-cards">
+
+            @foreach ($answers as $answer)
+                <!-- Result Card 1 -->
+                <a href="{{ route('front.exam.results.show',$answer->id) }}" class="result-card text-decoration-none">
+                    <div class="student-info">
+                        <h3 class="student-name">
+                            <span class="material-symbols-outlined">person</span>
+                            {{ $answer->name }}
+                        </h3>
+                        <div class="student-meta">
+                            <span class="meta-item">
+                                <span class="material-symbols-outlined">badge</span>
+                                ID: {{ $answer->id_no }}
+                            </span>
+                            <span class="meta-item">
+                                <span class="material-symbols-outlined">phone</span>
+                                {{ $answer->contact }}
+                            </span>
+                        </div>
+                        <div class="student-meta">
+                            <span class="meta-item">
+                                <span class="material-symbols-outlined">schedule</span>
+                                {{ \Carbon\CarbonInterval::createFromFormat('H:i:s.u', $answer->duration)->format('%I:%S') }}
+                            </span>
+                        </div>
+                        <div class="student-meta">
+                            <span class="text-decoration-none text-primary">Click to View Details</span>
+                        </div>
+                    </div>
+
+                    <div class="exam-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Correct</span>
+                            <span class="stat-value stat-correct">{{ $answer->correct_ans }}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Incorrect</span>
+                            <span class="stat-value stat-incorrect">{{ $answer->incorrect_ans }}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Unanswered</span>
+                            <span class="stat-value stat-neutral">{{ $answer->not_answered }}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Full Mark</span>
+                            <span class="stat-value">{{ $answer->full_mark }}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Obtained</span>
+                            <span class="stat-value">{{ $answer->obtained_mark }}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Penalty</span>
+                            <span class="stat-value stat-incorrect">-{{ $answer->negative_mark }}</span>
+                        </div>
+                    </div>
+
+                    <div class="result-summary">
+                        <span class="total-mark">{{ $answer->final_obtained_mark }}</span>
+                        <span class="mark-details">Final Obtained Mark</span>
+                        @if ($answer->exam_status == 2)
+                            <span class="status-badge status-completed">
+                                <span class="material-symbols-outlined">check_circle</span>
+                                Completed
+                            </span>
+                        @else
+                            <span class="status-badge status-pending">
+                                <span class="material-symbols-outlined">check_circle</span>
+                                Not Submitted
+                            </span>
+                        @endif
+
+                    </div>
+                </a>
+            @endforeach
+
+        </div>
+
+    </div>
+@endsection

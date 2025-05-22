@@ -27,4 +27,18 @@ class ExamResultController extends Controller
         return view('front.exam.exam-result-details', compact('answer'));
     }
 
+    public function winner(Request $request)
+    {
+        $examCode = $request->input('exam_code');
+        $rank = $request->input('rank');
+
+        // Get the actual Exam model instance
+        $exam = Exam::where('exam_code', $examCode)->firstOrFail();
+
+        // Call the relationship method (this returns a query builder, so call ->get())
+        $winners = $exam->winners($rank)->get();
+
+        return view('front.exam.exam-winners', compact('winners','exam'));
+    }
+
 }

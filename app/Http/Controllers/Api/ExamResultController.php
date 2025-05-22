@@ -98,4 +98,35 @@ class ExamResultController extends Controller
             ], 500);
         }
     }
+
+    public function showWinners(Request $request, $exam_id, $take = 20) {
+        try {
+            $exam = Exam::with([])
+            ->where('id', $exam_id)
+            ->where('exam_status', '<>', Exam::DRAFT)
+            ->where('exam_source', Exam::SOURCE_API)
+            ->where('created_by', $request->user()->id)
+            ->first();
+
+            if (!$exam) {
+                return response()->json([
+                    'code' => 404,
+                    'message' => 'Exam not found',
+                ], 404);
+            }
+
+            $winners = $exam->winners($take);
+
+            return response()->json([
+                'code' => 200,
+                'message' => 'Data found',
+                'data' => $winners,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

@@ -36,6 +36,8 @@ Route::post('exam-start', [ExamStartController::class, 'examSubmit'])->name('fro
 Route::get('exam-results/{exam_id}', [ExamResultController::class, 'index'])->name('front.exam.results');
 Route::get('/results/{answer}', [ExamResultController::class, 'show'])->name('front.exam.results.show');
 
+Route::get('/exam-winner', [ExamResultController::class, 'winner'])->name('front.exam.winner');
+
 
 Route::view('demo-exam-list', 'front.demo.exam-list');
 Route::view('demo-exam-create', 'front.demo.exam-create');
