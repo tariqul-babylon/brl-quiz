@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\ExamHelper;
+use Illuminate\Support\Facades\Validator;
 
 class ExamController extends Controller
 {
@@ -19,7 +20,7 @@ class ExamController extends Controller
      */
     public function index()
     {
-        $exams = Exam::latest()->paginate(10);
+        $exams = Exam::with('questions')->latest()->paginate(10);
         return view('front.exam.index', compact('exams'));
     }
 
@@ -50,15 +51,15 @@ class ExamController extends Controller
         $data['duration'] = gmdate("H:i:s", $totalSeconds);
 
         $code = $this->makeExamCode();
-        while(1){
-            if(!Exam::where('exam_code', $code)->exists()){
+        while (1) {
+            if (!Exam::where('exam_code', $code)->exists()) {
                 break;
             }
             $code = $this->makeExamCode();
         }
 
         $data['exam_code'] = $code;
-        $data['exam_link'] = '/exam/'.$code;
+        $data['exam_link'] = '/exam/' . $code;
 
         Exam::create($data);
 
@@ -98,8 +99,8 @@ class ExamController extends Controller
         $totalSeconds = ($hours * 3600) + ($minutes * 60);
         $data['duration'] = gmdate("H:i:s", $totalSeconds); // Store as HH:MM:SS
 
-        if (!$exam->exam_link){
-            $data['exam_link'] = '/exam/'.$exam->exam_code;
+        if (!$exam->exam_link) {
+            $data['exam_link'] = '/exam/' . $exam->exam_code;
         }
 
         $exam->update($data);
@@ -116,7 +117,7 @@ class ExamController extends Controller
         return redirect()->route('exams.index')->with('success', 'Exam deleted successfully.');
     }
 
-//     protected function getBooleanFields()
+    //     protected function getBooleanFields()
 //     {
 //         return [
 //             'is_bluer', 'is_timer', 'is_date_enabled',
@@ -126,29 +127,29 @@ class ExamController extends Controller
 //         ];
 //     }
 
-//     public function createLink(Exam $exam)
+    //     public function createLink(Exam $exam)
 //     {
 //         $exam->update([
 //             'exam_link' => '/exam/'.$exam->exam_code
 //         ]);
 
-//         return redirect()->route('exams.index')->with('success', 'Exam Link Created successfully.');
+    //         return redirect()->route('exams.index')->with('success', 'Exam Link Created successfully.');
 //     }
 
-//     public function search(Request $request)
+    //     public function search(Request $request)
 //     {
 //         $query = $request->get('q');
 //         $type = $request->get('type');  // You can still use this for filtering if needed
 //         $examId = $request->get('exam_id');
 
-//         $users = User::where(function ($q) use ($query) {
+    //         $users = User::where(function ($q) use ($query) {
 //             $q->where('name', 'like', "%{$query}%")
 //                 ->orWhere('email', 'like', "%{$query}%");
 //         })
 //             ->limit(10)
 //             ->get(['id', 'name', 'email', 'photo']);  // corrected to match your property name
 
-//         // Fetch assigned user IDs for this exam (assuming pivot table exam_user with user_id and exam_id)
+    //         // Fetch assigned user IDs for this exam (assuming pivot table exam_user with user_id and exam_id)
 //         $assignedUserIds = [];
 //         if ($examId) {
 //             $assignedUserIds = ExamUser::where('exam_id', $examId)
@@ -156,7 +157,7 @@ class ExamController extends Controller
 //                 ->toArray();
 //         }
 
-//         // Map users, add disabled property if assigned
+    //         // Map users, add disabled property if assigned
 //         return $users->map(function ($user) use ($assignedUserIds) {
 //             return [
 //                 'id' => $user->id,
@@ -169,79 +170,137 @@ class ExamController extends Controller
 //     }
 
 
-//     // ExamController.php
+    //     // ExamController.php
 
-//     public function assignTeacher(Request $request)
+    //     public function assignTeacher(Request $request)
 //     {
 //         $request->validate([
 //             'user_id' => 'required',
 //         ]);
 
-//         $examId = $request->query('exam_id');
+    //         $examId = $request->query('exam_id');
 //         $userId = $request->user_id;
 
-//         // Check if user is already assigned in conflicting role
+    //         // Check if user is already assigned in conflicting role
 //         if ($this->hasConflictingAssignment($examId, $userId, 1)) {
 //             return redirect()->back()->withErrors([
 //                 'user_id' => 'This user is already assigned as a student for this exam, or already assigned as teacher.'
 //             ]);
 //         }
 
-//         ExamUser::create([
+    //         ExamUser::create([
 //             'user_id' => $userId,
 //             'exam_id' => $examId,
 //             'user_type' => 1,
 //         ]);
 
-//         return redirect()->back()->with('success', 'Teacher assigned successfully.');
+    //         return redirect()->back()->with('success', 'Teacher assigned successfully.');
 //     }
 
-//     public function assignStudent(Request $request)
+    //     public function assignStudent(Request $request)
 //     {
 //         $request->validate([
 //             'user_id' => 'required',
 //         ]);
 
-//         $examId = $request->query('exam_id');
+    //         $examId = $request->query('exam_id');
 //         $userId = $request->user_id;
 
-//         // Check if user is already assigned in conflicting role
+    //         // Check if user is already assigned in conflicting role
 //         if ($this->hasConflictingAssignment($examId, $userId, 2)) {
 //             return redirect()->back()->withErrors([
 //                 'user_id' => 'This user is already assigned as a teacher for this exam, or already assigned as student.'
 //             ]);
 //         }
 
-//         ExamUser::create([
+    //         ExamUser::create([
 //             'user_id' => $userId,
 //             'exam_id' => $examId,
 //             'user_type' => 2,
 //         ]);
 
-//         return redirect()->back()->with('success', 'Student assigned successfully.');
+    //         return redirect()->back()->with('success', 'Student assigned successfully.');
 //     }
 
-//     private function hasConflictingAssignment($examId, $userId, $currentUserType)
+    //     private function hasConflictingAssignment($examId, $userId, $currentUserType)
 //     {
 //         // The conflicting user_type is the opposite of current one
 //         $conflictingUserType = $currentUserType === 1 ? 2 : 1;
 
-//         // Check if user already assigned as conflicting user_type
+    //         // Check if user already assigned as conflicting user_type
 //         $conflictExists = ExamUser::where('exam_id', $examId)
 //             ->where('user_id', $userId)
 //             ->where('user_type', $conflictingUserType)
 //             ->exists();
 
-//         if ($conflictExists) {
+    //         if ($conflictExists) {
 //             return true;
 //         }
 
-//         // Also check if user already assigned with the current user_type (avoid duplicates)
+    //         // Also check if user already assigned with the current user_type (avoid duplicates)
 //         $alreadyAssigned = ExamUser::where('exam_id', $examId)
 //             ->where('user_id', $userId)
 //             ->where('user_type', $currentUserType)
 //             ->exists();
 
-//         return $alreadyAssigned;
+    //         return $alreadyAssigned;
 //     }
+
+    public function updateStatus(Request $request, $exam_id)
+    {
+        try {
+            $rules = [
+                'status' => 'required|in:1,2,3',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'code' => 422,
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            $exam = Exam::where('id', $exam_id)
+                ->first();
+
+            if (!$exam) {
+                return response()->json([
+                    'code' => 404,
+                    'message' => 'Exam not found',
+                ], 404);
+            }
+
+
+            if ($exam->exam_status != 1 && $request->status == 2) {
+                return response()->json([
+                    'code' => 403,
+                    'message' => 'Exam is not in draft status. You can not update this exam.',
+                ], 403);
+            }
+
+            if ($exam->exam_status != 2 && $request->status == 3) {
+                return response()->json([
+                    'code' => 403,
+                    'message' => 'Exam not published yet. You can not update completed status before exam publish.',
+                ], 403);
+            }
+
+            $exam->update([
+                'exam_status' => $request->status,
+            ]);
+
+            return response()->json([
+                'code' => 200,
+                'message' => 'Exam status updated successfully',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

@@ -46,6 +46,9 @@ Route::view('demo-exam-result', 'front.demo.exam-result');
 Route::view('demo-exam-winner', 'front.demo.exam-winner');
 Route::view('demo-exam-result-detail', 'front.demo.exam-result-detail');
 
+Route::put('exam/{question_id}/update-status', [ExamController::class, 'updateStatus']);
+
+
 Route::get('demo-exam-winner-data', function () {
     $exam = Exam::findOrFail($exam_id ?? 1);
     $winners = $exam->winners(20);
