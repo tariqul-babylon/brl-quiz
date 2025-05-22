@@ -1,4 +1,6 @@
-<footer id="footer" class="mt-5">
+
+<div class="mt-5"></div>
+<footer id="footer" >
     <div class="container">
         <div class="content">
             <div class="copyright">
