@@ -58,6 +58,7 @@ class ExamController extends Controller
         }
 
         $data['exam_code'] = $code;
+        $data['exam_link'] = '/exam/'.$code;
 
         Exam::create($data);
 
@@ -96,6 +97,10 @@ class ExamController extends Controller
         $minutes = (int) $request->input('duration_minutes', 0);
         $totalSeconds = ($hours * 3600) + ($minutes * 60);
         $data['duration'] = gmdate("H:i:s", $totalSeconds); // Store as HH:MM:SS
+
+        if (!$exam->exam_link){
+            $data['exam_link'] = '/exam/'.$exam->exam_code;
+        }
 
         $exam->update($data);
 
