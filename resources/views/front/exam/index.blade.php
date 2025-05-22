@@ -85,7 +85,11 @@
                                 <span class="material-symbols-outlined">quiz</span> Questions Add
                             </a>
 
-                            @if(!$exam->exam_link)
+                            <a href="{{ route('front.exam.results', $exam->id) }}" class="btn btn-sm btn-info" title="View Results">
+                                <span class="material-symbols-outlined">quiz</span> Result
+                            </a>
+
+                        @if(!$exam->exam_link)
                                 <a href="{{ route('exam.create-link', $exam->id) }}" class="btn btn-sm btn-secondary">
                                     <span class="material-symbols-outlined">link</span> Create Exam Link
                                 </a>

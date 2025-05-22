@@ -1,12 +1,12 @@
 @extends('front.layouts.app')
 
 @section('content')
-   
+
  <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
-                <h4 class="m-0">Exam Result</h4>
-                <p class="m-0 small">Soft skills exam for Mastul Foundation</p>
+                <h4 class="m-0">Exam Result for : {{ $exam->title }}</h4>
+                <p class="m-0 small">Tagline: {{ $exam->tagline }}</p>
             </div>
             <div class="d-flex">
                 <div class="input-group search-box">
@@ -158,7 +158,7 @@
                     </tbody>
                 </table>
             </div>
-            
+
             <div class="d-flex justify-content-between align-items-center mt-3">
                 <div class="pagination-info">
                     Showing 1 to 10 of 12 entries
@@ -185,15 +185,15 @@
         document.getElementById('winnersFilter').addEventListener('change', function() {
             const filterValue = this.value;
             const saveBtn = document.getElementById('saveWinnersBtn');
-            
+
             // Show/hide save button
             saveBtn.style.display = filterValue === 'all' ? 'none' : 'block';
-            
+
             // Filter rows
             const rows = document.querySelectorAll('#resultsTable tbody tr');
             rows.forEach(row => {
                 const status = row.getAttribute('data-status');
-                
+
                 switch(filterValue) {
                     case 'all':
                         row.style.display = '';
@@ -212,7 +212,7 @@
         document.getElementById('saveWinnersBtn').addEventListener('click', function() {
             const selectedFilter = document.getElementById('winnersFilter').value;
             let winnerIds = [];
-            
+
             // Collect IDs of visible winners
             document.querySelectorAll('#resultsTable tbody tr').forEach(row => {
                 if (row.style.display !== 'none') {
@@ -220,14 +220,14 @@
                     if (id) winnerIds.push(id);
                 }
             });
-            
+
             // In a real application, you would send this to your server
             console.log('Saving winners with filter:', selectedFilter);
             console.log('Winner IDs:', winnerIds);
-            
+
             // Show success message
             alert(`Successfully saved ${winnerIds.length} winners!`);
-            
+
             // In a real app, you would use fetch() to send to your backend
             // fetch('/save-winners', {
             //     method: 'POST',
@@ -249,11 +249,11 @@
         document.getElementById('searchBtn').addEventListener('click', function() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const rows = document.querySelectorAll('#resultsTable tbody tr');
-            
+
             rows.forEach(row => {
                 const name = row.cells[1].textContent.toLowerCase();
                 const email = row.cells[2].textContent.toLowerCase();
-                
+
                 if (name.includes(searchTerm) || email.includes(searchTerm)) {
                     row.style.display = '';
                 } else {
@@ -273,7 +273,7 @@
 
 @push ('js')
     <script>
-      
-    
+
+
     </script>
 @endpush
