@@ -42,25 +42,25 @@
                                 @enderror
                             </div>
 
-                            <div>
-                                <label>Start Date & Time</label>
-                                <input type="text" id="exam_start_time" name="exam_start_time"
-                                       class="form-control @error('exam_start_time') is-invalid @enderror"
-                                       value="{{ old('exam_start_time', \Carbon\Carbon::parse($exam->exam_start_time)->format('Y-m-d H:i')) }}">
-                                @error('exam_start_time')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+{{--                            <div>--}}
+{{--                                <label>Start Date & Time</label>--}}
+{{--                                <input type="text" id="exam_start_time" name="exam_start_time"--}}
+{{--                                       class="form-control @error('exam_start_time') is-invalid @enderror"--}}
+{{--                                       value="{{ old('exam_start_time', \Carbon\Carbon::parse($exam->exam_start_time)->format('Y-m-d H:i')) }}">--}}
+{{--                                @error('exam_start_time')--}}
+{{--                                <div class="invalid-feedback">{{ $message }}</div>--}}
+{{--                                @enderror--}}
+{{--                            </div>--}}
 
-                            <div>
-                                <label>End Date & Time</label>
-                                <input type="text" id="exam_end_time" name="exam_end_time"
-                                       class="form-control @error('exam_end_time') is-invalid @enderror"
-                                       value="{{ old('exam_end_time', \Carbon\Carbon::parse($exam->exam_end_time)->format('Y-m-d H:i')) }}">
-                                @error('exam_end_time')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+{{--                            <div>--}}
+{{--                                <label>End Date & Time</label>--}}
+{{--                                <input type="text" id="exam_end_time" name="exam_end_time"--}}
+{{--                                       class="form-control @error('exam_end_time') is-invalid @enderror"--}}
+{{--                                       value="{{ old('exam_end_time', \Carbon\Carbon::parse($exam->exam_end_time)->format('Y-m-d H:i')) }}">--}}
+{{--                                @error('exam_end_time')--}}
+{{--                                <div class="invalid-feedback">{{ $message }}</div>--}}
+{{--                                @enderror--}}
+{{--                            </div>--}}
 
                             <div>
                                 <label>Mark Per Question</label>
