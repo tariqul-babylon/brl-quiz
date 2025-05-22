@@ -276,7 +276,7 @@ class ExamController extends Controller
             }
 
 
-            if ($exam->exam_status != 1 && $request->status == 2) {
+            if (!in_array($exam->exam_status, [1, 3]) && $request->status == 2) {
                 return response()->json([
                     'code' => 403,
                     'message' => 'Exam is not in draft status. You can not update this exam.',
