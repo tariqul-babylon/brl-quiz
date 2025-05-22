@@ -23,11 +23,25 @@ class ExamQuestionController extends Controller
         $exam = Exam::own()->where('id', $exam_id)->firstOrFail();
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'question_type' => 'required|in:1,2,3', // ✅ changed from boolean
+            'question_type' => 'required|in:1,2,3',
             'options' => 'required|array|min:2',
             'options.*' => 'required|string|max:255',
             'correct_option' => 'required|integer|min:0',
         ]);
+
+        // Check if question title is already used in the same exam
+        if ($exam->questions()->where('title', $validated['title'])->exists()) {
+            return back()->withInput()->withErrors([
+                'title' => 'This question title already exists for the selected exam.',
+            ]);
+        }
+
+        // Check for duplicate options within the same question
+        if (count($validated['options']) !== count(array_unique($validated['options']))) {
+            return back()->withInput()->withErrors([
+                'options' => 'Each option must be unique.',
+            ]);
+        }
 
         DB::transaction(function () use ($exam, $validated) {
             $question = $exam->questions()->create([
@@ -58,7 +72,7 @@ class ExamQuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit( ExamQuestion $question, $exam_id)
+    public function edit($exam_id, ExamQuestion $question)
     {
         $exam = Exam::own()->where('id', $exam_id)->firstOrFail();
         // Ensure the question belongs to the exam
@@ -72,7 +86,7 @@ class ExamQuestionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ExamQuestion $question, $exam_id)
+    public function update(Request $request, $exam_id, ExamQuestion $question)
     {
         $exam = Exam::own()->where('id', $exam_id)->firstOrFail();
         if ($question->exam_id !== $exam->id) {
