@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,5 +28,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('errtext', function ($field) {
             return "<?php echo \$errors->has($field) ? '<small class=\"text-danger\">' . \$errors->first($field) . '</small>' : ''; ?>";
         });
+
+        Paginator::useBootstrapFive();
     }
 }
