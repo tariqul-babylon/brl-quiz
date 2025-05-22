@@ -97,17 +97,46 @@ class ExamQuestionController extends Controller
             'title' => 'required|string|max:255',
             'question_type' => 'required|in:1,2,3',
             'options' => 'required|array|min:2',
-            'options.*' => 'required|string|max:255',
+            'options.*' => 'required|string|max:255|distinct',
             'correct_option' => 'required|integer|min:0',
+        ], [
+            'options.*.distinct' => 'Option values must be unique. Duplicate values are not allowed.',
         ]);
 
+        // Check if question title or type has changed
+        $titleChanged = $question->title !== $validated['title'];
+        $typeChanged = $question->question_type !== (int)$validated['question_type'];
+
+        // Load existing options
+        $existingOptions = $question->options()->orderBy('id')->get();
+
+        // Compare existing options with new options
+        $optionsChanged = count($existingOptions) !== count($validated['options']);
+        if (!$optionsChanged) {
+            foreach ($existingOptions as $index => $option) {
+                if (
+                    $option->title !== $validated['options'][$index] ||
+                    $option->is_correct != ($index === (int)$validated['correct_option'])
+                ) {
+                    $optionsChanged = true;
+                    break;
+                }
+            }
+        }
+
+        // If nothing changed, skip update
+        if (!$titleChanged && !$typeChanged && !$optionsChanged) {
+            return redirect()->route('front.exam_questions.index', $exam->id)
+                ->with('info', 'No changes were made to the question.');
+        }
+
+        // Proceed with update
         DB::transaction(function () use ($question, $validated) {
             $question->update([
                 'title' => $validated['title'],
                 'question_type' => (int)$validated['question_type'],
             ]);
 
-            // Delete old options and add new ones
             $question->options()->delete();
 
             foreach ($validated['options'] as $index => $optionText) {
@@ -125,7 +154,7 @@ class ExamQuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ExamQuestion $question, $exam_id)
+    public function destroy($exam_id, ExamQuestion $question)
     {
         $exam = Exam::own()->where('id', $exam_id)->firstOrFail();
         if ($question->exam_id !== $exam->id) {
