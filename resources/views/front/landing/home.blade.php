@@ -53,7 +53,7 @@
         .hero-btns {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 8px;
         }
         
         /* Features Section */
@@ -150,8 +150,11 @@
         <h1>Master Your Skills with Online Quiz Exams</h1>
         <p>Skill Shoper provides comprehensive online testing solutions to help you assess and improve your knowledge in various domains.</p>
         <div class="hero-btns">
-            <a href="#" class="btn">Get Started</a>
-            <a href="#" class="btn btn-outline">Sign Up</a>
+            <a href="{{route('exams.index')}}" class="btn">Get Started</a>
+            <a href="{{route('front.join-exam')}}" class="btn">Join Exam</a>
+            @guest
+                <a href="{{route('register')}}" class="btn ms-0 btn-outline">Sign Up</a>
+            @endguest
         </div>
     </div>
 </section>

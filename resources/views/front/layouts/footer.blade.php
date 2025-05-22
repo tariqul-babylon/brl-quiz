@@ -5,11 +5,10 @@
                 &copy; {{date('Y')}} 
             </div>
             <div class="menu">
-                <a href="">Help</a>
-                <a href="">Terms</a>
-                <a href="">Privacy</a>
-                <a href="">About</a>
-                <a href="">Cookie Policy</a>
+                <a href="{{route('front.page.terms')}}">Terms</a>
+                <a href="{{route('front.page.privacy')}}">Privacy</a>
+                <a href="{{route('front.page.about')}}">About</a>
+                <a href="{{route('front.page.cookie-policy')}}">Cookie Policy</a>
             </div>
             <div class="social">
                 <a href="" class="social-link">
