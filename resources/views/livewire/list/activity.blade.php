@@ -111,11 +111,11 @@
                 <table class="table table-striped">
                     <thead class="bg-secondary text-white">
                         <tr>
-                            <th>Sl. No.</th>
-                            <th>User</th>
-                            <th>Description</th>
-                            <th>Agent</th>
-                            <th width="100">Created At</th>
+                            <th width="80">Sl. No.</th>
+                            <th width="200">User</th>
+                            <th class="desc-cell">Description</th>
+                            <th width="150">Agent</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -130,8 +130,11 @@
                                     <small class="d-block">
                                         {{ $log->ipAddress }}
                                     </small>
+                                    <small class="d-block">
+                                        {{ $log->created_at->format('d M Y h:i A') }}
+                                    </small>
                                 </td>
-                                <td>
+                                <td class="desc-cell">
                                     {{ $log->description }}
                                     <hr class="my-0">
                                     @if ($log->methodType == 'GET')
@@ -181,12 +184,7 @@
                                     </small>
                                 </td>
 
-                                <td>
-                                    {{ $log->created_at->format('d M Y') }}
-                                    <div>
-                                        {{ $log->created_at->format('h:i:s A') }}
-                                    </div>
-                                </td>
+
                             </tr>
                         @endforeach
 

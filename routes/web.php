@@ -34,7 +34,7 @@ Route::middleware(['activity'])->group(function () {
     Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 });
 
-Route::get('activity', [LogController::class, 'laravelLoggerActivity'])->name('log.laravel-logger-activity');
+Route::get('activity', [LogController::class, 'laravelLoggerActivity'])->name('log.laravel-logger-activity')->middleware(['auth', 'admin']);
 
 // Route::middleware(['auth'])->prefix(prefix: 'admin')->name('admin.')->group(function () {
 //     Route::get('/change-password', [AdminPasswordController::class, 'showChangeForm'])->name('password.change');
