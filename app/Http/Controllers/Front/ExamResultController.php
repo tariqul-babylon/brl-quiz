@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 
 class ExamResultController extends Controller
 {
-     public function index($id)
+    public function index($id)
     {
-        $exam = Exam::own()->where('id',$id)->firstOrFail();
-        $answers = Answer::where('exam_id',$id)->get();
-        return view('front.exam.exam-result',compact('exam','answers'));
+        $exam = Exam::own()->where('id', $id)->firstOrFail();
+        $answers = Answer::where('exam_id', $id)->get();
+        return view('front.exam.exam-result', compact('exam', 'answers'));
     }
 
     public function show($id)
@@ -23,10 +23,10 @@ class ExamResultController extends Controller
             'answerOptions.question', // Add this to eager-load the question
             'answerOptions.answerOptionChoices.examQuestionOption.question'
         ])
-        ->whereHas('exam', function ($query){
-            $query->own();
-        })
-        ->findOrFail($id);
+            ->whereHas('exam', function ($query) {
+                $query->own();
+            })
+            ->findOrFail($id);
 
         return view('front.exam.exam-result-details', compact('answer'));
     }
@@ -42,7 +42,6 @@ class ExamResultController extends Controller
         // Call the relationship method (this returns a query builder, so call ->get())
         $winners = $exam->winners($rank)->get();
 
-        return view('front.exam.exam-winners', compact('winners','exam'));
+        return view('front.exam.exam-winners', compact('winners', 'exam'));
     }
-
 }

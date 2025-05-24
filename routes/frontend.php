@@ -44,19 +44,4 @@ Route::middleware('auth')->group(function () {
     Route::get('exam-results/{exam_id}', [ExamResultController::class, 'index'])->name('front.exam.results');
     Route::get('/results/{answer}', [ExamResultController::class, 'show'])->name('front.exam.results.show');
     Route::get('/exam-winner', [ExamResultController::class, 'winner'])->name('front.exam.winner');
-
 });
-
-
-
-
-
-
-
-Route::view('demo-exam-list', 'front.demo.exam-list');
-Route::view('demo-exam-create', 'front.demo.exam-create');
-Route::view('demo-exam-show', 'front.demo.exam-show');
-Route::view('demo-exam-result', 'front.demo.exam-result');
-Route::view('demo-exam-winner', 'front.demo.exam-winner');
-Route::view('demo-exam-result-detail', 'front.demo.exam-result-detail');
-

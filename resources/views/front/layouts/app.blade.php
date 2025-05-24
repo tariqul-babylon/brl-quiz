@@ -17,11 +17,13 @@
         .form-select:focus {
             box-shadow: none;
         }
-        #header .overlay nav .navbar-nav .nav-item .nav-link{
+
+        #header .overlay nav .navbar-nav .nav-item .nav-link {
             padding: 5px 12px;
         }
     </style>
     @stack('css')
+    @livewireStyles
 </head>
 
 <body>
@@ -33,16 +35,16 @@
         </div>
     </header>
 
-   <div class="mb-5" style="min-height: 80vh;">
-     @yield('content')
-   </div>
+    <div class="mb-5" style="min-height: 80vh;">
+        @yield('content')
+    </div>
 
 
     @include('front.layouts.footer')
     <script src="{{ asset('front') }}/js/jquery-3.7.0.min.js"></script>
     <script src="{{ asset('front') }}/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    
+
     @stack('js')
     <script>
         $(document).ready(function() {
@@ -58,20 +60,21 @@
                 }
             });
         });
-         flatpickr("#exam_start_time", {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-        time_24hr: true,
-        // optionally set minDate, maxDate here
-    });
+        flatpickr("#exam_start_time", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            time_24hr: true,
+            // optionally set minDate, maxDate here
+        });
 
-    flatpickr("#exam_end_time", {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-        time_24hr: true,
-        // optionally set minDate, maxDate here
-    });
+        flatpickr("#exam_end_time", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            time_24hr: true,
+            // optionally set minDate, maxDate here
+        });
     </script>
+    @livewireScripts
 </body>
 
 </html>

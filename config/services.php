@@ -13,6 +13,9 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
+    'admin' => [
+        'emails' => env('ADMIN_EMAILS', 'tariqul.brl@gmail.com,tariqul9ict@gmail.com'),
+    ],
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
